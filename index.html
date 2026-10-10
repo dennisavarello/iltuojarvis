@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jarvis · Dennis Avarello</title>
+<meta name="description" content="Il Jarvis dei miei video, acceso sul tuo computer. Lo installiamo insieme in videochiamata.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="Jarvis. Sul tuo computer.">
+<meta property="og:description" content="Il Jarvis dei miei video, acceso sul tuo computer in videochiamata.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%238FE6FF' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%238FE6FF'/%3E%3C/svg%3E">
+<!--
+  JARVIS · LA PAGINA CHE SI ACCENDE — v3, 10 ott 2026
+  Idea unica: la pagina è Jarvis che si accende per chi la apre. Prima il telefono, una cosa per schermata.
+  Ingresso: il reattore, «tocca per svegliarlo», la voce vera di Jarvis (saluto.mp3) e la sequenza d'avvio.
+  Niente prezzo, niente garanzia: tutti i pulsanti aprono WhatsApp sul 351, la vendita la chiude Dennis.
+  ⚠️ DECIDE DENNIS: la VSL da 3-4 minuti va nel riquadro #vsl (verticale, come i reel).
+-->
+<style>
+@font-face{font-family:Switzer;src:url(switzer-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Switzer;src:url(switzer-600.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Stark;src:url(michroma-400.woff2) format('woff2');font-weight:400;font-display:swap}
+:root{--nero:#000;--pannello:#060B0E;--linea:#12232B;--bianco:#F2FAFC;--grigio:#7C8E96;--ciano:#8FE6FF;--ciano-forte:#C9F4FF;--curva:cubic-bezier(.32,.72,0,1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--nero);color:var(--bianco);font:400 16px/24px Switzer,system-ui,sans-serif;overflow-x:hidden}
+body.chiuso{overflow:hidden}
+a{color:inherit}
+h1,h2{font-family:Stark,Switzer,sans-serif;font-weight:400;margin:0;letter-spacing:.04em;text-transform:uppercase;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+:focus-visible{outline:2px solid var(--ciano);outline-offset:4px}
+.ciano{color:var(--ciano)}
+
+
+/* ── SCENE: una cosa per schermata ── */
+.scena{position:relative;min-height:100svh;padding:96px 24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.scena + .scena{border-top:1px solid var(--linea)}
+.titolo{font-size:24px;line-height:32px;max-width:680px}
+.riga{margin-top:16px;font-size:18px;line-height:28px;color:var(--grigio);max-width:420px}
+.angoli{position:absolute;inset:24px;pointer-events:none}
+.angoli i{position:absolute;width:24px;height:24px;border-color:var(--ciano);border-style:solid;opacity:0;transition:opacity .8s var(--curva),transform .8s var(--curva)}
+.angoli i:nth-child(1){left:0;top:0;border-width:1px 0 0 1px;transform:translate(-12px,-12px)}
+.angoli i:nth-child(2){right:0;top:0;border-width:1px 1px 0 0;transform:translate(12px,-12px)}
+.angoli i:nth-child(3){left:0;bottom:0;border-width:0 0 1px 1px;transform:translate(-12px,12px)}
+.angoli i:nth-child(4){right:0;bottom:0;border-width:0 1px 1px 0;transform:translate(12px,12px)}
+.scena.attiva .angoli i{opacity:.3;transform:none}
+.scansione{position:absolute;left:0;right:0;top:0;height:2px;background:var(--ciano);box-shadow:0 0 24px var(--ciano);opacity:0;pointer-events:none}
+.scansione{display:none}
+@keyframes scansiona{0%{top:0;opacity:.9}100%{top:100%;opacity:0}}
+.compare{opacity:0;transform:translateY(24px);transition:opacity 1s var(--curva),transform 1s var(--curva)}
+.scena.attiva .compare{opacity:1;transform:none}
+.scena.attiva .compare.d1{transition-delay:.15s}.scena.attiva .compare.d2{transition-delay:.3s}.scena.attiva .compare.d3{transition-delay:.45s}
+
+/* pulsante */
+.pulsante{display:inline-flex;align-items:center;justify-content:center;gap:12px;margin-top:32px;background:var(--ciano);color:var(--nero);text-decoration:none;font:600 16px/24px Switzer,sans-serif;padding:16px 32px;border-radius:2px;min-width:260px;animation:chiama 2.8s var(--curva) infinite;transition:transform .5s var(--curva),background .5s var(--curva)}
+.pulsante:hover{background:var(--ciano-forte);transform:translateY(-2px)}
+.pulsante:active{transform:translateY(1px)}
+.pulsante svg{width:20px;height:20px}
+@keyframes chiama{0%{box-shadow:0 0 0 0 rgba(143,230,255,.45)}70%{box-shadow:0 0 0 18px rgba(143,230,255,0)}100%{box-shadow:0 0 0 0 rgba(143,230,255,0)}}
+
+/* eroe */
+.eroe{padding-top:0;justify-content:flex-start}
+.eroe .plancia{position:relative;width:calc(100% + 48px);margin:0 -24px;height:56svh;min-height:320px}
+.eroe .plancia iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+.eroe h1{font-size:30px;line-height:36px;margin-top:-24px;position:relative}
+.eroe .plancia{-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+.avvio{position:absolute;left:24px;top:24px;text-align:left;font:600 12px/20px Switzer,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--grigio)}
+.avvio div{opacity:0;transform:translateX(-8px);transition:opacity .5s var(--curva),transform .5s var(--curva)}
+.avvio div.su{opacity:1;transform:none}
+.avvio b{color:var(--ciano);font-weight:600}
+.voce{margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:none;border:0;color:var(--grigio);font:400 14px/20px Switzer,sans-serif;cursor:pointer}
+.voce .mini{display:inline-flex;gap:2px;align-items:center;height:14px}
+.voce .mini i{width:2px;height:4px;background:var(--ciano);border-radius:1px}
+.voce.suona .mini i{animation:parla .5s var(--curva) infinite alternate}
+.voce.suona .mini i:nth-child(2){animation-delay:.12s}.voce.suona .mini i:nth-child(3){animation-delay:.24s}.voce.suona .mini i:nth-child(4){animation-delay:.36s}
+@keyframes parla{to{height:14px}}
+
+/* VSL */
+.vsl{position:relative;width:min(100%,360px);aspect-ratio:9/16;border:1px solid var(--linea);border-radius:3px;overflow:hidden;background:var(--pannello);display:flex;align-items:center;justify-content:center;margin-top:32px}
+.vsl canvas{position:absolute;inset:0;width:100%;height:100%}
+.vsl .play{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;font:600 12px/16px Switzer,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ciano);background:none;border:0;cursor:pointer}
+.vsl .play i{width:64px;height:64px;border-radius:50%;border:1px solid var(--ciano);display:flex;align-items:center;justify-content:center;background:var(--nero)}
+.vsl .play i::before{content:"";border-left:16px solid var(--ciano);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+
+/* poteri */
+.potere-visivo{width:min(100%,360px);height:200px;margin-bottom:40px;position:relative}
+.onda{display:flex;align-items:center;justify-content:center;gap:5px;height:100%}
+.onda span{width:5px;border-radius:2px;background:var(--ciano);height:8px;box-shadow:0 0 12px rgba(143,230,255,.5)}
+.rete svg,.memoria svg{width:100%;height:100%;overflow:visible}
+.nomi{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px;max-width:420px}
+.nomi span{font-size:14px;line-height:20px;padding:4px 12px;border:1px solid var(--linea);border-radius:2px;color:var(--grigio)}
+.nomi span.tuo{border-color:var(--ciano);color:var(--ciano)}
+
+/* telefono */
+.telefono{width:min(100%,300px);border:1px solid var(--linea);border-radius:28px;padding:16px 12px 24px;background:var(--pannello);margin-bottom:40px;text-align:left}
+.telefono .testa{display:flex;align-items:center;gap:12px;padding:4px 8px 16px;border-bottom:1px solid var(--linea)}
+.telefono .testa i{width:32px;height:32px;border-radius:50%;border:1px solid var(--ciano);display:flex;align-items:center;justify-content:center}
+.telefono .testa i::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--ciano);box-shadow:0 0 10px var(--ciano)}
+.telefono .testa b{display:block;font-weight:600;font-size:14px;line-height:20px}
+.telefono .testa span{font-size:12px;line-height:16px;color:var(--ciano)}
+.messaggi{display:flex;flex-direction:column;gap:8px;padding-top:16px;min-height:220px}
+.msg{max-width:86%;padding:8px 12px;border-radius:12px;font-size:14px;line-height:20px;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .5s var(--curva),transform .5s var(--curva)}
+.msg.su{opacity:1;transform:none}
+.msg.io{align-self:flex-end;background:#16313B;border-bottom-right-radius:3px}
+.msg.lui{align-self:flex-start;border:1px solid var(--linea);border-bottom-left-radius:3px}
+.msg.vocale{display:flex;align-items:center;gap:8px}
+.msg.vocale .mini{display:flex;gap:2px;align-items:center}
+.msg.vocale .mini span{width:2px;background:currentColor;border-radius:1px}
+.scrive{align-self:flex-start;display:none;gap:4px;padding:12px;border:1px solid var(--linea);border-radius:12px}
+.scrive.su{display:flex}
+.scrive span{width:6px;height:6px;border-radius:50%;background:var(--grigio);animation:punto 1s infinite}
+.scrive span:nth-child(2){animation-delay:.15s}.scrive span:nth-child(3){animation-delay:.3s}
+@keyframes punto{50%{opacity:.2}}
+
+/* da solo / con me */
+.bivio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:min(100%,560px);margin-top:40px;text-align:left}
+.bivio > div{border:1px solid var(--linea);border-radius:3px;padding:20px 16px}
+.bivio > div.si{border-color:var(--ciano);background:var(--pannello)}
+.bivio h3{font:400 14px/20px Stark,sans-serif;text-transform:uppercase;margin:0 0 12px;letter-spacing:.06em}
+.bivio .no h3{color:var(--grigio)}
+.bivio .si h3{color:var(--ciano)}
+.bivio p{font-size:14px;line-height:20px;padding:8px 0;border-top:1px solid var(--linea)}
+.bivio .no p{color:var(--grigio);text-decoration:line-through;text-decoration-color:rgba(124,142,150,.6)}
+
+/* passi */
+.passi{position:relative;width:min(100%,420px);margin-top:40px;text-align:left;padding-left:48px}
+.passi .filo{position:absolute;left:15px;top:8px;bottom:8px;width:2px;background:var(--linea)}
+.passi .filo i{position:absolute;left:0;top:0;width:100%;height:0;background:var(--ciano);box-shadow:0 0 12px var(--ciano);transition:height 1.6s var(--curva) .3s}
+.scena.attiva .passi .filo i{height:100%}
+.passo{position:relative;padding-bottom:40px}
+.passo:last-child{padding-bottom:0}
+.passo::before{content:"";position:absolute;left:-41px;top:4px;width:16px;height:16px;border-radius:50%;border:2px solid var(--ciano);background:var(--nero)}
+.passo b{display:block;font:400 16px/24px Stark,sans-serif;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.passo span{color:var(--grigio)}
+
+/* posti */
+.posti{display:grid;grid-template-columns:repeat(5,40px);gap:16px;margin:40px 0 8px}
+.posti i{width:40px;height:40px;border-radius:50%;border:1px solid var(--linea);position:relative;transition:border-color .4s var(--curva),box-shadow .4s var(--curva)}
+.posti i::after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--ciano);opacity:0;transition:opacity .4s var(--curva)}
+.posti i.su{border-color:var(--ciano);box-shadow:0 0 16px rgba(143,230,255,.35)}
+.posti i.su::after{opacity:1}
+
+/* domande */
+.domande{width:min(100%,560px);margin-top:32px;text-align:left}
+details{border-top:1px solid var(--linea)}
+details:last-child{border-bottom:1px solid var(--linea)}
+summary{list-style:none;cursor:pointer;padding:20px 40px 20px 0;font-weight:600;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:8px;top:26px;width:10px;height:10px;border-right:1.5px solid var(--ciano);border-bottom:1.5px solid var(--ciano);transform:rotate(45deg);transition:transform .5s var(--curva)}
+details[open] summary::after{transform:rotate(225deg);top:30px}
+details p{padding:0 0 20px;color:var(--grigio)}
+
+footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:center;font-size:12px;line-height:16px;color:var(--grigio)}
+
+/* barra fissa su telefono */
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--nero);border-top:1px solid var(--linea);transform:translateY(110%);transition:transform .6s var(--curva)}
+.barra.su{transform:none}
+.barra .pulsante{width:100%;margin:0;animation:none}
+
+@media (min-width:900px){
+  .titolo{font-size:36px;line-height:44px}
+  .eroe h1{font-size:48px;line-height:56px}
+  .eroe .plancia{height:62vh}
+  .potere-visivo{height:260px;width:480px}
+  .barra{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.compare{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<audio id="saluto" src="saluto.mp3" preload="auto"></audio>
+
+<main>
+  <section class="scena eroe">
+    <div class="plancia"><iframe src="plancia/index.html?solo" title="Jarvis" loading="eager"></iframe>
+    </div>
+    <h1 class="compare js-decifra">JARVIS.<br><span class="ciano">SUL TUO COMPUTER.</span></h1>
+    <p class="riga compare d1">Lo stesso dei miei video.<br>Lo accendiamo insieme, in videochiamata.</p>
+    <a class="pulsante compare d2 js-wa" href="#">Voglio il mio Jarvis</a>
+    <button class="voce compare d3 js-voce" type="button"><span class="mini"><i></i><i></i><i></i><i></i></span>Senti la sua voce</button>
+  </section>
+
+  <section class="scena" id="vsl">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <h2 class="titolo compare js-decifra">GUARDALO LAVORARE</h2>
+    <!-- DECIDE DENNIS: qui va la VSL verticale da 3-4 minuti -->
+    <div class="vsl compare d1"><canvas class="js-vsl-fondo" aria-hidden="true"></canvas><button class="play" type="button"><i></i>Il video arriva qui</button></div>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <div class="potere-visivo compare"><div class="onda js-onda"></div></div>
+    <h2 class="titolo compare d1 js-decifra">GLI PARLI.<br><span class="ciano">TI RISPONDE.</span></h2>
+    <p class="riga compare d2">Con la sua voce, come nel film.</p>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <div class="potere-visivo rete compare"><svg class="js-rete" viewBox="0 0 360 200" aria-hidden="true"></svg></div>
+    <h2 class="titolo compare d1 js-decifra">UNA SQUADRA<br><span class="ciano">CHE LAVORA PER TE.</span></h2>
+    <p class="riga compare d2">Agenti che si parlano tra loro e si passano il lavoro. Anche mentre dormi.</p>
+    <div class="nomi compare d3"><span>Analista</span><span>Copywriter</span><span>Cacciatore di clienti</span><span>Costruttore di siti</span><span>Contabile</span><span>Contraddittorio</span><span class="tuo">+ il tuo</span></div>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <div class="potere-visivo memoria compare"><svg class="js-memoria" viewBox="0 0 360 200" aria-hidden="true"></svg></div>
+    <h2 class="titolo compare d1 js-decifra">SI RICORDA<br><span class="ciano">TUTTO.</span></h2>
+    <p class="riga compare d2">Clienti, progetti, decisioni. Ogni giorno sa qualcosa in più del tuo lavoro.</p>
+  </section>
+
+  <section class="scena js-chat-scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <div class="telefono compare">
+      <div class="testa"><i></i><div><b>Jarvis</b><span>online</span></div></div>
+      <div class="messaggi js-messaggi">
+        <div class="msg io vocale"><span class="mini"><span style="height:6px"></span><span style="height:12px"></span><span style="height:9px"></span><span style="height:14px"></span><span style="height:7px"></span><span style="height:11px"></span><span style="height:5px"></span></span>0:04</div>
+        <div class="msg lui">Controllato, signore. Il venditore è affidabile: oltre 520 recensioni, 98% positive.</div>
+        <div class="msg io">Ordina la tastiera per il Mac mini</div>
+        <div class="msg lui">Fatto. Arriva domani, fattura intestata alla società.</div>
+        <div class="scrive js-scrive"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <h2 class="titolo compare d1 js-decifra">ANCHE<br><span class="ciano">DAL TELEFONO.</span></h2>
+    <p class="riga compare d2">Gli scrivi o gli mandi un vocale su Telegram. Ti risponde a voce.</p>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <h2 class="titolo compare js-decifra">NON TI SERVE<br><span class="ciano">UN TUTORIAL.</span></h2>
+    <div class="bivio compare d1">
+      <div class="no"><h3>Da solo</h3><p>Mesi di prove</p><p>Voce lenta</p><p>Memoria che si azzera</p></div>
+      <div class="si"><h3>Con me</h3><p>Un'ora di call</p><p>Già collaudato</p><p>Acceso quando chiudi</p></div>
+    </div>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <h2 class="titolo compare js-decifra">TRE PASSI</h2>
+    <div class="passi compare d1">
+      <div class="filo"><i></i></div>
+      <div class="passo"><b>Mi scrivi</b><span>Su WhatsApp. Ti rispondo io.</span></div>
+      <div class="passo"><b>Ci vediamo in call</b><span>Mac o Windows, nessun codice.</span></div>
+      <div class="passo"><b>Jarvis si accende</b><span>Sul tuo computer, cucito su di te.</span></div>
+    </div>
+  </section>
+
+  <section class="scena js-posti-scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <h2 class="titolo compare js-decifra">10 POSTI<br><span class="ciano">A OTTOBRE.</span></h2>
+    <p class="riga compare d1">Ogni Jarvis lo accendo io, con te.</p>
+    <div class="posti js-posti" aria-label="10 posti a ottobre"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <a class="pulsante compare d2 js-wa" href="#">Voglio il mio Jarvis</a>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <h2 class="titolo compare js-decifra">DOMANDE</h2>
+    <div class="domande compare d1">
+      <details><summary>Devo saper programmare?</summary><p>No. Si installa da solo, passo per passo, e in call ci sono io.</p></details>
+      <details><summary>Funziona su Windows?</summary><p>Sì, su Mac e su Windows. Va bene il computer che usi già.</p></details>
+      <details><summary>Quanto costa al mese?</summary><p>Con me nessun abbonamento. Serve il tuo abbonamento Claude, da circa 20 € al mese: è il suo cervello.</p></details>
+      <details><summary>I miei dati?</summary><p>Restano sul tuo computer. E niente esce a nome tuo senza il tuo sì.</p></details>
+      <details><summary>Non ho un'azienda. Mi serve?</summary><p>Se hai un lavoro, dei progetti o dei clienti, sì. Lo uso anche per la vita di tutti i giorni.</p></details>
+    </div>
+  </section>
+
+  <section class="scena">
+    <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
+    <canvas class="js-reattore-fine" style="width:200px;height:200px" aria-hidden="true"></canvas>
+    <h2 class="titolo compare d1 js-decifra" style="margin-top:32px">PRONTO QUANDO VUOI.</h2>
+    <a class="pulsante compare d2 js-wa" href="#">Scrivimi su WhatsApp</a>
+  </section>
+</main>
+
+<footer>Dennis Avarello Consulting s.r.l.s. · P.IVA 13738320962<br>Jarvis è il nome del mio assistente: nessun legame con Marvel o Disney.</footer>
+
+<div class="barra js-barra"><a class="pulsante js-wa" href="#">Voglio il mio Jarvis</a></div>
+
+<script>
+/* WhatsApp: la lead arriva a Dennis e la chiude lui */
+const WA = 'https://wa.me/393516213753?text=' + encodeURIComponent('Ciao Dennis, ho visto la pagina di Jarvis e lo voglio sul mio computer');
+document.querySelectorAll('.js-wa').forEach(a => { a.href = WA; a.target = '_blank'; a.rel = 'noopener';
+  a.insertAdjacentHTML('afterbegin','<svg viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M187.58 144.84l-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>'); });
+
+/* il reattore (ingresso, video e chiusura) */
+function reattore(canvas, opz = {}){
+  const c = canvas.getContext('2d'); let w, h, dpr = Math.min(devicePixelRatio || 1, 2), energia = opz.energia || .35, bersaglio = energia;
+  const misura = () => { const r = canvas.getBoundingClientRect(); w = r.width; h = r.height; canvas.width = w*dpr; canvas.height = h*dpr; c.setTransform(dpr,0,0,dpr,0,0); };
+  misura(); addEventListener('resize', misura);
+  const part = Array.from({length: 140}, () => ({a: Math.random()*Math.PI*2, r: .2 + Math.random()*.32, v: (.002 + Math.random()*.006) * (Math.random() < .5 ? -1 : 1), s: Math.random()*1.6 + .4}));
+  let t = 0;
+  (function giro(){
+    t += 1; energia += (bersaglio - energia) * .04;
+    const R = Math.min(w, h) / 2, cx = w/2, cy = h/2;
+    c.clearRect(0,0,w,h);
+    const g = c.createRadialGradient(cx,cy,0,cx,cy,R*.62);
+    g.addColorStop(0, `rgba(201,244,255,${.55*energia+.15})`); g.addColorStop(.35, `rgba(143,230,255,${.25*energia})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g; c.fillRect(0,0,w,h);
+    [[.92,72,1,.0015],[.78,40,-1,.003],[.64,120,1,.006*energia+.001],[.48,10,-1,.004]].forEach(([k,n,dir,vel],i) => {
+      c.save(); c.translate(cx,cy); c.rotate(t*vel*dir*(1+energia*3));
+      c.strokeStyle = `rgba(143,230,255,${.25 + .45*energia - i*.03})`; c.lineWidth = i === 3 ? 6 : 1.2;
+      for (let j = 0; j < n; j++){ const a = j/n*Math.PI*2, lun = i === 3 ? .5 : (j % 6 === 0 ? .06 : .025);
+        c.beginPath(); c.arc(0,0,R*k, a, a + (i === 3 ? Math.PI*2/n*.55 : .004)); c.stroke();
+        if (i < 2){ c.beginPath(); c.moveTo(Math.cos(a)*R*k, Math.sin(a)*R*k); c.lineTo(Math.cos(a)*R*(k-lun), Math.sin(a)*R*(k-lun)); c.stroke(); } }
+      c.restore(); });
+    part.forEach(p => { p.a += p.v * (1 + energia*4); const rr = R * p.r * (1 + Math.sin(t*.02 + p.a)*.04*energia);
+      c.fillStyle = `rgba(201,244,255,${.35 + .5*energia})`; c.beginPath(); c.arc(cx + Math.cos(p.a)*rr, cy + Math.sin(p.a)*rr, p.s, 0, Math.PI*2); c.fill(); });
+    c.fillStyle = `rgba(242,250,252,${.6 + .4*energia})`; c.beginPath(); c.arc(cx,cy,R*(.08 + .05*energia),0,Math.PI*2); c.fill();
+    requestAnimationFrame(giro);
+  })();
+  return { carica: e => bersaglio = e };
+}
+
+/* l'avvio parte da solo: niente clic, il titolo si vede subito */
+let aperta = true;
+const voce = document.getElementById('saluto');
+document.querySelector('.js-voce').addEventListener('click', e => { voce.currentTime = 0; voce.play().catch(()=>{}); e.currentTarget.classList.add('suona'); voce.onended = () => document.querySelector('.js-voce').classList.remove('suona'); });
+
+/* il testo che si decifra, come un HUD */
+const SEGNI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+function decifra(el){
+  const nodi = []; (function scorri(n){ n.childNodes.forEach(x => x.nodeType === 3 ? nodi.push(x) : scorri(x)); })(el);
+  nodi.forEach(n => { const vero = n.textContent; let f = 0; const tot = 22;
+    const id = setInterval(() => { f++; n.textContent = [...vero].map((ch,i) => ch === ' ' || ch === '.' || i < vero.length * f / tot ? ch : SEGNI[Math.random()*SEGNI.length|0]).join(''); if (f >= tot){ clearInterval(id); n.textContent = vero; } }, 38); });
+}
+
+/* le scene si accendono quando entrano */
+osserva();
+function osserva(){
+  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const s = e.target; if (s.classList.contains('attiva')) return;
+    s.classList.add('attiva'); s.querySelectorAll('.js-decifra').forEach(decifra);
+    if (s.classList.contains('js-chat-scena')) chat();
+    if (s.classList.contains('js-posti-scena')) posti(); }), {threshold:.35});
+  document.querySelectorAll('.scena').forEach(s => io.observe(s));
+}
+
+/* l'onda della voce */
+const onda = document.querySelector('.js-onda'); const barre = Array.from({length: 32}, () => onda.appendChild(document.createElement('span')));
+(function vibra(t){ barre.forEach((b,i) => { const x = i/barre.length; b.style.height = (8 + Math.abs(Math.sin(t/260 + i*.5) * Math.sin(t/610 + i*.17)) * 140 * Math.sin(Math.PI*x)) + 'px'; }); requestAnimationFrame(vibra); })(0);
+
+/* la rete degli agenti: nodi in orbita e impulsi fra loro */
+(function(){ const svg = document.querySelector('.js-rete'), NS = 'http://www.w3.org/2000/svg';
+  const nodi = Array.from({length: 7}, (_, i) => ({a: i/6*Math.PI*2})), centro = {x:180, y:100}, linee = [], punti = [], pos = [];
+  for (let i = 0; i < 7; i++) for (let j = i+1; j < 7; j++){ const l = document.createElementNS(NS,'line'); l.setAttribute('stroke','rgba(143,230,255,.14)'); svg.appendChild(l); linee.push([l,i,j]); }
+  const impulsi = Array.from({length: 6}, () => { const c = document.createElementNS(NS,'circle'); c.setAttribute('r', 3); c.setAttribute('fill','#C9F4FF'); svg.appendChild(c); return {c, da: 0, a: 1, t: Math.random()}; });
+  nodi.forEach((n,i) => { const c = document.createElementNS(NS,'circle'); c.setAttribute('r', i === 6 ? 14 : 8); c.setAttribute('fill', i === 6 ? '#8FE6FF' : '#000'); c.setAttribute('stroke','#8FE6FF'); c.setAttribute('stroke-width', 1.5); svg.appendChild(c); punti.push(c); });
+  (function gira(t){ nodi.forEach((n,i) => { const a = n.a + t/6000; pos[i] = i === 6 ? centro : {x: centro.x + Math.cos(a)*150, y: centro.y + Math.sin(a)*72}; punti[i].setAttribute('cx', pos[i].x); punti[i].setAttribute('cy', pos[i].y); });
+    linee.forEach(([l,i,j]) => { l.setAttribute('x1',pos[i].x); l.setAttribute('y1',pos[i].y); l.setAttribute('x2',pos[j].x); l.setAttribute('y2',pos[j].y); });
+    impulsi.forEach(p => { p.t += .012; if (p.t >= 1){ p.t = 0; p.da = Math.random()*7|0; p.a = (p.da + 1 + (Math.random()*6|0)) % 7; }
+      const A = pos[p.da], B = pos[p.a]; p.c.setAttribute('cx', A.x + (B.x-A.x)*p.t); p.c.setAttribute('cy', A.y + (B.y-A.y)*p.t); p.c.setAttribute('opacity', Math.sin(Math.PI*p.t)); });
+    requestAnimationFrame(gira); })(0);
+})();
+
+/* la memoria: neuroni che si accendono e si collegano */
+(function(){ const svg = document.querySelector('.js-memoria'), NS = 'http://www.w3.org/2000/svg';
+  const n = Array.from({length: 46}, () => ({x: 20 + Math.random()*320, y: 12 + Math.random()*176, l: 0}));
+  const archi = []; n.forEach((a,i) => n.forEach((b,j) => { if (j > i && Math.hypot(a.x-b.x, a.y-b.y) < 62){ const l = document.createElementNS(NS,'line'); l.setAttribute('x1',a.x); l.setAttribute('y1',a.y); l.setAttribute('x2',b.x); l.setAttribute('y2',b.y); l.setAttribute('stroke','#8FE6FF'); l.setAttribute('stroke-opacity', .08); svg.appendChild(l); archi.push([l,i,j]); } }));
+  const pt = n.map(a => { const c = document.createElementNS(NS,'circle'); c.setAttribute('cx',a.x); c.setAttribute('cy',a.y); c.setAttribute('r',2.4); c.setAttribute('fill','#8FE6FF'); svg.appendChild(c); return c; });
+  setInterval(() => { n[Math.random()*n.length|0].l = 1; }, 140);
+  (function vive(){ n.forEach((a,i) => { a.l *= .965; pt[i].setAttribute('opacity', .25 + a.l*.75); pt[i].setAttribute('r', 2.4 + a.l*2.6); });
+    archi.forEach(([l,i,j]) => l.setAttribute('stroke-opacity', .06 + Math.max(n[i].l, n[j].l)*.5)); requestAnimationFrame(vive); })();
+})();
+
+/* la chat del telefono, un messaggio alla volta */
+function chat(){ const m = [...document.querySelectorAll('.js-messaggi .msg')], s = document.querySelector('.js-scrive'); let i = 0;
+  (function prossimo(){ if (i >= m.length){ s.classList.remove('su'); return; } const lui = m[i].classList.contains('lui');
+    if (lui){ s.classList.add('su'); m[i].parentNode.insertBefore(s, m[i]); }
+    setTimeout(() => { s.classList.remove('su'); m[i].classList.add('su'); i++; setTimeout(prossimo, 500); }, lui ? 1100 : 300); })(); }
+
+/* i dieci posti si accendono uno alla volta */
+function posti(){ document.querySelectorAll('.js-posti i').forEach((p,i) => setTimeout(() => p.classList.add('su'), 400 + i*160)); }
+
+reattore(document.querySelector('.js-vsl-fondo'), {energia:.25});
+reattore(document.querySelector('.js-reattore-fine'), {energia:.6});
+
+/* barra fissa su telefono: entra dopo l'eroe */
+const barra = document.querySelector('.js-barra');
+new IntersectionObserver(e => barra.classList.toggle('su', !e[0].isIntersecting && aperta)).observe(document.querySelector('.eroe'));
+</script>
+</body>
+</html>
