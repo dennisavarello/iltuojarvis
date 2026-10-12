@@ -78,10 +78,12 @@ p{margin:0;text-wrap:pretty}
 
 /* VSL */
 .vsl{position:relative;width:min(100%,360px);aspect-ratio:9/16;border:1px solid var(--linea);border-radius:3px;overflow:hidden;background:var(--pannello);display:flex;align-items:center;justify-content:center;margin-top:32px}
-.vsl canvas{position:absolute;inset:0;width:100%;height:100%}
+.vsl video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--nero)}
 .vsl .play{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;font:600 12px/16px Switzer,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ciano);background:none;border:0;cursor:pointer}
 .vsl .play i{width:64px;height:64px;border-radius:50%;border:1px solid var(--ciano);display:flex;align-items:center;justify-content:center;background:var(--nero)}
 .vsl .play i::before{content:"";border-left:16px solid var(--ciano);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.vsl .play{position:absolute;width:100%;inset:0;justify-content:center;background:linear-gradient(transparent 55%,rgba(0,0,0,.55))}
+.vsl.in-onda .play{display:none}
 
 /* poteri */
 .potere-visivo{width:min(100%,360px);height:200px;margin-bottom:40px;position:relative}
@@ -185,8 +187,7 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
   <section class="scena" id="vsl">
     <div class="angoli"><i></i><i></i><i></i><i></i></div><div class="scansione"></div>
     <h2 class="titolo compare js-decifra">GUARDALO LAVORARE</h2>
-    <!-- DECIDE DENNIS: qui va la VSL verticale da 3-4 minuti -->
-    <div class="vsl compare d1"><canvas class="js-vsl-fondo" aria-hidden="true"></canvas><button class="play" type="button"><i></i>Il video arriva qui</button></div>
+    <div class="vsl compare d1"><video class="js-vsl" src="vsl-jarvis.mp4" poster="vsl-copertina.jpg" playsinline preload="metadata"></video><button class="play js-vsl-play" type="button" aria-label="Guarda il video"><i></i></button></div>
   </section>
 
   <section class="scena">
@@ -373,7 +374,8 @@ function chat(){ const m = [...document.querySelectorAll('.js-messaggi .msg')], 
 /* i dieci posti si accendono uno alla volta */
 function posti(){ document.querySelectorAll('.js-posti i').forEach((p,i) => setTimeout(() => p.classList.add('su'), 400 + i*160)); }
 
-reattore(document.querySelector('.js-vsl-fondo'), {energia:.25});
+const vsl = document.querySelector('.js-vsl');
+document.querySelector('.js-vsl-play').addEventListener('click', () => { vsl.closest('.vsl').classList.add('in-onda'); vsl.controls = true; vsl.play().catch(()=>{}); });
 reattore(document.querySelector('.js-reattore-fine'), {energia:.6});
 
 /* barra fissa su telefono: entra dopo l'eroe */
