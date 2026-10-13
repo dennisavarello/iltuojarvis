@@ -440,6 +440,13 @@ function riepiloga(){
   invia.setAttribute('aria-disabled', !pronto); invia.style.opacity = pronto ? 1 : .35; invia.style.pointerEvents = pronto ? '' : 'none';
 }
 invia.insertAdjacentHTML('afterbegin', ICONA);
+/* la lead entra nel CRM Lead Jarvis nel momento in cui preme WhatsApp (13 ott) */
+const RACCOLTA = 'https://script.google.com/macros/s/AKfycbwkaixtjnRyktxhv5SMuOhi41CzeVnppWjWTFVGofk3dEve_cwbRAhe0acMRREB-xHa8Q/exec';
+invia.addEventListener('click', () => {
+  if (invia.getAttribute('aria-disabled') === 'true') return;
+  const r = risposte, corpo = {nome: r.nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, investimento: r.investimento, numero: NUMERO, pagina: location.href};
+  try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(corpo)}); } catch (e) {}
+});
 
 /* il reattore (ingresso, video e chiusura) */
 function reattore(canvas, opz = {}){
