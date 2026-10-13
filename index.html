@@ -435,7 +435,7 @@ function riepiloga(){
   filtro.querySelector('.js-riepilogo').innerHTML = righe.map(([k, v]) => `<div><b>${k}</b><span></span></div>`).join('');
   filtro.querySelectorAll('.js-riepilogo span').forEach((s, i) => s.textContent = righe[i][1] || '');
   const nome = (risposte.nome || '').trim(), pronto = nome.length > 1;
-  const testo = `Ciao Dennis, sono ${nome}. Ho visto la pagina di Jarvis e lo voglio sul mio computer.\n\n` + righe.map(([k, v]) => `• ${k}: ${v}`).join('\n');
+  const testo = `Ciao, sono ${nome}. Ho visto la pagina di Jarvis e lo voglio sul mio computer.\n\n` + righe.map(([k, v]) => `• ${k}: ${v}`).join('\n');
   invia.href = pronto ? `https://wa.me/${NUMERO}?text=${encodeURIComponent(testo)}` : '#';
   invia.setAttribute('aria-disabled', !pronto); invia.style.opacity = pronto ? 1 : .35; invia.style.pointerEvents = pronto ? '' : 'none';
 }
