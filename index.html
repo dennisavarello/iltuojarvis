@@ -186,6 +186,9 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 .campo span{display:block;font-size:14px;line-height:20px;color:var(--grigio);margin-bottom:8px}
 .campo input{width:100%;background:var(--pannello);border:1px solid var(--linea);border-radius:3px;color:var(--bianco);font:400 16px/24px Switzer,sans-serif;padding:14px 16px}
 .campo input:focus{outline:none;border-color:var(--ciano)}
+.coppia{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.consenso{display:flex;gap:10px;align-items:flex-start;margin:16px 0 4px;color:var(--grigio);font:400 14px/20px Switzer,sans-serif;cursor:pointer}
+.consenso input{margin-top:3px;accent-color:var(--ciano);width:16px;height:16px;flex:none}
 .campo textarea{width:100%;min-height:144px;resize:vertical;background:var(--pannello);border:1px solid var(--linea);border-radius:3px;color:var(--bianco);font:400 16px/24px Switzer,sans-serif;padding:14px 16px}
 .campo textarea:focus{outline:none;border-color:var(--ciano)}
 .campo textarea::placeholder{color:var(--grigio)}
@@ -377,8 +380,16 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 
     <div class="domanda" data-passo="6">
       <div class="num">Ultimo passo</div>
-      <h2>Come ti chiami?</h2>
-      <label class="campo"><span>Nome e cognome</span><input class="js-campo" data-chiave="nome" autocomplete="name" placeholder="Es. Marco Rossi"></label>
+      <h2>Dove ti mando la proposta?</h2>
+      <p class="nota">Con queste risposte ti preparo un Jarvis su misura. Lasciami i contatti: ti scrivo io, e prima della chiamata hai già in mano cosa farà per te.</p>
+      <div class="coppia">
+        <label class="campo"><span>Nome</span><input class="js-campo" data-chiave="nome" autocomplete="given-name" placeholder="Marco"></label>
+        <label class="campo"><span>Cognome</span><input class="js-campo" data-chiave="cognome" autocomplete="family-name" placeholder="Rossi"></label>
+      </div>
+      <label class="campo"><span>Email</span><input class="js-campo" data-chiave="email" data-tipo="email" type="email" inputmode="email" autocomplete="email" placeholder="marco@azienda.it"></label>
+      <label class="campo"><span>Telefono (WhatsApp)</span><input class="js-campo" data-chiave="telefono" data-tipo="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="+39 333 123 4567"></label>
+      <label class="consenso"><input type="checkbox" class="js-consenso"><span>Voglio ricevere da Dennis contenuti e novità su Jarvis via email e WhatsApp. Mi cancello quando voglio.</span></label>
+      <p class="nota" style="font-size:13px;line-height:18px;margin-top:4px">I tuoi dati servono a risponderti. <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--ciano)">Informativa privacy</a></p>
       <div class="riepilogo js-riepilogo"></div>
       <a class="pulsante js-invia" href="#" target="_blank" rel="noopener" aria-disabled="true">Continua su WhatsApp</a>
       <p class="nota" style="font-size:14px;line-height:20px">Si apre WhatsApp con le tue risposte già scritte. Ti rispondo io, di persona.</p>
@@ -431,8 +442,15 @@ filtro.querySelectorAll('.scelte').forEach(g => g.addEventListener('click', e =>
   }, 260);
 }));
 filtro.querySelectorAll('.js-campo').forEach(c => c.addEventListener('input', () => { risposte[c.dataset.chiave] = c.value.trim(); controlla(c.closest('.domanda')); }));
+/* 14 ott: l'opt-in vuole email e telefono veri, non solo due lettere */
+function valido(c){
+  const v = c.value.trim();
+  if (c.dataset.tipo === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  if (c.dataset.tipo === 'tel') return v.replace(/\D/g, '').length >= 8;
+  return v.length >= (+c.dataset.minimo || 2);
+}
 function controlla(d){
-  const pieni = [...d.querySelectorAll('.js-campo')].every(c => c.value.trim().length >= (+c.dataset.minimo || 2)) && [...d.querySelectorAll('.scelte')].every(g => risposte[g.dataset.chiave]);
+  const pieni = [...d.querySelectorAll('.js-campo')].every(valido) && [...d.querySelectorAll('.scelte')].every(g => risposte[g.dataset.chiave]);
   const b = d.querySelector('.js-avanti'); if (b) b.disabled = !pieni;
   if (d.dataset.passo === '6') riepiloga();
 }
@@ -445,7 +463,8 @@ function riepiloga(){
   const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')], ['Squadra', risposte.persone]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
   filtro.querySelector('.js-riepilogo').innerHTML = righe.map(([k, v]) => `<div><b>${k}</b><span></span></div>`).join('');
   filtro.querySelectorAll('.js-riepilogo span').forEach((s, i) => s.textContent = righe[i][1] || '');
-  const nome = (risposte.nome || '').trim(), pronto = nome.length > 1;
+  const nome = [risposte.nome, risposte.cognome].filter(Boolean).join(' ').trim();
+  const pronto = [...filtro.querySelectorAll('[data-passo="6"] .js-campo')].every(valido);
   const testo = `Ciao, sono ${nome}. Ho visto la pagina di Jarvis e lo voglio sul mio computer.\n\n` + righe.map(([k, v]) => `• ${k}: ${v}`).join('\n');
   invia.href = pronto ? `https://wa.me/${NUMERO}?text=${encodeURIComponent(testo)}` : '#';
   invia.setAttribute('aria-disabled', !pronto); invia.style.opacity = pronto ? 1 : .35; invia.style.pointerEvents = pronto ? '' : 'none';
@@ -455,7 +474,10 @@ invia.insertAdjacentHTML('afterbegin', ICONA);
 const RACCOLTA = 'https://script.google.com/macros/s/AKfycbwkaixtjnRyktxhv5SMuOhi41CzeVnppWjWTFVGofk3dEve_cwbRAhe0acMRREB-xHa8Q/exec';
 invia.addEventListener('click', () => {
   if (invia.getAttribute('aria-disabled') === 'true') return;
-  const r = risposte, corpo = {nome: r.nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.href};
+  const r = risposte, nome = [r.nome, r.cognome].filter(Boolean).join(' ');
+  const contatto = {nome: r.nome, cognome: r.cognome, email: r.email, telefono: r.telefono, consenso: filtro.querySelector('.js-consenso').checked};
+  /* il web app della raccolta tiene solo i campi che conosce: il contatto viaggia anche dentro «pagina» (14 ott) */
+  const corpo = {...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.href.split('#')[0] + '#c=' + encodeURIComponent(JSON.stringify(contatto))};
   try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(corpo)}); } catch (e) {}
 });
 
