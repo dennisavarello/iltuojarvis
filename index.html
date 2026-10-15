@@ -169,9 +169,9 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 .filtro .avanza i{position:absolute;left:0;top:0;bottom:0;background:var(--ciano);box-shadow:0 0 12px var(--ciano);width:0;transition:width .6s var(--curva)}
 .filtro .chiudi,.filtro .indietro{background:none;border:0;color:var(--grigio);font:400 14px/20px Switzer,sans-serif;cursor:pointer;padding:8px;min-width:44px;min-height:44px}
 .filtro .indietro[hidden]{display:inline-block;visibility:hidden}
-.filtro .corpo{flex:1;overflow-y:auto;display:flex;align-items:center;justify-content:center;padding:24px 16px 48px}
+.filtro .corpo{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;padding:24px 16px 48px}
 .domanda{width:min(100%,480px);display:none;text-align:left}
-.domanda.su{display:block;animation:entra .6s var(--curva)}
+.domanda.su{display:block;margin:auto;animation:entra .6s var(--curva)}
 @keyframes entra{from{opacity:0;transform:translateY(16px)}}
 .domanda .num{font:600 12px/16px Switzer,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ciano)}
 .domanda h2{font-size:22px;line-height:30px;margin-top:12px}
@@ -197,7 +197,9 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 .riepilogo{margin-top:24px;border-top:1px solid var(--linea)}
 .riepilogo div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--linea);font-size:14px;line-height:20px}
 .riepilogo b{font-weight:400;color:var(--grigio)}
-.riepilogo span{text-align:right;overflow-wrap:anywhere}
+.riepilogo span{text-align:right;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.campo.sbagliato input{border-color:#ff6b6b}
+.esito{margin-top:16px;color:var(--ciano);font:400 15px/22px Switzer,sans-serif}
 .domanda .esci{display:inline-block;margin-top:24px;color:var(--ciano);font-weight:600}
 @media (min-width:900px){.domanda h2{font-size:30px;line-height:40px}}
 
@@ -441,7 +443,7 @@ filtro.querySelectorAll('.scelte').forEach(g => g.addEventListener('click', e =>
     vai(n + 1);
   }, 260);
 }));
-filtro.querySelectorAll('.js-campo').forEach(c => c.addEventListener('input', () => { risposte[c.dataset.chiave] = c.value.trim(); controlla(c.closest('.domanda')); }));
+filtro.querySelectorAll('.js-campo').forEach(c => ['input', 'change', 'blur'].forEach(ev => c.addEventListener(ev, () => { risposte[c.dataset.chiave] = c.value.trim(); c.closest('.campo').classList.remove('sbagliato'); controlla(c.closest('.domanda')); })));
 /* 14 ott: l'opt-in vuole email e telefono veri, non solo due lettere */
 function valido(c){
   const v = c.value.trim();
@@ -467,7 +469,7 @@ function riepiloga(){
   const pronto = [...filtro.querySelectorAll('[data-passo="6"] .js-campo')].every(valido);
   const testo = `Ciao, sono ${nome}. Ho visto la pagina di Jarvis e lo voglio sul mio computer.\n\n` + righe.map(([k, v]) => `• ${k}: ${v}`).join('\n');
   invia.href = pronto ? `https://wa.me/${NUMERO}?text=${encodeURIComponent(testo)}` : '#';
-  invia.setAttribute('aria-disabled', !pronto); invia.style.opacity = pronto ? 1 : .35; invia.style.pointerEvents = pronto ? '' : 'none';
+  invia.setAttribute('aria-disabled', !pronto); invia.style.opacity = pronto ? 1 : .5;
 }
 invia.insertAdjacentHTML('afterbegin', ICONA);
 /* la lead entra nel CRM Lead Jarvis nel momento in cui preme WhatsApp (13 ott) */
@@ -476,13 +478,31 @@ invia.insertAdjacentHTML('afterbegin', ICONA);
 const UTM = (q => q ? '?' + q : '')([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
 if (location.search) history.replaceState(null, '', location.pathname);
 const RACCOLTA = 'https://script.google.com/macros/s/AKfycbwkaixtjnRyktxhv5SMuOhi41CzeVnppWjWTFVGofk3dEve_cwbRAhe0acMRREB-xHa8Q/exec';
-invia.addEventListener('click', () => {
-  if (invia.getAttribute('aria-disabled') === 'true') return;
+/* 15 ott: nel browser interno di Instagram il pulsante restava spento senza dire perché, e target=_blank verso WhatsApp si perdeva.
+   Ora: se manca un campo lo segna e ci porta lì; la lead si salva PRIMA di uscire (beacon); dentro le app social WhatsApp si apre nella stessa scheda. */
+const IN_APP = /Instagram|FBAN|FBAV|FB_IAB|musical_ly|TikTok|BytedanceWebview|Threads/i.test(navigator.userAgent);
+let inviata = false;
+invia.addEventListener('click', e => {
+  filtro.querySelectorAll('[data-passo="6"] .js-campo').forEach(c => { risposte[c.dataset.chiave] = c.value.trim(); }); riepiloga();
+  if (invia.getAttribute('aria-disabled') === 'true') {
+    e.preventDefault();
+    const male = [...filtro.querySelectorAll('[data-passo="6"] .js-campo')].filter(c => !valido(c));
+    male.forEach(c => c.closest('.campo').classList.add('sbagliato'));
+    if (male[0]) { male[0].scrollIntoView({block: 'center', behavior: 'smooth'}); male[0].focus(); }
+    return;
+  }
   const r = risposte, nome = [r.nome, r.cognome].filter(Boolean).join(' ');
-  const contatto = {nome: r.nome, cognome: r.cognome, email: r.email, telefono: r.telefono, consenso: filtro.querySelector('.js-consenso').checked};
-  /* 15 ott: la raccolta salva cognome, email, telefono e consenso come campi veri: «pagina» porta solo l'indirizzo con gli UTM */
-  const corpo = {...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.origin + location.pathname + UTM};
-  try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(corpo)}); } catch (e) {}
+  if (!inviata) {
+    inviata = true;
+    const contatto = {nome: r.nome, cognome: r.cognome, email: r.email, telefono: r.telefono, consenso: filtro.querySelector('.js-consenso').checked};
+    /* 15 ott: la raccolta salva cognome, email, telefono e consenso come campi veri: «pagina» porta solo l'indirizzo con gli UTM */
+    const corpo = JSON.stringify({...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.origin + location.pathname + UTM});
+    let ok = false;
+    try { ok = navigator.sendBeacon && navigator.sendBeacon(RACCOLTA, new Blob([corpo], {type: 'text/plain'})); } catch (x) {}
+    if (!ok) try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: corpo}); } catch (x) {}
+  }
+  if (!filtro.querySelector('.js-esito')) invia.insertAdjacentHTML('afterend', '<p class="esito js-esito">Ricevuto. Se WhatsApp non si apre, tranquillo: ti scriviamo noi al numero che hai lasciato.</p>');
+  if (IN_APP) { e.preventDefault(); setTimeout(() => { location.href = invia.href; }, 150); }
 });
 
 /* il reattore (ingresso, video e chiusura) */
