@@ -472,14 +472,16 @@ function riepiloga(){
 invia.insertAdjacentHTML('afterbegin', ICONA);
 /* la lead entra nel CRM Lead Jarvis nel momento in cui preme WhatsApp (13 ott) */
 /* 14 ott: i link corti (/ig, /tt, /yt…) portano qui con gli UTM; si tengono in memoria e si toglie la coda dalla barra */
-const UTM = location.search; if (UTM) history.replaceState(null, '', location.pathname);
+/* 15 ott: dentro «pagina» vanno SOLO gli utm_*. Instagram attacca al link un fbclid lunghissimo che sforava il tetto della raccolta */
+const UTM = (q => q ? '?' + q : '')([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
+if (location.search) history.replaceState(null, '', location.pathname);
 const RACCOLTA = 'https://script.google.com/macros/s/AKfycbwkaixtjnRyktxhv5SMuOhi41CzeVnppWjWTFVGofk3dEve_cwbRAhe0acMRREB-xHa8Q/exec';
 invia.addEventListener('click', () => {
   if (invia.getAttribute('aria-disabled') === 'true') return;
   const r = risposte, nome = [r.nome, r.cognome].filter(Boolean).join(' ');
   const contatto = {nome: r.nome, cognome: r.cognome, email: r.email, telefono: r.telefono, consenso: filtro.querySelector('.js-consenso').checked};
-  /* il web app della raccolta tiene solo i campi che conosce: il contatto viaggia anche dentro «pagina» (14 ott) */
-  const corpo = {...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.origin + location.pathname + UTM + '#c=' + encodeURIComponent(JSON.stringify(contatto))};
+  /* 15 ott: la raccolta salva cognome, email, telefono e consenso come campi veri: «pagina» porta solo l'indirizzo con gli UTM */
+  const corpo = {...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.origin + location.pathname + UTM};
   try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(corpo)}); } catch (e) {}
 });
 
