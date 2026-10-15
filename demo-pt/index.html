@@ -300,9 +300,9 @@ td.flash{animation:flash 1.2s}
 const DEMO = {
   titolo: "Jarvis — Una Giornata da Personal Trainer",
   giorno: "ven 16 ott",
-  ritmo: 1.35,          // 15 ott, Dennis: «troppo lento, troppe pause»
-  voceVel: 1.18,        // Tony un filo più svelto, ancora naturale
-  musica: { file: "voce-trainer/musica-clash.mp3", alta: 0.32, sotto: 0.11 },   // 15 ott, Dennis: «metti proprio quella dei Clash», link solo in privato
+  ritmo: 1.8,          // 15 ott, Dennis: «troppo lento, troppe pause»
+  voceVel: 1.22,        // Tony un filo più svelto, ancora naturale
+  musica: { file: "voce-trainer/musica-clash.mp3", alta: 0.55, sotto: 0.2 },   // 15 ott, Dennis: «metti proprio quella dei Clash», link solo in privato
   apertura: ["Questo è il Mac mini di un personal trainer: acceso 24 ore su 24, lavora per lui.", "Lui allena. Jarvis fa il resto. Premere «Avvia»."],
   dock: [
     { n: "Finder", img: "finder" },
@@ -502,9 +502,12 @@ let audioOra = null;
 /* la musica sotto (15 ott, Dennis: «deve caricare di più»): parte con Jarvis, si abbassa quando parla Tony */
 const MUS = typeof DEMO !== "undefined" && DEMO.musica ? Object.assign(new Audio(DEMO.musica.file), { loop: true, volume: 0 }) : null;
 let musTimer = null;
-function musicaVol(v) { if (!MUS) return; clearInterval(musTimer); const da = MUS.volume, passi = 12; let k = 0; musTimer = setInterval(() => { k++; MUS.volume = Math.max(0, Math.min(1, da + (v - da) * k / passi)); if (k >= passi) clearInterval(musTimer); }, 30); }
+/* volume con Web Audio: su iPhone il volume di un <audio> non si può cambiare, il GainNode sì */
+let musCtx = null, musGain = null;
+function musicaGain() { if (!MUS || musGain) return; try { const C = window.AudioContext || window.webkitAudioContext; musCtx = new C(); musGain = musCtx.createGain(); musGain.gain.value = 0; musCtx.createMediaElementSource(MUS).connect(musGain).connect(musCtx.destination); MUS.volume = 1; } catch (e) { musGain = null; } }
+function musicaVol(v) { if (!MUS) return; if (musGain) { const t = musCtx.currentTime; musGain.gain.cancelScheduledValues(t); musGain.gain.setValueAtTime(musGain.gain.value, t); musGain.gain.linearRampToValueAtTime(v, t + 0.35); return; } clearInterval(musTimer); const da = MUS.volume, passi = 12; let k = 0; musTimer = setInterval(() => { k++; MUS.volume = Math.max(0, Math.min(1, da + (v - da) * k / passi)); if (k >= passi) clearInterval(musTimer); }, 30); }
 function musicaGiu(giu) { if (MUS && !MUS.paused) musicaVol(giu ? DEMO.musica.sotto : DEMO.musica.alta); }
-function musicaVia() { if (!MUS || !voceOn) return; MUS.play().then(() => musicaVol(DEMO.musica.alta)).catch(() => {}); }
+function musicaVia() { if (!MUS || !voceOn) return; musicaGain(); if (musCtx && musCtx.state !== "running") musCtx.resume(); MUS.play().then(() => musicaVol(DEMO.musica.alta)).catch(() => {}); }
 const F = {}; let zz = 10;
 
 const attendi = (ms, g) => new Promise((ok, ko) => {
