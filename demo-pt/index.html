@@ -300,6 +300,10 @@ td.flash{animation:flash 1.2s}
 const DEMO = {
   titolo: "Jarvis — Una Giornata da Personal Trainer",
   giorno: "ven 16 ott",
+  ritmo: 1.35,          // 15 ott, Dennis: «troppo lento, troppe pause»
+  voceVel: 1.18,        // Tony un filo più svelto, ancora naturale
+  musica: { file: "voce-trainer/musica-rock.mp3", alta: 0.32, sotto: 0.11,
+            credito: "Musica: «Riptide» di Kevin MacLeod (incompetech.com), CC BY 4.0" },
   apertura: ["Questo è il Mac mini di un personal trainer: acceso 24 ore su 24, lavora per lui.", "Lui allena. Jarvis fa il resto. Premere «Avvia»."],
   dock: [
     { n: "Finder", img: "finder" },
@@ -496,20 +500,26 @@ class Stop extends Error {}
 let giro = 0, inCorso = false, subito = false, vel = 1.5, voceOn = true, scenaQui = 0;
 const ICONE = typeof ICONE_DEMO !== "undefined" ? ICONE_DEMO : {}, VOCI = typeof VOCI_DEMO !== "undefined" ? VOCI_DEMO : {};
 let audioOra = null;
+/* la musica sotto (15 ott, Dennis: «deve caricare di più»): parte con Jarvis, si abbassa quando parla Tony */
+const MUS = typeof DEMO !== "undefined" && DEMO.musica ? Object.assign(new Audio(DEMO.musica.file), { loop: true, volume: 0 }) : null;
+let musTimer = null;
+function musicaVol(v) { if (!MUS) return; clearInterval(musTimer); const da = MUS.volume, passi = 12; let k = 0; musTimer = setInterval(() => { k++; MUS.volume = Math.max(0, Math.min(1, da + (v - da) * k / passi)); if (k >= passi) clearInterval(musTimer); }, 30); }
+function musicaGiu(giu) { if (MUS && !MUS.paused) musicaVol(giu ? DEMO.musica.sotto : DEMO.musica.alta); }
+function musicaVia() { if (!MUS || !voceOn) return; MUS.play().then(() => musicaVol(DEMO.musica.alta)).catch(() => {}); }
 const F = {}; let zz = 10;
 
 const attendi = (ms, g) => new Promise((ok, ko) => {
   if (subito) return g === giro ? ok() : ko(new Stop());
-  setTimeout(() => g === giro ? ok() : ko(new Stop()), ms / vel);
+  setTimeout(() => g === giro ? ok() : ko(new Stop()), ms / (vel * (DEMO.ritmo || 1)));
 });
 function parla(t) {
   return new Promise(ok => {
     if (!voceOn || subito) return ok();
     if (VOCI[t]) {
       try {
-        const a = new Audio(VOCI[t]); audioOra = a; a.playbackRate = vel > 1 ? 1.08 : 1;
+        const a = new Audio(VOCI[t]); audioOra = a; a.playbackRate = vel > 1 ? (DEMO.voceVel || 1.08) : 1; musicaGiu(true);
         let f = false; const fine = () => { if (!f) { f = true; ok(); } };
-        a.onended = fine; a.onerror = fine; setTimeout(fine, 30000);
+        const fine0 = fine; a.onended = () => { musicaGiu(false); fine0(); }; a.onerror = () => { musicaGiu(false); fine0(); }; setTimeout(fine, 30000);
         a.play().catch(fine); return;
       } catch (e) { return ok(); }
     }
@@ -725,7 +735,7 @@ async function passo(p, g) {
     c.classList.remove("cambia");
     const v = parla(p.cap[0] + (p.cap[1] ? ". " + p.cap[1] : ""));
     const parole = (p.cap[0] + " " + (p.cap[1] || "")).split(/\s+/).length;
-    await Promise.all([v, attendi(Math.max(1600, parole * 300), g)]);
+    await Promise.all([v, attendi(Math.max(DEMO.ritmo ? 900 : 1600, parole * (DEMO.ritmo ? 170 : 300)), g)]);
   }
   if (p.jarvis != null) { $("hud-t").textContent = p.jarvis; $("hud").classList.toggle("lavora", !!p.jarvis && !/^in ascolto/.test(p.jarvis)); }
   if (p.apri) {
@@ -851,11 +861,12 @@ async function suona(i, g) {
 function finita(i) { const g = ++giro; subito = true; suona(i, g).catch(() => {}).finally(() => { subito = false; }); }
 async function avvia(da) {
   const g = ++giro; inCorso = true; aggiornaPlay(); try { speechSynthesis?.cancel(); } catch (e) {}
-  try { for (let i = da; i < DEMO.scene.length; i++) { await suona(i, g); await attendi(1800, g); } }
+  musicaVia();
+  try { for (let i = da; i < DEMO.scene.length; i++) { await suona(i, g); await attendi(DEMO.ritmo ? 700 : 1800, g); } }
   catch (e) { if (!(e instanceof Stop)) console.error(e); return; }
   if (g === giro) { inCorso = false; aggiornaPlay(); }
 }
-function ferma() { giro++; inCorso = false; aggiornaPlay(); try { speechSynthesis?.cancel(); } catch (e) {} if (audioOra) audioOra.pause(); }
+function ferma() { giro++; inCorso = false; aggiornaPlay(); if (MUS) MUS.pause(); try { speechSynthesis?.cancel(); } catch (e) {} if (audioOra) audioOra.pause(); }
 function aggiornaPlay() { $("play").textContent = inCorso ? "Pausa" : "Avvia"; }
 
 /* ---------- avvio ---------- */
@@ -864,7 +875,7 @@ dock();
 $("capitoli").innerHTML = DEMO.scene.map((s, i) => `<button class="cap" type="button" data-i="${i}"><i></i><b>${esc(s.ora)}</b><span>${esc(s.titolo)}</span></button>`).join("");
 document.querySelectorAll(".cap").forEach(b => b.onclick = () => { ferma(); avvia(+b.dataset.i); });
 $("play").onclick = () => inCorso ? ferma() : avvia(scenaQui);
-$("voce").onclick = () => { voceOn = !voceOn; $("voce").setAttribute("aria-pressed", voceOn); if (!voceOn) { try { speechSynthesis.cancel(); } catch (e) {} if (audioOra) audioOra.pause(); } };
+$("voce").onclick = () => { voceOn = !voceOn; $("voce").setAttribute("aria-pressed", voceOn); if (!voceOn) { try { speechSynthesis.cancel(); } catch (e) {} if (audioOra) audioOra.pause(); if (MUS) MUS.pause(); } else if (inCorso) musicaVia(); };
 $("vel").onclick = () => { vel = vel === 1.5 ? 1 : 1.5; $("vel").textContent = vel === 1.5 ? "1,5×" : "1×"; $("vel").setAttribute("aria-pressed", vel !== 1); };
 addEventListener("keydown", e => {
   if (e.key === " " && !e.target.closest("button")) { e.preventDefault(); $("play").click(); }
@@ -872,5 +883,6 @@ addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") { ferma(); avvia(Math.max(scenaQui - 1, 0)); }
 });
 adatta();
+if (DEMO.musica && DEMO.musica.credito) document.body.appendChild(Object.assign(document.createElement("div"), { textContent: DEMO.musica.credito, style: "position:fixed;right:10px;bottom:4px;font-size:10px;opacity:.35;color:#fff;pointer-events:none" }));
 prepara(0); { const c = $("cap"); c.querySelector("b").textContent = DEMO.apertura[0]; c.querySelector("span").textContent = DEMO.apertura[1]; }
 </script>
