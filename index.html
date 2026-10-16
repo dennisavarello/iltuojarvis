@@ -389,8 +389,16 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
       <label class="consenso"><input type="checkbox" class="js-consenso"><span>Voglio ricevere da Dennis contenuti e novità su Jarvis via email e WhatsApp. Mi cancello quando voglio.</span></label>
       <p class="nota" style="font-size:13px;line-height:18px;margin-top:4px">I tuoi dati servono a risponderti. <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--ciano)">Informativa privacy</a></p>
       <div class="riepilogo js-riepilogo"></div>
-      <a class="pulsante js-invia" href="#" target="_blank" rel="noopener" aria-disabled="true">Continua su WhatsApp</a>
-      <p class="nota" style="font-size:14px;line-height:20px">Si apre WhatsApp con le tue risposte già scritte. Ti rispondiamo in pochi minuti.</p>
+      <a class="pulsante js-invia" href="#" target="_blank" rel="noopener" aria-disabled="true">Invia la richiesta</a>
+      <p class="nota" style="font-size:14px;line-height:20px">Ti scriviamo noi su WhatsApp al numero che hai lasciato.</p>
+    </div>
+
+    <div class="domanda" data-passo="grazie">
+      <div class="num">Richiesta ricevuta</div>
+      <h2>Grazie, ci siamo.</h2>
+      <p class="nota">Abbiamo le tue risposte. Ti scriviamo su WhatsApp al numero che hai lasciato, nelle prossime ore, con la proposta per il tuo Jarvis.</p>
+      <p class="nota">Intanto guarda cosa fa Jarvis ogni giorno nelle storie.</p>
+      <a class="pulsante" href="https://www.instagram.com/dennisavarello.bsn/" target="_blank" rel="noopener">Seguimi su Instagram</a>
     </div>
 
     <div class="domanda" data-passo="fuori">
@@ -425,7 +433,7 @@ function vai(p, salva = true){
   const ora = passi.find(d => d.classList.contains('su'));
   if (ora && salva) storia.push(ora.dataset.passo);
   passi.forEach(d => d.classList.toggle('su', d.dataset.passo === String(p)));
-  avanza.style.width = (p === 'fuori' ? 100 : (p - 1) / 5 * 100) + '%';
+  avanza.style.width = (p === 'fuori' || p === 'grazie' ? 100 : (p - 1) / 5 * 100) + '%';
   indietro.hidden = !storia.length;
   if (p === 6) riepiloga();
   const campo = filtro.querySelector('.domanda.su input, .domanda.su textarea'); if (campo && matchMedia('(min-width:900px)').matches) campo.focus();
@@ -466,7 +474,7 @@ function controlla(d){
 filtro.querySelectorAll('.js-avanti').forEach(b => b.addEventListener('click', () => vai(+b.dataset.poi)));
 
 /* il riepilogo diventa il primo messaggio su WhatsApp */
-const invia = filtro.querySelector('.js-invia');
+const invia = filtro.querySelector('.js-invia'), SOLO_GRAZIE = true;
 function riepiloga(){
   const personale = risposte.uso === 'Per i miei progetti personali';
   const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
@@ -508,6 +516,8 @@ invia.addEventListener('click', e => {
     try { ok = navigator.sendBeacon && navigator.sendBeacon(RACCOLTA, new Blob([corpo], {type: 'text/plain'})); } catch (x) {}
     if (!ok) try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: corpo}); } catch (x) {}
   }
+  /* 16 ott sera: WhatsApp di Davide bannato 24 ore → niente WhatsApp, pagina di ringraziamento. La lead è già nel CRM (beacon sopra). Per tornare a WhatsApp: SOLO_GRAZIE = false */
+  if (SOLO_GRAZIE) { e.preventDefault(); vai('grazie'); return; }
   if (!filtro.querySelector('.js-esito')) invia.insertAdjacentHTML('afterend', '<p class="esito js-esito">Ricevuto. Se WhatsApp non si apre, tranquillo: ti scriviamo noi al numero che hai lasciato.</p>');
   if (IN_APP) { e.preventDefault(); setTimeout(() => { location.href = invia.href; }, 150); }
 });
