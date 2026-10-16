@@ -330,8 +330,9 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
       <h2>Per cosa ti serve Jarvis?</h2>
       <p class="nota">Ogni Jarvis lo accendo io, a mano. Cinque domande e so già come costruirlo per te.</p>
       <div class="scelte" data-chiave="uso">
-        <button type="button" data-v="Ho un'azienda">Ho un'azienda</button>
-        <button type="button" data-v="Sono un libero professionista">Sono un libero professionista</button>
+        <button type="button" data-v="Per organizzare il mio lavoro, sono da solo">Per organizzare il mio lavoro, sono da solo</button>
+        <button type="button" data-v="Per la mia attività, ho qualche collaboratore">Per la mia attività, ho qualche collaboratore</button>
+        <button type="button" data-v="Per la mia azienda e il mio team">Per la mia azienda e il mio team</button>
         <button type="button" data-v="Per i miei progetti personali">Per i miei progetti personali</button>
         <button type="button" data-v="curioso" data-fuori>Sono curioso, adoro Iron Man</button>
       </div>
@@ -342,10 +343,12 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
       <h2>Raccontami la tua attività.</h2>
       <label class="campo"><span>Come si chiama</span><input class="js-campo" data-chiave="attivita" autocomplete="organization" placeholder="Es. Rossi Immobiliare"></label>
       <label class="campo"><span>Di cosa si occupa</span><input class="js-campo" data-chiave="settore" placeholder="Es. compravendite a Milano"></label>
-      <div class="scelte" data-chiave="persone" style="margin-top:20px">
-        <button type="button" data-v="Lavoro da solo">Lavoro da solo</button>
-        <button type="button" data-v="Siamo 2-10 persone">Siamo 2-10 persone</button>
-        <button type="button" data-v="Siamo più di 10 persone">Siamo più di 10 persone</button>
+      <p class="nota" style="margin-top:20px">Quanto fattura all'anno la tua attività?</p>
+      <div class="scelte" data-chiave="fatturato">
+        <button type="button" data-v="Fino a 100.000 €">Fino a 100.000 €</button>
+        <button type="button" data-v="100.000 € - 500.000 €">100.000 € - 500.000 €</button>
+        <button type="button" data-v="500.000 € - 2 milioni">500.000 € - 2 milioni</button>
+        <button type="button" data-v="Oltre 2 milioni">Oltre 2 milioni</button>
       </div>
       <button class="pulsante js-avanti" type="button" data-poi="3" disabled>Avanti</button>
     </div>
@@ -394,7 +397,7 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
       <p class="nota" style="font-size:13px;line-height:18px;margin-top:4px">I tuoi dati servono a risponderti. <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--ciano)">Informativa privacy</a></p>
       <div class="riepilogo js-riepilogo"></div>
       <a class="pulsante js-invia" href="#" target="_blank" rel="noopener" aria-disabled="true">Continua su WhatsApp</a>
-      <p class="nota" style="font-size:14px;line-height:20px">Si apre WhatsApp con le tue risposte già scritte. Ti rispondo io, di persona.</p>
+      <p class="nota" style="font-size:14px;line-height:20px">Si apre WhatsApp con le tue risposte già scritte. Ti rispondiamo in pochi minuti.</p>
     </div>
 
     <div class="domanda" data-passo="fuori">
@@ -411,7 +414,18 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 
 <script>
 /* WhatsApp: prima cinque domande, poi la lead arriva a Dennis già profilata e la chiude lui */
-const NUMERO = '393520936895', ICONA = '<svg viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M187.58 144.84l-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>';
+/* 16 ott: il target si capisce dalle risposte, senza chiederlo. Freelance e privati → setter Jarvis (numero Jarvis),
+   microimprese e aziende → Davide. Il numero Jarvis si accende con JARVIS_ATTIVO = true quando è collegato a GHL. */
+const NUMERO_DAVIDE = '393520936895', NUMERO_JARVIS = '393520686513', JARVIS_ATTIVO = false;
+function target(r){
+  if (r.uso === 'Per i miei progetti personali') return 'privato';
+  const az = r.uso === 'Per la mia azienda e il mio team' || r.fatturato === 'Oltre 2 milioni';
+  if (az) return 'azienda';
+  if (r.uso === 'Per organizzare il mio lavoro, sono da solo' && r.fatturato === 'Fino a 100.000 €') return 'freelance';
+  return 'microimpresa';
+}
+const numero = r => (JARVIS_ATTIVO && ['freelance', 'privato'].includes(target(r))) ? NUMERO_JARVIS : NUMERO_DAVIDE;
+const NUMERO = NUMERO_DAVIDE, ICONA = '<svg viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M187.58 144.84l-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>';
 const filtro = document.querySelector('.js-filtro'), risposte = {}, storia = [];
 const passi = [...filtro.querySelectorAll('.domanda')], avanza = filtro.querySelector('.js-avanza'), indietro = filtro.querySelector('.js-indietro');
 function vai(p, salva = true){
@@ -462,13 +476,13 @@ filtro.querySelectorAll('.js-avanti').forEach(b => b.addEventListener('click', (
 const invia = filtro.querySelector('.js-invia');
 function riepiloga(){
   const personale = risposte.uso === 'Per i miei progetti personali';
-  const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')], ['Squadra', risposte.persone]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
+  const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')], ['Fatturato', risposte.fatturato]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
   filtro.querySelector('.js-riepilogo').innerHTML = righe.map(([k, v]) => `<div><b>${k}</b><span></span></div>`).join('');
   filtro.querySelectorAll('.js-riepilogo span').forEach((s, i) => s.textContent = righe[i][1] || '');
   const nome = [risposte.nome, risposte.cognome].filter(Boolean).join(' ').trim();
   const pronto = [...filtro.querySelectorAll('[data-passo="6"] .js-campo')].every(valido);
   const testo = `Ciao, sono ${nome}. Ho visto la pagina di Jarvis e lo voglio sul mio computer.\n\n` + righe.map(([k, v]) => `• ${k}: ${v}`).join('\n');
-  invia.href = pronto ? `https://wa.me/${NUMERO}?text=${encodeURIComponent(testo)}` : '#';
+  invia.href = pronto ? `https://wa.me/${numero(risposte)}?text=${encodeURIComponent(testo)}` : '#';
   invia.setAttribute('aria-disabled', !pronto); invia.style.opacity = pronto ? 1 : .5;
 }
 invia.insertAdjacentHTML('afterbegin', ICONA);
@@ -496,7 +510,7 @@ invia.addEventListener('click', e => {
     inviata = true;
     const contatto = {nome: r.nome, cognome: r.cognome, email: r.email, telefono: r.telefono, consenso: filtro.querySelector('.js-consenso').checked};
     /* 15 ott: la raccolta salva cognome, email, telefono e consenso come campi veri: «pagina» porta solo l'indirizzo con gli UTM */
-    const corpo = JSON.stringify({...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: r.persone, primo: r.primo, processi: r.processi, investimento: r.investimento, numero: NUMERO, pagina: location.origin + location.pathname + UTM});
+    const corpo = JSON.stringify({...contatto, nome, uso: r.uso, attivita: r.attivita, settore: r.settore, persone: [r.fatturato, 'target ' + target(r)].filter(Boolean).join(' · '), primo: r.primo, processi: r.processi, investimento: r.investimento, numero: numero(r), pagina: location.origin + location.pathname + UTM});
     let ok = false;
     try { ok = navigator.sendBeacon && navigator.sendBeacon(RACCOLTA, new Blob([corpo], {type: 'text/plain'})); } catch (x) {}
     if (!ok) try { fetch(RACCOLTA, {method: 'POST', mode: 'no-cors', keepalive: true, headers: {'Content-Type': 'text/plain'}, body: corpo}); } catch (x) {}
