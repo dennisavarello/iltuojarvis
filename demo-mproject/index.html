@@ -570,7 +570,7 @@ const SFX = (() => {
   const on = () => voceOn && !subito && !(typeof DEMO !== "undefined" && DEMO.suoni === false);
   function pronto() {
     if (ctx) { if (ctx.state !== "running") ctx.resume(); return true; }
-    try { ctx = new (window.AudioContext || window.webkitAudioContext)(); out = ctx.createGain(); out.gain.value = (DEMO.suoniVol || 1) * 0.55; out.connect(ctx.destination); } catch (e) { return false; }
+    try { ctx = new (window.AudioContext || window.webkitAudioContext)(); out = ctx.createGain(); out.gain.value = (DEMO.suoniVol || 1) * 1.8; out.connect(ctx.destination); } catch (e) { return false; }
     const n = ctx.sampleRate * 0.5; rumore = ctx.createBuffer(1, n, ctx.sampleRate); const d = rumore.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
     return true;
   }
@@ -617,11 +617,14 @@ const SFX = (() => {
       if (squillo) return; const suonata = () => { if (!on()) return; for (let k = 0; k < 10; k++) { tono(1320, 0.05, { vol: 0.09, dopo: k * 0.05 }); tono(1660, 0.05, { vol: 0.07, dopo: k * 0.05 + 0.025 }); } };
       suonata(); squillo = setInterval(suonata, 1500);
     },
+    sblocca() {},
     basta() { clearInterval(squillo); squillo = null; },
-    giu(si) { if (out) out.gain.setTargetAtTime((DEMO.suoniVol || 1) * (si ? 0.3 : 0.55), ctx.currentTime, 0.1); }
+    giu(si) { if (out) out.gain.setTargetAtTime((DEMO.suoniVol || 1) * (si ? 1.0 : 1.8), ctx.currentTime, 0.1); }
   };
   return new Proxy(S, { get: (o, k) => (k === "basta" || k === "giu") ? o[k] : (...a) => { if (on() && pronto()) try { o[k](...a); } catch (e) {} } });
 })();
+/* 16 ott: Chrome tiene muto l'audio creato fuori da un clic: lo si sblocca al primo tocco */
+["pointerdown", "keydown", "touchstart"].forEach(ev => document.addEventListener(ev, () => SFX.sblocca(), { capture: true }));
 const F = {}; let zz = 10;
 
 const attendi = (ms, g) => new Promise((ok, ko) => {
