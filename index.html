@@ -491,7 +491,20 @@ invia.insertAdjacentHTML('afterbegin', ICONA);
 /* la lead entra nel CRM Lead Jarvis nel momento in cui preme WhatsApp (13 ott) */
 /* 14 ott: i link corti (/ig, /tt, /yt…) portano qui con gli UTM; si tengono in memoria e si toglie la coda dalla barra */
 /* 15 ott: dentro «pagina» vanno SOLO gli utm_*. Instagram attacca al link un fbclid lunghissimo che sforava il tetto della raccolta */
-const UTM = (q => q ? '?' + q : '')([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
+/* 17 ott, Dennis: «attento che siano tutti tracciati». Tre reti: 1) gli utm del link; 2) se mancano, quelli della prima visita
+   (memoria del telefono, 60 giorni: chi torna dopo o ricarica la pagina non diventa «senza fonte»); 3) se non c'è niente, il sito da cui arriva o «diretto». */
+const UTM = (() => {
+  const dalLink = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
+  const K = 'jarvis_utm';
+  try {
+    if (dalLink) { localStorage.setItem(K, JSON.stringify({q: dalLink, t: Date.now()})); return '?' + dalLink; }
+    const m = JSON.parse(localStorage.getItem(K) || 'null');
+    if (m && Date.now() - m.t < 60 * 864e5) return '?' + m.q + '&utm_term=ritorno';
+  } catch (x) {}
+  const ref = (document.referrer || '').toLowerCase(), da = [['instagram', 'instagram'], ['tiktok', 'tiktok'], ['youtube', 'youtube'], ['youtu.be', 'youtube'], ['facebook', 'facebook'], ['fb.', 'facebook'], ['google', 'google'], ['linkedin', 'linkedin'], ['t.co', 'twitter'], ['whatsapp', 'whatsapp'], ['t.me', 'telegram']].find(([x]) => ref.includes(x));
+  const q = da ? `utm_source=${da[1]}&utm_medium=referral&utm_campaign=jarvis&utm_content=senza-utm` : (ref && !ref.includes('iltuojarvis') ? `utm_source=${encodeURIComponent(new URL(ref).hostname)}&utm_medium=referral&utm_campaign=jarvis` : 'utm_source=diretto&utm_medium=nessuno&utm_campaign=jarvis');
+  return '?' + q;
+})();
 if (location.search) history.replaceState(null, '', location.pathname);
 const RACCOLTA = 'https://script.google.com/macros/s/AKfycbwkaixtjnRyktxhv5SMuOhi41CzeVnppWjWTFVGofk3dEve_cwbRAhe0acMRREB-xHa8Q/exec';
 /* 15 ott: nel browser interno di Instagram il pulsante restava spento senza dire perché, e target=_blank verso WhatsApp si perdeva.
