@@ -343,13 +343,6 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
       <h2>Raccontami la tua attività.</h2>
       <label class="campo"><span>Come si chiama</span><input class="js-campo" data-chiave="attivita" autocomplete="organization" placeholder="Es. Rossi Immobiliare"></label>
       <label class="campo"><span>Di cosa si occupa</span><input class="js-campo" data-chiave="settore" placeholder="Es. compravendite a Milano"></label>
-      <p class="nota" style="margin-top:20px">Quanto fattura all'anno la tua attività?</p>
-      <div class="scelte" data-chiave="fatturato">
-        <button type="button" data-v="Fino a 100.000 €">Fino a 100.000 €</button>
-        <button type="button" data-v="100.000 € - 500.000 €">100.000 € - 500.000 €</button>
-        <button type="button" data-v="500.000 € - 2 milioni">500.000 € - 2 milioni</button>
-        <button type="button" data-v="Oltre 2 milioni">Oltre 2 milioni</button>
-      </div>
       <button class="pulsante js-avanti" type="button" data-poi="3" disabled>Avanti</button>
     </div>
 
@@ -419,9 +412,9 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 const NUMERO_DAVIDE = '393520936895', NUMERO_JARVIS = '393520686513', JARVIS_ATTIVO = false;
 function target(r){
   if (r.uso === 'Per i miei progetti personali') return 'privato';
-  const az = r.uso === 'Per la mia azienda e il mio team' || r.fatturato === 'Oltre 2 milioni';
-  if (az) return 'azienda';
-  if (r.uso === 'Per organizzare il mio lavoro, sono da solo' && r.fatturato === 'Fino a 100.000 €') return 'freelance';
+  /* 16 ott: il fatturato non si chiede più (troppo invasivo). Da solo = freelance, team = azienda */
+  if (r.uso === 'Per la mia azienda e il mio team') return 'azienda';
+  if (r.uso === 'Per organizzare il mio lavoro, sono da solo') return 'freelance';
   return 'microimpresa';
 }
 const numero = r => (JARVIS_ATTIVO && ['freelance', 'privato'].includes(target(r))) ? NUMERO_JARVIS : NUMERO_DAVIDE;
@@ -476,7 +469,7 @@ filtro.querySelectorAll('.js-avanti').forEach(b => b.addEventListener('click', (
 const invia = filtro.querySelector('.js-invia');
 function riepiloga(){
   const personale = risposte.uso === 'Per i miei progetti personali';
-  const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')], ['Fatturato', risposte.fatturato]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
+  const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
   filtro.querySelector('.js-riepilogo').innerHTML = righe.map(([k, v]) => `<div><b>${k}</b><span></span></div>`).join('');
   filtro.querySelectorAll('.js-riepilogo span').forEach((s, i) => s.textContent = righe[i][1] || '');
   const nome = [risposte.nome, risposte.cognome].filter(Boolean).join(' ').trim();
