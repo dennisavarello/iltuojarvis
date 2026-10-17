@@ -478,7 +478,7 @@ function controlla(d){
 filtro.querySelectorAll('.js-avanti').forEach(b => b.addEventListener('click', () => vai(+b.dataset.poi)));
 
 /* il riepilogo diventa il primo messaggio su WhatsApp */
-const invia = filtro.querySelector('.js-invia'), SOLO_GRAZIE = true;
+const invia = filtro.querySelector('.js-invia'), SOLO_GRAZIE = false; /* 17 ott sera (Davide): WhatsApp riacceso sul 352 097 5156 (setter Jarvis su GHL) */
 function riepiloga(){
   const personale = risposte.uso === 'Per i miei progetti personali';
   const righe = [['Uso', risposte.uso], ...(personale ? [] : [['Attività', [risposte.attivita, risposte.settore].filter(Boolean).join(' · ')]]), ['Per prima cosa', risposte.primo], ['Da automatizzare', risposte.processi], ['Investimento', risposte.investimento]];
