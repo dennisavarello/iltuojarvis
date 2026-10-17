@@ -418,7 +418,10 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 /* WhatsApp: prima cinque domande, poi la lead arriva a Dennis già profilata e la chiude lui */
 /* 16 ott: il target si capisce dalle risposte, senza chiederlo. Freelance e privati → setter Jarvis (numero Jarvis),
    microimprese e aziende → Davide. Il numero Jarvis si accende con JARVIS_ATTIVO = true quando è collegato a GHL. */
-const NUMERO_DAVIDE = '393520936895', NUMERO_JARVIS = '393520686513', JARVIS_ATTIVO = false;
+/* 17 ott sera (Davide): numero Jarvis setter = 352 097 5156, API ufficiale collegata a GHL con il setter AI attivo.
+   Il 352 093 6895 di Davide ha la restrizione di Meta: finché non c'è il numero aziende, anche aziende e microimprese
+   vanno al numero Jarvis (il setter le riconosce e le passa a Davide). Quando c'è il numero aziende, si rimette in NUMERO_DAVIDE. */
+const NUMERO_DAVIDE = '393520975156', NUMERO_JARVIS = '393520975156', JARVIS_ATTIVO = false;
 function target(r){
   if (r.uso === 'Per i miei progetti personali') return 'privato';
   /* 16 ott: il fatturato non si chiede più (troppo invasivo). Da solo = freelance, team = azienda */
