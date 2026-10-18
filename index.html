@@ -421,7 +421,9 @@ footer{padding:32px 24px 112px;border-top:1px solid var(--linea);text-align:cent
 /* 17 ott sera (Davide): numero Jarvis setter = 352 097 5156, API ufficiale collegata a GHL con il setter AI attivo.
    Il 352 093 6895 di Davide ha la restrizione di Meta: finché non c'è il numero aziende, anche aziende e microimprese
    vanno al numero Jarvis (il setter le riconosce e le passa a Davide). Quando c'è il numero aziende, si rimette in NUMERO_DAVIDE. */
-const NUMERO_DAVIDE = '393520975156', NUMERO_JARVIS = '393520975156', JARVIS_ATTIVO = false;
+/* 18 ott (Davide): due numeri. Jarvis Aziende 351 373 5369 = aziende e microimprese, solo messaggio automatico poi Davide a mano.
+   Jarvis Setter 352 097 5156 = freelance e privati, risponde il bot AI. NUMERO_DAVIDE qui è il numero Jarvis Aziende. */
+const NUMERO_DAVIDE = '393513735369', NUMERO_JARVIS = '393520975156', JARVIS_ATTIVO = true;
 function target(r){
   if (r.uso === 'Per i miei progetti personali') return 'privato';
   /* 16 ott: il fatturato non si chiede più (troppo invasivo). Da solo = freelance, team = azienda */
