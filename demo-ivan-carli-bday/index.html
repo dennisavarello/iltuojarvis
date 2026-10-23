@@ -2141,7 +2141,7 @@ function parla(t) {
     if (!voceOn || subito) return ok();
     if (VOCI[t]) {
       try {
-        const a = new Audio(VOCI[t]); audioOra = a; a.playbackRate = vel > 1 ? (DEMO.voceVel || 1.08) : 1; musicaGiu(true); SFX.giu(true);
+        const a = new Audio(VOCI[t]); audioOra = a; a.preservesPitch = true; a.playbackRate = vel; musicaGiu(true); SFX.giu(true);
         let f = false; const fine = () => { if (!f) { f = true; ok(); } };
         const fine0 = fine; a.onended = () => { musicaGiu(false); SFX.giu(false); fine0(); }; a.onerror = () => { musicaGiu(false); SFX.giu(false); fine0(); }; setTimeout(fine, 30000);
         a.play().catch(fine); return;
@@ -2506,7 +2506,7 @@ $("capitoli").innerHTML = DEMO.scene.map((s, i) => `<button class="cap" type="bu
 document.querySelectorAll(".cap").forEach(b => b.onclick = () => { ferma(); avvia(+b.dataset.i); });
 $("play").onclick = () => inCorso ? ferma() : avvia(scenaQui);
 $("voce").onclick = () => { voceOn = !voceOn; $("voce").setAttribute("aria-pressed", voceOn); if (!voceOn) { SFX.basta(); try { speechSynthesis.cancel(); } catch (e) {} if (audioOra) audioOra.pause(); if (MUS) MUS.pause(); } else if (inCorso) musicaVia(); };
-$("vel").onclick = () => { vel = vel === 1.5 ? 1 : 1.5; $("vel").textContent = vel === 1.5 ? "1,5×" : "1×"; $("vel").setAttribute("aria-pressed", vel !== 1); };
+$("vel").onclick = () => { vel = vel === 1.5 ? 1 : 1.5; $("vel").textContent = vel === 1.5 ? "1,5×" : "1×"; $("vel").setAttribute("aria-pressed", vel !== 1); if (audioOra) audioOra.playbackRate = vel; };
 addEventListener("keydown", e => {
   if (e.key === " " && !e.target.closest("button")) { e.preventDefault(); $("play").click(); }
   if (e.key === "ArrowRight") { ferma(); avvia(Math.min(scenaQui + 1, DEMO.scene.length - 1)); }
