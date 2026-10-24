@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Federico, i tuoi prossimi clienti</title>
+<link rel="preload" href="/switzer-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/tanker-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Switzer;font-weight:400;font-display:swap;src:url(/switzer-400.woff2) format("woff2")}
+@font-face{font-family:Switzer;font-weight:500;font-display:swap;src:url(/switzer-500.woff2) format("woff2")}
+@font-face{font-family:Switzer;font-weight:600;font-display:swap;src:url(/switzer-600.woff2) format("woff2")}
+@font-face{font-family:Tanker;font-weight:400;font-display:swap;src:url(/tanker-400.woff2) format("woff2")}
+:root{
+  --notte:#0B0E13;   /* fondo pagina, 70% */
+  --banda:#131820;   /* fondo alternato */
+  --filo:#2A3240;    /* linee su scuro */
+  --testo:#F3F1EC;   /* testo su scuro, 16:1 */
+  --grigio:#A3ACB9;  /* testo secondario su scuro, 7,8:1 */
+  --acc:#7FD8F5;     /* unico accento, 11:1 su notte */
+  --carta:#F6F4EF;   /* documenti veri: tabella, email */
+  --ink:#12151B;     /* testo sui documenti, 17:1 */
+  --ink2:#525B68;    /* secondario sui documenti, 6,6:1 */
+  --riga:#DDD8CE;    /* linee sui documenti */
+  --s1:8px;--s2:16px;--s3:24px;--s4:40px;--s5:64px;--s6:104px;
+  --sans:Switzer,-apple-system,"Helvetica Neue",Helvetica,sans-serif;
+  --num:Tanker,Switzer,Impact,sans-serif;
+  --mov:cubic-bezier(.32,.72,0,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--notte);color:var(--testo);font-family:var(--sans);font-size:21px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.s{min-height:100vh;padding:var(--s5) var(--s5);display:flex;align-items:center;border-top:1px solid var(--filo)}
+.s:nth-of-type(even){background:var(--banda)}
+.w{width:100%;max-width:1240px;margin:0 auto}
+h1,h2,h3{font-weight:600;margin:0;letter-spacing:-.025em}
+h1{font-size:clamp(44px,6vw,88px);line-height:1;max-width:17ch}
+h2{font-size:clamp(34px,4.4vw,64px);line-height:1.02;max-width:18ch}
+h3{font-size:24px;line-height:1.25;letter-spacing:-.01em}
+p{margin:0}
+.lead{font-size:clamp(20px,1.75vw,26px);line-height:1.4;color:var(--grigio);max-width:38ch;margin-top:var(--s3)}
+.lead b{color:var(--testo);font-weight:500}
+.nota{font-size:16px;color:var(--grigio);margin-top:var(--s3);max-width:70ch}
+.acc{color:var(--acc)}
+.big{font-family:var(--num);font-weight:400;line-height:.86;letter-spacing:.005em;font-variant-numeric:tabular-nums}
+
+/* titolo + frase affiancati */
+.testa{display:grid;grid-template-columns:7fr 5fr;gap:var(--s5);align-items:end}
+.testa .lead{margin-top:0;max-width:34ch}
+
+/* 1 copertina */
+.hero h1{margin-top:var(--s2)}
+.chi{font-size:18px;color:var(--grigio)}
+.cifre{display:grid;grid-template-columns:repeat(3,1fr);margin-top:var(--s4);border-top:1px solid var(--filo)}
+.cifre>div{padding:var(--s3) var(--s3) 0 0}
+.cifre>div+div{padding-left:var(--s3);border-left:1px solid var(--filo)}
+.cifre .big{font-size:clamp(88px,8.4vw,132px)}
+.cifre p{font-size:19px;color:var(--grigio);margin-top:var(--s2);max-width:24ch}
+.cifre p b{color:var(--testo);font-weight:500}
+
+/* 2 le sue parole */
+.due{display:grid;grid-template-columns:5fr 6fr;gap:var(--s5);align-items:start}
+.cit{font-size:clamp(28px,3vw,44px);line-height:1.15;font-weight:500;letter-spacing:-.02em;text-indent:-.4em}
+.cit-et{font-size:16px;color:var(--grigio);margin-top:var(--s1)}
+.parole>div{padding:var(--s3) 0;border-top:1px solid var(--filo)}
+.parole>div:first-child{border-top:2px solid var(--acc)}
+.parole .cit.forte{color:var(--acc)}
+.parole .cit.piccola{font-size:clamp(22px,2vw,28px);font-weight:400}
+
+/* 3 fonte */
+.fonte-grande{display:grid;grid-template-columns:auto 1fr;gap:var(--s5);align-items:end;margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--filo)}
+.fonte-grande .big{font-size:clamp(110px,15vw,240px);color:var(--acc)}
+.fonte-grande h3{font-size:clamp(24px,2.2vw,32px);font-weight:500}
+.fonte-grande p{color:var(--grigio);margin-top:var(--s2);max-width:44ch}
+.passi{list-style:none;padding:0;margin:var(--s5) 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s4);counter-reset:p}
+.passi li{counter-increment:p;font-size:18px;color:var(--grigio)}
+.passi li::before{content:counter(p);display:block;font-family:var(--num);font-size:44px;line-height:1;color:var(--testo);margin-bottom:var(--s2)}
+.passi b{display:block;color:var(--testo);font-weight:600;font-size:21px;margin-bottom:6px}
+
+/* documenti chiari */
+.doc{background:var(--carta);color:var(--ink);border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 30px 60px -30px rgba(0,0,0,.7)}
+.barra-doc{display:flex;align-items:center;gap:var(--s2);padding:12px var(--s3);border-bottom:1px solid var(--riga);font-size:14px;color:var(--ink2)}
+.barra-doc i{width:10px;height:10px;border-radius:50%;background:#C9C3B7;display:inline-block;margin-right:-8px}
+.barra-doc span{margin-left:var(--s2)}
+
+/* 4 tabella */
+.tit-riga{display:flex;justify-content:space-between;align-items:end;gap:var(--s4);margin-bottom:var(--s4);flex-wrap:wrap}
+.tit-riga .lead{margin-top:0;max-width:30ch}
+table{border-collapse:collapse;width:100%;font-size:18px}
+th{text-align:left;font-weight:500;font-size:14px;color:var(--ink2);padding:12px var(--s2);border-bottom:1px solid var(--riga);white-space:nowrap}
+td{padding:13px var(--s2);border-bottom:1px solid var(--riga);vertical-align:baseline}
+tr:last-child td{border-bottom:none}
+td.az{font-weight:600}
+td.cit-t{color:var(--ink2);white-space:nowrap}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+td.n b{font-weight:600}
+.tag{display:inline-block;background:var(--ink);color:var(--acc);font-size:13px;font-weight:600;padding:2px 8px;border-radius:2px;margin-right:8px;vertical-align:2px}
+.sotto-tab{display:flex;flex-wrap:wrap;gap:var(--s4);margin-top:var(--s3);font-size:16px;color:var(--grigio)}
+.sotto-tab b{color:var(--testo);font-weight:600}
+
+/* 5 scheda */
+.scheda{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);align-items:center;margin-top:var(--s4)}
+.scheda .doc{padding:var(--s1) var(--s3) var(--s2)}
+.dati{margin:0}
+.dati div{display:grid;grid-template-columns:130px 1fr;gap:var(--s2);padding:12px 0;border-bottom:1px solid var(--riga);font-size:17px}
+.dati div:last-child{border-bottom:none}
+.dati dt{color:var(--ink2)}
+.dati dd{margin:0}
+.dati .vuoto{color:var(--ink2);font-style:italic}
+.domanda{font-size:clamp(28px,2.8vw,40px);line-height:1.2;font-weight:500;letter-spacing:-.02em;border-left:3px solid var(--acc);padding-left:var(--s3);text-indent:-.4em}
+.domanda-et{font-size:16px;color:var(--grigio);margin-bottom:var(--s2);padding-left:calc(var(--s3) + 3px)}
+
+/* 6 email */
+.posta{display:grid;grid-template-columns:330px 1fr;margin-top:var(--s3);overflow:hidden}
+.bozze{border-right:1px solid var(--riga);background:#EDEAE3}
+.bozze .t{font-size:14px;color:var(--ink2);padding:var(--s2) var(--s3);border-bottom:1px solid var(--riga)}
+.bozza{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--riga);padding:var(--s2) var(--s3);font:inherit;color:var(--ink);cursor:pointer;border-left:3px solid transparent;transition:background .3s var(--mov)}
+.bozza:hover{background:#E4E0D7}
+.bozza[aria-selected=true]{background:var(--carta);border-left-color:var(--ink)}
+.bozza b{display:block;font-size:16px;font-weight:600;line-height:1.3}
+.bozza>span{display:block;font-size:14px;color:var(--ink2);line-height:1.35;margin-top:2px}
+.lettera{padding:var(--s3) var(--s5) var(--s3) var(--s4);font-size:18px;line-height:1.5;display:none}
+.lettera.on{display:block;animation:entra .5s var(--mov)}
+@keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lettera .int{font-size:14px;color:var(--ink2);padding-bottom:12px;border-bottom:1px solid var(--riga);margin-bottom:var(--s3);display:grid;grid-template-columns:40px 1fr;gap:4px 8px}
+.lettera .ogg{font-size:clamp(24px,2.3vw,32px);font-weight:600;letter-spacing:-.02em;margin-bottom:var(--s3);line-height:1.15;border-left:3px solid var(--acc);padding-left:var(--s2)}
+.lettera .ogg small{display:block;font-size:13px;font-weight:500;letter-spacing:0;color:var(--ink2);margin-bottom:4px}
+.lettera .int{grid-template-columns:40px 1fr}
+.var{font-style:normal;background:#E4E0D7;border:1px dashed #A9A295;padding:0 6px;border-radius:2px}
+.var::before{content:"{"}.var::after{content:"}"}
+.metodo{margin-top:var(--s3);font-size:20px;color:var(--grigio);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.metodo .pt{font-style:normal}
+.metodo b{color:var(--testo);font-weight:500;border-bottom:2px solid var(--acc)}
+.lettera p{margin-bottom:12px;max-width:66ch}
+.lettera mark{background:var(--acc);color:var(--ink);padding:1px 3px;border-radius:2px}
+.lettera .piede{font-size:14px;color:var(--ink2);margin-top:var(--s3)}
+
+/* 7 sequenza */
+.seq{display:grid;grid-template-columns:repeat(6,1fr);margin-top:var(--s5);position:relative}
+.seq::before{content:"";position:absolute;left:0;right:0;top:26px;height:2px;background:var(--filo)}
+.seq>div{position:relative;padding-right:var(--s3)}
+.seq .g{font-family:var(--num);font-size:56px;line-height:1;background:var(--notte);display:inline-block;padding-right:var(--s2);position:relative}
+.s:nth-of-type(even) .seq .g{background:var(--banda)}
+.seq .g small{font-family:var(--sans);font-size:15px;color:var(--grigio);margin-right:6px;font-weight:500;letter-spacing:0}
+.seq p{font-size:18px;color:var(--grigio);margin-top:var(--s2)}
+.seq p b{display:block;color:var(--testo);font-weight:600;margin-bottom:4px}
+.seq .tu .g{color:var(--acc)}
+.stop{margin-top:var(--s5);padding:var(--s3) var(--s4);border:1px solid var(--filo);border-left:3px solid var(--acc);font-size:21px;max-width:900px;border-radius:2px}
+.stop b{font-weight:600}
+
+/* 8 prova numeri */
+.imbuto{margin-top:var(--s5)}
+.liv{display:grid;grid-template-columns:240px 1fr;gap:var(--s4);align-items:center;padding:var(--s2) 0;border-top:1px solid var(--filo)}
+.liv .big{font-size:clamp(72px,7vw,120px);text-align:right}
+.liv .bar{height:14px;background:var(--testo);border-radius:2px;transform-origin:left;transition:transform 1.1s var(--mov)}
+.liv p{font-size:20px;color:var(--grigio);margin-top:var(--s1)}
+.liv p b{color:var(--testo);font-weight:500}
+.liv.forte .big,.liv.forte p b{color:var(--acc)}
+.liv.forte .bar{background:var(--acc)}
+.js .imbuto:not(.vista) .bar{transform:scaleX(0)}
+
+/* 9 risposte */
+.risposte{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-top:var(--s4)}
+.risp{padding:var(--s3)}
+.risp .da{font-size:14px;color:var(--ink2);padding-bottom:12px;border-bottom:1px solid var(--riga);margin-bottom:var(--s2);display:flex;justify-content:space-between;gap:var(--s2)}
+.risp .da b{color:var(--ink);font-weight:600}
+.risp q{display:block;font-size:22px;line-height:1.35;font-weight:500;quotes:none}
+.risp .ctx{font-size:15px;color:var(--ink2);margin-top:var(--s2)}
+.oscura{background:var(--ink);color:var(--ink);display:inline-block;line-height:1;border-radius:2px;letter-spacing:-.05em;user-select:none}
+.richiesta{margin-top:var(--s4);font-size:19px;color:var(--grigio);max-width:70ch}
+.richiesta i{color:var(--testo);font-style:normal}
+
+/* 10 settimana */
+.sett{display:grid;grid-template-columns:1fr 420px;gap:var(--s5);align-items:center;margin-top:var(--s4)}
+.giorni{list-style:none;margin:0;padding:0}
+.giorni li{display:grid;grid-template-columns:150px 1fr;gap:var(--s3);padding:var(--s2) 0;border-top:1px solid var(--filo);font-size:19px;color:var(--grigio)}
+.giorni li b{color:var(--testo);font-weight:600}
+.giorni li.tu{color:var(--testo)}
+.giorni li.tu b{color:var(--acc)}
+.tg{background:#17212B;border-radius:3px;overflow:hidden;font-size:16px;line-height:1.4;box-shadow:0 0 0 1px var(--filo)}
+.tg .top{display:flex;align-items:center;gap:12px;padding:14px var(--s2);background:#1E2C3A;font-size:15px}
+.tg .top i{width:34px;height:34px;border-radius:50%;background:#0B0E13;border:2px solid var(--acc);display:block}
+.tg .top b{display:block;font-weight:600}
+.tg .top small{color:#8FA3B5;font-size:13px}
+.tg .chat{padding:var(--s2);display:flex;flex-direction:column;gap:10px}
+.m{max-width:86%;padding:9px 12px 6px;border-radius:3px;background:#22303E;color:#F3F1EC}
+.m.io{align-self:flex-end;background:#2B5278}
+.m small{display:block;text-align:right;font-size:11px;color:#9FB2C4;margin-top:2px}
+
+/* 11 dubbi */
+.dubbi{margin-top:var(--s4)}
+.dubbio{display:grid;grid-template-columns:5fr 7fr;gap:var(--s5);padding:var(--s3) 0;border-top:1px solid var(--filo)}
+.dubbio h3{font-size:clamp(22px,2vw,28px);font-weight:500}
+.dubbio p{color:var(--grigio);font-size:19px;max-width:54ch}
+.dubbio p b{color:var(--testo);font-weight:500}
+
+/* 12 conto */
+.conto{display:grid;grid-template-columns:auto 1fr;gap:var(--s5);align-items:center;margin-top:var(--s5)}
+.eq{display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap}
+.eq .big{font-size:clamp(80px,8vw,132px)}
+.eq .op{font-size:48px;color:var(--grigio)}
+.eq-et{display:flex;gap:var(--s3);font-size:16px;color:var(--grigio);margin-top:var(--s2)}
+.mesi{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--s1);align-items:end;height:260px;position:relative;border-bottom:1px solid var(--filo)}
+.mesi>div{background:var(--filo);border-radius:2px 2px 0 0;position:relative;z-index:2;transform-origin:bottom;transition:transform 1s var(--mov)}
+.mesi>div.pari{background:var(--acc)}
+.mesi>div span{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:14px;color:var(--testo);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mesi>div.pari span{color:var(--ink);font-weight:600}
+.soglia{margin:0;position:absolute;left:0;right:0;border-top:2px dashed var(--testo);z-index:1}
+.soglia em{position:absolute;left:0;bottom:6px;font-style:normal;font-size:14px;font-weight:600;background:var(--banda);padding:0 6px}
+.mesi-et{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--s1);font-size:14px;color:var(--grigio);text-align:center;margin-top:var(--s1)}
+.js .grafico:not(.vista) .mesi>div{transform:scaleY(0)}
+
+/* 13 passo */
+.fine{display:grid;grid-template-columns:3fr 2fr;gap:var(--s5);align-items:stretch;margin-top:var(--s5)}
+.orari{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
+.orario{border:1px solid var(--filo);border-top:3px solid var(--acc);padding:var(--s3);border-radius:2px}
+.orario .g{font-size:clamp(24px,2.1vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.orario .o{font-family:var(--num);font-size:clamp(56px,5vw,80px);line-height:1;margin-top:var(--s2)}
+.prezzo{border-left:1px solid var(--filo);padding-left:var(--s5);display:flex;flex-direction:column;justify-content:center}
+.prezzo .big{font-size:clamp(72px,7vw,112px)}
+.prezzo p{font-size:19px;color:var(--grigio);margin-top:var(--s2)}
+.prezzo p b{color:var(--testo);font-weight:500}
+.chiusa{font-size:clamp(24px,2.2vw,32px);font-weight:500;margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid var(--filo);letter-spacing:-.01em}
+
+/* contatore per la registrazione */
+.cont{position:fixed;right:var(--s3);bottom:var(--s3);font-size:14px;color:var(--grigio);font-variant-numeric:tabular-nums;background:var(--notte);border:1px solid var(--filo);padding:4px 10px;border-radius:2px;z-index:5}
+
+@media (max-width:1100px){
+  .s{padding:var(--s5) var(--s4)}
+  .posta{grid-template-columns:260px 1fr}
+  .lettera{padding:var(--s3)}
+  .sett{grid-template-columns:1fr 360px}
+}
+@media (max-width:820px){
+  body{font-size:18px}
+  .s{min-height:auto;padding:var(--s5) 20px}
+  .cifre{grid-template-columns:1fr}
+  .cifre>div,.cifre>div+div{padding:var(--s3) 0;border-left:none;border-top:1px solid var(--filo);display:grid;grid-template-columns:120px 1fr;gap:var(--s2);align-items:center}
+  .cifre>div:first-child{border-top:none}
+  .cifre .big{font-size:88px}
+  .cifre p{margin-top:0;font-size:18px}
+  .due,.scheda,.risposte,.sett,.conto,.orari,.testa,.fine{grid-template-columns:1fr}
+  .testa{gap:0}
+  .testa .lead{margin-top:var(--s2)}
+  .prezzo{border-left:none;padding-left:0;border-top:1px solid var(--filo);padding-top:var(--s3)}
+  .due{gap:var(--s3)}
+  .fonte-grande{grid-template-columns:1fr;gap:var(--s2)}
+  .passi{grid-template-columns:1fr;gap:var(--s3)}
+  .passi li::before{font-size:36px;margin-bottom:var(--s1)}
+  /* tabella diventa schede */
+  table,tbody,tr,td{display:block}
+  thead{display:none}
+  tr{padding:var(--s2);border-bottom:1px solid var(--riga)}
+  td{padding:0;border:none}
+  td.az{font-size:19px}
+  td.cit-t{font-size:15px;margin-bottom:6px}
+  td.n{font-size:16px;display:inline}
+  td.n.add::after{content:" addetti · "}
+  td.seg{margin-top:6px;font-size:16px}
+  .dati div{grid-template-columns:1fr;gap:2px}
+  .posta{grid-template-columns:1fr}
+  .bozze{border-right:none;border-bottom:1px solid var(--riga);display:flex;overflow-x:auto}
+  .bozze .t{display:none}
+  .bozza{min-width:240px;border-bottom:none;border-left:none;border-top:3px solid transparent;border-right:1px solid var(--riga)}
+  .bozza[aria-selected=true]{border-left:none;border-top-color:var(--ink)}
+  .lettera{font-size:17px;padding:var(--s3) 20px}
+  .lettera .ogg{font-size:22px}
+  .metodo{font-size:17px;flex-direction:column;align-items:flex-start;gap:8px}
+  .metodo .pt{display:none}
+  .seq{grid-template-columns:1fr;gap:0}
+  .seq::before{left:15px;right:auto;top:10px;bottom:10px;width:2px;height:auto}
+  .seq>div{display:grid;grid-template-columns:100px 1fr;gap:var(--s2);padding:var(--s2) 0;align-items:start}
+  .seq .g{font-size:40px;padding:0 6px 0 0}
+  .seq p{margin-top:2px;font-size:17px}
+  .stop{padding:var(--s2) var(--s3);font-size:18px}
+  .liv{grid-template-columns:1fr;gap:var(--s1)}
+  .liv .big{text-align:left;font-size:80px}
+  .risp q{font-size:19px}
+  .giorni li{grid-template-columns:1fr;gap:2px}
+  .dubbio{grid-template-columns:1fr;gap:var(--s1)}
+  .mesi{height:200px}
+  .eq .big{font-size:60px}
+  .eq .op{font-size:32px}
+  .eq{gap:var(--s2)}
+  .sotto-tab{gap:var(--s1);flex-direction:column}
+  .seq::before{display:none}
+  .cit,.domanda{text-indent:0}
+  .domanda-et,.scheda .lead{padding-left:0!important}
+  .mesi>div span{font-size:10px;top:4px}
+  .cont{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- 01 -->
+<section class="s hero" id="s1">
+  <div class="w">
+    <p class="chi">Per Federico Pianigiani · da Davide Merli · 24 ottobre 2026</p>
+    <h1>Federico, ecco le aziende a cui vendere il tuo software.</h1>
+    <p class="lead">Le ha trovate Jarvis, sul tuo mercato. <b>Non abbiamo contattato nessuno:</b> le vedi prima tu.</p>
+    <div class="cifre">
+      <div><div class="big">25</div><p><b>aziende di produzione vere</b>, con telefono e fatturato</p></div>
+      <div><div class="big acc">5</div><p><b>stanno assumendo in produzione</b> proprio adesso</p></div>
+      <div><div class="big">3</div><p><b>email già scritte</b>, pronte da mandare col tuo sì</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="s" id="s2">
+  <div class="w due">
+    <div>
+      <h2>Il tuo problema, con le tue parole.</h2>
+      <p class="lead">Dalla nostra call del 21 ottobre.</p>
+    </div>
+    <div class="parole">
+      <div><p class="cit">«Prendendo il telefono, chiamando dentro l'azienda e prendere tanti no.»</p><p class="cit-et">Come trovi i clienti oggi</p></div>
+      <div><p class="cit forte">«Poi dopo mi manca la parte di decision…»</p><p class="cit-et">CreditSafe ti dà azienda e fatturato. Non chi decide.</p></div>
+      <div><p class="cit piccola">«Mi vorrei dedicare più alla parte dopo, di visita, che è poi lì il vero valore.»</p><p class="cit-et">Dove sei forte tu: se fissi cinque appuntamenti, ne chiudi tre</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="s" id="s3">
+  <div class="w">
+    <div class="testa"><h2>I tuoi clienti stanno in un registro pubblico.</h2>
+    <p class="lead">Basta sapere quale codice cercare.</p></div>
+    <div class="fonte-grande">
+      <div class="big">25.62</div>
+      <div>
+        <h3>«Lavori di meccanica generale», nel registro delle imprese.</h3>
+        <p>Chi è iscritto con questo codice produce su commessa per forza. Ha ordini, distinte, magazzino, spedizioni: i problemi che risolve il tuo software.</p>
+      </div>
+    </div>
+    <ol class="passi">
+      <li><b>Il registro, provincia per provincia</b>Addetti, telefono e fatturato degli ultimi 5-6 anni.</li>
+      <li><b>Gli annunci di lavoro in produzione</b>Chi cerca un responsabile di produzione ha il problema adesso.</li>
+      <li><b>Il sito e la tua visura CreditSafe</b>Il sito dà il motivo per scrivere. La visura dà il nome di chi decide.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="s" id="s4">
+  <div class="w">
+    <div class="tit-riga">
+      <h2>Dieci delle venticinque.</h2>
+      <p class="lead">Tutte vere. Le puoi controllare una per una.</p>
+    </div>
+    <div class="doc">
+      <div class="barra-doc"><i></i><i></i><i></i><span>Aziende Toscana · produzione su commessa · 25 righe</span></div>
+      <table>
+        <thead><tr><th>Azienda</th><th>Città</th><th>Addetti</th><th>Fatturato</th><th>Perché scrivergli adesso</th></tr></thead>
+        <tbody>
+          <tr><td class="az">Galli e Morelli</td><td class="cit-t">Lucca</td><td class="n add">16</td><td class="n">1,97 → <b>3,37 M€</b></td><td class="seg"><span class="tag">Assume</span>Cerca un responsabile di produzione</td></tr>
+          <tr><td class="az">Nuova Simat</td><td class="cit-t">Collesalvetti (LI)</td><td class="n add">35</td><td class="n">3,26 → <b>5,17 M€</b></td><td class="seg"><span class="tag">Assume</span>Due annunci in 10 giorni</td></tr>
+          <tr><td class="az">Pasquali Microwave Systems</td><td class="cit-t">Firenze</td><td class="n add">50</td><td class="n">5,62 → <b>7,55 M€</b></td><td class="seg"><span class="tag">Assume</span>Cerca un operatore CNC</td></tr>
+          <tr><td class="az">Kuoyo</td><td class="cit-t">Sesto Fiorentino (FI)</td><td class="n add">29</td><td class="n">12,09 → <b>13,51 M€</b></td><td class="seg"><span class="tag">Assume</span>Magazzino sui piani di produzione</td></tr>
+          <tr><td class="az">Industria Meccanica Fiorentina</td><td class="cit-t">Signa (FI)</td><td class="n add">24</td><td class="n">2,25 → <b>6,92 M€</b></td><td class="seg">Fatturato triplicato in cinque anni</td></tr>
+          <tr><td class="az">Alfa Meccanica</td><td class="cit-t">Sesto Fiorentino (FI)</td><td class="n add">21</td><td class="n">1,45 → <b>4,06 M€</b></td><td class="seg">Fatturato quasi triplicato in quattro anni</td></tr>
+          <tr><td class="az">S.N.A. Impianti</td><td class="cit-t">Livorno</td><td class="n add">43</td><td class="n">0,87 → <b>5,71 M€</b></td><td class="seg">Fatturato per sei, ogni commessa col suo fascicolo</td></tr>
+          <tr><td class="az">Oleodinamica Sabatini Sistemi</td><td class="cit-t">Serravalle P.se (PT)</td><td class="n add">12</td><td class="n">1,36 → <b>7,44 M€</b></td><td class="seg">Lavoro su misura quintuplicato con 12 persone</td></tr>
+          <tr><td class="az">Catarsi Ing. Piero e C.</td><td class="cit-t">Calcinaia (PI)</td><td class="n add">75</td><td class="n">8,06 → <b>10,96 M€</b></td><td class="seg">Aerospazio: tracciabilità di lotto obbligatoria</td></tr>
+          <tr><td class="az">Bertini Mekkanica</td><td class="cit-t">Vaiano (PO)</td><td class="n add">19</td><td class="n">1,74 → <b>2,01 M€</b></td><td class="seg">Officina di famiglia, passaggio da padre a figlio</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sotto-tab">
+      <span><b>25 su 25</b> con telefono e fatturato</span>
+      <span><b>8</b> province toscane</span>
+      <span>Fatturato dal 2019 all'ultimo bilancio pubblicato</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="s" id="s5">
+  <div class="w">
+    <h2>Ogni riga è una scheda così.</h2>
+    <div class="scheda">
+      <div class="doc">
+        <dl class="dati">
+          <div><dt>Azienda</dt><dd><b>Galli e Morelli srl</b>, Acquacalda (Lucca)</dd></div>
+          <div><dt>Cosa fa</dt><dd>Meccanica generale. Pezzi per CERN, INFN, Virgo, ESA</dd></div>
+          <div><dt>Addetti</dt><dd>16</dd></div>
+          <div><dt>Fatturato</dt><dd>1,97 M€ nel 2019 · 3,92 nel 2023 · 3,37 nel 2024</dd></div>
+          <div><dt>Telefono</dt><dd>0583 954337</dd></div>
+          <div><dt>Segnale</dt><dd>Annuncio del 14 settembre: cercano chi pianifichi i carichi e segua l'avanzamento delle commesse</dd></div>
+          <div><dt>Chi decide</dt><dd class="vuoto">Dalla tua visura CreditSafe, o dalla risposta all'email</dd></div>
+        </dl>
+      </div>
+      <div>
+        <p class="domanda-et">La domanda per aprire</p>
+        <p class="domanda">«State cercando chi pianifichi l'officina. Oggi quel lavoro dove lo tenete?»</p>
+        <p class="lead" style="padding-left:27px">Niente chiamate a tappeto. <b>Sai già di cosa parlare al primo minuto.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="s" id="s6">
+  <div class="w">
+    <h2>Le email sono già scritte.</h2>
+    <p class="metodo"><span>Il metodo che ha funzionato con Hospitality Pro:</span> <b>oggetto con quello che desiderano + il loro nome</b><i class="pt">·</i><b>li scegliamo noi</b><i class="pt">·</i><b>chiediamo nome e numero di chi decide</b></p>
+    <div class="doc posta" role="tablist">
+      <div class="bozze">
+        <div class="t">Bozze · 4</div>
+        <button class="bozza" role="tab" aria-selected="true" data-l="l1"><b>Il nuovo responsabile di produzione – Galli e Morelli</b><span>Galli e Morelli, Lucca</span></button>
+        <button class="bozza" role="tab" aria-selected="false" data-l="l2"><b>500 interventi, tutti fatturati – Nuova Simat</b><span>Nuova Simat, Collesalvetti</span></button>
+        <button class="bozza" role="tab" aria-selected="false" data-l="l3"><b>L'officina di <span class="oscura">xxxxxx</span>, anche per <span class="oscura">xxxxxx</span> – Bertini Mekkanica</b><span>Bertini Mekkanica, Vaiano</span></button>
+        <button class="bozza" role="tab" aria-selected="false" data-l="l4"><b>Commesse in tempo – <i class="var">azienda</i></b><span>Modello per tutte le officine</span></button>
+      </div>
+      <div>
+        <div class="lettera on" id="l1">
+          <div class="int"><span>Da</span><span>Federico Pianigiani</span><span>A</span><span>Galli e Morelli, casella dell'azienda</span></div>
+          <div class="ogg"><small>Oggetto</small>Il nuovo responsabile di produzione – Galli e Morelli</div>
+          <p>Buongiorno,<br>ho visto che state cercando un responsabile di produzione che pianifichi i carichi e segua l'avanzamento delle commesse.</p>
+          <p>Lavoro con officine di precisione come la vostra: chi entra in quel ruolo trova in un'unica schermata carichi macchina, avanzamento e scadenze di ogni commessa, ed è operativo dalla prima settimana invece che dopo mesi. Con clienti come CERN e INFN, dove tempi e controlli non si discutono, la differenza si vede subito.</p>
+          <p>Se vi interessa, <mark>rispondetemi indicando il nominativo e il recapito di chi segue la ricerca</mark>, così ci confrontiamo prima che arrivi la persona nuova.</p>
+          <p>Buon lavoro,<br>Federico Pianigiani</p>
+        </div>
+        <div class="lettera" id="l2">
+          <div class="int"><span>Da</span><span>Federico Pianigiani</span><span>A</span><span>Nuova Simat, alla c.a. del responsabile</span></div>
+          <div class="ogg"><small>Oggetto</small>500 interventi, tutti fatturati – Nuova Simat</div>
+          <p>Buongiorno <span class="oscura">xxxxxx</span>,<br>più di 500 interventi l'anno negli stabilimenti dei clienti sono un bel numero.</p>
+          <p>Lavoro con aziende di service come la vostra per avere in un unico posto squadre, macchine portatili, trasferte e ore di ogni intervento: si fattura tutto quello che si lavora e si vede subito quale commessa rende. Visto che state cercando un capofficina per il service, è il momento giusto per metterlo in ordine.</p>
+          <p>Se le interessa, <mark>mi lascia un recapito telefonico?</mark> La chiamo io quando le è comodo.</p>
+          <p>Buon lavoro,<br>Federico Pianigiani</p>
+          <p class="piede">Il nome vero c'è nella lista. Qui è oscurato perché la pagina è online.</p>
+        </div>
+        <div class="lettera" id="l3">
+          <div class="int"><span>Da</span><span>Federico Pianigiani</span><span>A</span><span>Bertini Mekkanica, alla c.a. del titolare</span></div>
+          <div class="ogg"><small>Oggetto</small>L'officina di <span class="oscura">xxxxxx</span>, anche per <span class="oscura">xxxxxx</span> – Bertini Mekkanica</div>
+          <p>Buongiorno <span class="oscura">xxxxxx</span>,<br>ho letto che guidate l'officina da più di quarant'anni, oggi insieme a <span class="oscura">xxxxxx</span>.</p>
+          <p>Lavoro con officine di famiglia come la vostra su un obiettivo preciso: mettere in un sistema semplice tempi, attrezzaggi e richieste di ogni cliente, cioè tutto quello che oggi sa chi è in officina da sempre. Così <span class="oscura">xxxxxx</span> ha tutto davanti e lei recupera ore per i clienti.</p>
+          <p>Se vi interessa, <mark>mi lascia un recapito telefonico?</mark> La chiamo io quando le è comodo.</p>
+          <p>Buon lavoro,<br>Federico Pianigiani</p>
+          <p class="piede">I nomi veri, padre e figlio, ci sono nella lista. Qui sono oscurati perché la pagina è online.</p>
+        </div>
+        <div class="lettera" id="l4">
+          <div class="int"><span>Da</span><span>Federico Pianigiani</span><span>A</span><span><i class="var">azienda</i>, casella dell'azienda</span></div>
+          <div class="ogg"><small>Oggetto</small>Commesse in tempo – <i class="var">azienda</i></div>
+          <p>Buongiorno,<br>vi contatto perché stiamo selezionando alcune officine meccaniche in Toscana con cui avviare un progetto sul controllo delle commesse: sapere in ogni momento a che punto è un lavoro, quanto sta costando e se la consegna è in tempo, senza ricostruirlo da fogli e telefonate.</p>
+          <p><i class="var">azienda</i>, per la crescita degli ultimi anni con la stessa struttura, ci è sembrata tra le realtà più adatte.</p>
+          <p>Se avete interesse a capire come funziona, <mark>rispondetemi pure indicando il nominativo e il recapito telefonico della persona che segue la produzione</mark>, così ci confrontiamo direttamente.</p>
+          <p>Buon lavoro,<br>Federico Pianigiani</p>
+          <p class="piede">Jarvis mette il nome dell'azienda al posto giusto, una per una.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="s" id="s7">
+  <div class="w">
+    <div class="testa"><h2>Poi Jarvis insiste al posto tuo.</h2>
+    <p class="lead">Fino al giorno in cui chiami tu, <b>con il nome giusto e il numero diretto.</b></p></div>
+    <div class="seq">
+      <div><span class="g"><small>giorno</small>0</span><p><b>Email</b>alla casella dell'azienda</p></div>
+      <div><span class="g"><small>giorno</small>1</span><p><b>Centralino</b>una domanda: chi segue la produzione?</p></div>
+      <div><span class="g"><small>giorno</small>2</span><p><b>LinkedIn</b>invito alla persona giusta</p></div>
+      <div><span class="g"><small>giorno</small>4</span><p><b>Sollecito</b>nella stessa email</p></div>
+      <div class="tu"><span class="g"><small>giorno</small>6</span><p><b>Chiami tu</b>col nome e il numero diretto</p></div>
+      <div><span class="g"><small>giorno</small>10</span><p><b>Ultimo sollecito</b>«mi basta anche un no»</p></div>
+    </div>
+    <div class="stop">Chiedono il prezzo, una demo, o ti dicono che gestionale usano? <b>Jarvis si ferma e ti passa il contatto.</b> Da lì sei tu.</div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="s" id="s8">
+  <div class="w">
+    <div class="testa"><h2>Funziona? L'abbiamo fatto su di noi.</h2>
+    <p class="lead">Hospitality Pro, la nostra agenzia per strutture da eventi in Toscana. <b>Stesso problema tuo: arrivare a chi decide.</b> Fine agosto - metà ottobre 2026.</p></div>
+    <div class="imbuto">
+      <div class="liv"><div class="big">115</div><div><div class="bar" style="width:100%"></div><p><b>strutture contattate</b> per email</p></div></div>
+      <div class="liv"><div class="big">50+</div><div><div class="bar" style="width:43.5%"></div><p><b>hanno risposto</b>, anche con dei no</p></div></div>
+      <div class="liv forte"><div class="big">20+</div><div><div class="bar" style="width:17.4%"></div><p><b>ci hanno dato nome e numero</b>, o chiesto di sentirci</p></div></div>
+      <div class="liv"><div class="big">5+</div><div><div class="bar" style="width:4.3%"></div><p><b>telefonate e incontri</b> fissati direttamente per email</p></div></div>
+    </div>
+    <p class="nota">Il tuo settore è diverso. Quanto risponde il manifatturiero lo misuriamo nelle prime due settimane.</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="s" id="s9">
+  <div class="w">
+    <div class="testa"><h2>Le risposte vere.</h2>
+    <p class="lead">Dalla casella di Davide. Nomi e numeri oscurati per rispetto delle persone.</p></div>
+    <div class="risposte">
+      <div class="doc risp"><div class="da"><b>Agriturismo con hotel, Toscana</b><span>la responsabile</span></div><q>«Lascio il mio cellulare: 338 <span class="oscura">0000000</span>. Sono E., la responsabile dell'azienda. Ci possiamo sentire da lunedì.»</q><p class="ctx">Avevamo scritto alla casella generica. L'hanno girata loro.</p></div>
+      <div class="doc risp"><div class="da"><b>Resort con tenuta, Toscana</b><span>reception</span></div><q>«Contattate pure la responsabile direttamente. M. C., +39 338 <span class="oscura">0000000</span>.»</q><p class="ctx">Ha risposto al sesto messaggio. Quel sollecito, a mano, non lo fa nessuno.</p></div>
+      <div class="doc risp"><div class="da"><b>Castello per eventi, colline di Firenze</b><span>ufficio eventi</span></div><q>«Benissimo, possiamo fare giovedì mattina h 9.15. Il numero è 055 <span class="oscura">000000</span>.»</q><p class="ctx">Prima email il 29 agosto, telefonata fissata il 15 settembre.</p></div>
+      <div class="doc risp"><div class="da"><b>Tenuta per eventi, provincia di Firenze</b><span>eventi</span></div><q>«Grazie mille per le email! Saremmo molto interessati a una collaborazione!»</q><p class="ctx">Dopo il quarto messaggio.</p></div>
+    </div>
+    <p class="richiesta">La nostra prima email chiudeva così: <i>«rispondetemi pure indicando il nominativo e il recapito telefonico della persona che segue questa parte»</i>. La stessa richiesta che c'è nelle tue.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="s" id="s10">
+  <div class="w">
+    <h2>Come lo usi tu, senza essere un tecnico.</h2>
+    <div class="sett">
+      <ul class="giorni">
+        <li><b>Lunedì</b><span>Jarvis prende 50 aziende nuove dal registro e le completa: sito, telefono, fatturato, segnale.</span></li>
+        <li><b>Ogni mattina</b><span>Guarda gli annunci di lavoro in produzione della tua zona.</span></li>
+        <li class="tu"><b>Ogni mattina</b><span>Ti scrive su Telegram: 10 email pronte. Partono solo col tuo sì.</span></li>
+        <li><b>Da solo</b><span>Manda i solleciti, legge le risposte.</span></li>
+        <li class="tu"><b>Ogni mattina</b><span>La lista di chi chiamare, con nome e numero.</span></li>
+        <li><b>Tu</b><span>Telefoni, fissi la visita, vai in azienda. Il tuo mestiere.</span></li>
+      </ul>
+      <div class="tg" aria-label="Esempio di chat su Telegram">
+        <div class="top"><i></i><div><b>Jarvis</b><small>esempio di chat</small></div></div>
+        <div class="chat">
+          <div class="m">Buongiorno Federico. Stamattina 10 email pronte. La prima è per Galli e Morelli: cercano un responsabile di produzione. Te la leggo?<small>07:42</small></div>
+          <div class="m io">Mandale tutte<small>07:51</small></div>
+          <div class="m">Partite. Ieri ti ha risposto un'officina di Prato: il titolare ti lascia il diretto, dice di chiamarlo dopo le 14.<small>07:51</small></div>
+          <div class="m io">Mettimelo in agenda alle 14:30<small>07:52</small></div>
+          <div class="m">Fatto. Oggi hai 3 persone da chiamare, nome e numero qui sotto.<small>07:52</small></div>
+        </div>
+      </div>
+    </div>
+    <p class="nota">Puoi scrivergli o mandargli un vocale, anche in macchina. Jarvis lavora quando il tuo computer è acceso.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="s" id="s11">
+  <div class="w">
+    <h2>I tuoi dubbi, uno per uno.</h2>
+    <div class="dubbi">
+      <div class="dubbio"><h3>«Non sono un tecnico.»</h3><p>Non tocchi codice e non impari un programma. <b>Lo installiamo noi sul tuo computer, in una call.</b> Poi gli parli su Telegram, come a un collega.</p></div>
+      <div class="dubbio"><h3>«Partono email a mio nome?»</h3><p><b>Solo dopo il tuo sì.</b> Le leggi prima, le cambi se vuoi.</p></div>
+      <div class="dubbio"><h3>«E se non funziona?»</h3><p>Non compri a scatola chiusa. <b>Prima di pagare lo vedi lavorare sul tuo mercato</b>, davanti a te. Se non ti convince, non compri.</p></div>
+      <div class="dubbio"><h3>«Quanto costa ogni mese?»</h3><p>A noi niente. Jarvis gira su <b>Claude Max, circa 100 $ al mese</b>, intestato a te e pagato direttamente a loro.</p></div>
+      <div class="dubbio"><h3>«Vale anche per altri prodotti?»</h3><p>Sì. Cambi il tipo di azienda e il messaggio: <b>il metodo è lo stesso.</b></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="s" id="s12">
+  <div class="w">
+    <h2>Il conto, con i tuoi numeri.</h2>
+    <div class="conto">
+      <div>
+        <div class="eq"><span class="big">3.000 €</span><span class="op">÷</span><span class="big">550 €</span></div>
+        <div class="eq-et"><span>Jarvis Personal, una volta</span><span>·</span><span>la tua provvigione media per cliente</span></div>
+        <p class="lead" style="max-width:24ch">= <b class="acc">6 clienti</b>, e Jarvis è ripagato.</p>
+      </div>
+      <div class="grafico">
+        <div class="mesi">
+          <p class="soglia" style="bottom:71.4%"><em>3.000 €</em></p>
+          <div style="height:13.1%"><span>550</span></div>
+          <div style="height:26.2%"><span>1.100</span></div>
+          <div style="height:39.3%"><span>1.650</span></div>
+          <div style="height:52.4%"><span>2.200</span></div>
+          <div style="height:65.5%"><span>2.750</span></div>
+          <div class="pari" style="height:78.6%"><span>3.300</span></div>
+          <div class="pari" style="height:91.7%"><span>3.850</span></div>
+        </div>
+        <div class="mesi-et"><span>1°</span><span>2°</span><span>3°</span><span>4°</span><span>5°</span><span>6°</span><span>7°</span></div>
+        <p class="nota">Mese per mese, se ti porta un cliente in più al mese. Con il tuo rapporto, cinque visite e tre chiusi, vuol dire meno di due visite in più al mese. Non è una promessa: è il conto. Quanti clienti porta davvero lo vediamo dalle prime settimane.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="s" id="s13">
+  <div class="w">
+    <div class="testa"><h2>Il prossimo passo: lo vedi lavorare dal vivo.</h2>
+    <p class="lead">Schermo condiviso. <b>Scegli tu due aziende della lista</b>: Jarvis trova chi decide, scrive l'email e te la manda su Telegram, davanti a te.</p></div>
+    <div class="fine"><div class="orari">
+      <div class="orario"><div class="g">Martedì 27 ottobre</div><div class="o">17:00</div></div>
+      <div class="orario"><div class="g">Mercoledì 28 ottobre</div><div class="o">16:30</div></div>
+    </div>
+    <div class="prezzo">
+      <div class="big">3.000 €</div>
+      <p><b>Jarvis Personal, pagamento unico.</b><br>Più Claude Max, circa 100 $ al mese, intestato a te. Se ti convince, lo installiamo.</p>
+    </div></div>
+    <p class="chiusa">Rispondimi solo con il giorno che preferisci.</p>
+    <p class="nota">La lista è in Toscana perché pensiamo sia la tua zona. Se copri altro, in call la rifacciamo sulla tua.</p>
+  </div>
+</section>
+
+<div class="cont" id="cont">01 / 13</div>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  // email: cambio bozza
+  var tabs=[].slice.call(document.querySelectorAll('.bozza'));
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected','false');document.getElementById(x.dataset.l).classList.remove('on')});
+    t.setAttribute('aria-selected','true');document.getElementById(t.dataset.l).classList.add('on');
+    if(t.parentNode.scrollWidth>t.parentNode.clientWidth)t.parentNode.scrollTo({left:t.offsetLeft-20,behavior:'smooth'});
+  })});
+  // grafici che si riempiono quando entrano
+  var gr=[].slice.call(document.querySelectorAll('.imbuto,.grafico'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vista');io.unobserve(e.target)}})},{threshold:.35});
+    gr.forEach(function(g){io.observe(g)});
+  } else gr.forEach(function(g){g.classList.add('vista')});
+  // contatore e frecce, per la registrazione
+  var sez=[].slice.call(document.querySelectorAll('.s')),cont=document.getElementById('cont');
+  function pad(n){return (n<10?'0':'')+n}
+  function corrente(){var y=window.scrollY+window.innerHeight*.4,i=0;sez.forEach(function(s,k){if(s.offsetTop<=y)i=k});return i}
+  function agg(){cont.textContent=pad(corrente()+1)+' / '+pad(sez.length)}
+  window.addEventListener('scroll',agg,{passive:true});agg();
+  document.addEventListener('keydown',function(e){
+    var d=0;
+    if(['ArrowDown','PageDown',' ','ArrowRight'].indexOf(e.key)>-1)d=1;
+    if(['ArrowUp','PageUp','ArrowLeft'].indexOf(e.key)>-1)d=-1;
+    if(!d)return;e.preventDefault();
+    var t=sez[Math.max(0,Math.min(sez.length-1,corrente()+d))];
+    window.scrollTo({top:t.offsetTop,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
