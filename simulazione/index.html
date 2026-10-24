@@ -224,7 +224,7 @@ function caricaFile(){
   var inp = document.getElementById("fileinput"), err = document.getElementById("err");
   if (inp) inp.onchange = function(){
     var f = inp.files[0]; if (!f) return;
-    if (f.size > 10 * 1024 * 1024){ err.hidden = false; err.textContent = "Questo file supera i 10 MB: prova con una foto o uno screenshot."; return; }
+    if (f.size > 10 * 1024 * 1024 || files.reduce(function(t, x){ return t + x.size; }, f.size) > 20 * 1024 * 1024){ err.hidden = false; err.textContent = "Questo file supera i 10 MB: prova con una foto o uno screenshot."; return; }
     files.push(f); caricaFile();
   };
   app.querySelectorAll(".file button").forEach(function(b){ b.onclick = function(){ files.splice(+b.getAttribute("data-n"), 1); caricaFile(); }; });
