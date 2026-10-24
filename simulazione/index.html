@@ -291,21 +291,34 @@ function inviaParte1(){
   });
 }
 
+// Esempio vero mirato (Davide 24/10 notte: «o la togliamo o va fatta in modo strategico»): chiediamo IL file che serve
+// per il lavoro che il lead vuole togliersi, e diciamo cosa ci guadagna (Mark sul suo file vero in telefonata, come Studio 15).
+function tipoEsempio(){
+  var l = (info.lavoro || "").toLowerCase();
+  if (/fattur|contab|commercialist|pagament|incass|bilanc|prima nota/.test(l)) return {cosa:"una fattura o l\'export dei movimenti di un mese", perche:"le tue fatture"};
+  if (/client|vend|contatt|preventiv|lead|social|instagram|campagn/.test(l)) return {cosa:"un preventivo, la lista dei tuoi contatti o un messaggio che mandi ai clienti", perche:"i tuoi clienti"};
+  if (/mail|posta|agenda|organizz|ricord|dimentic|scadenz|appuntament|telefon/.test(l)) return {cosa:"uno screenshot della tua posta o della tua agenda di questa settimana", perche:"la tua posta e la tua agenda"};
+  return {cosa:"il file o la schermata dove oggi perdi più tempo", perche:"il tuo lavoro vero"};
+}
+
 function meta(){
   avanzamento(N + 1);
+  var e = tipoEsempio();
   el('<p class="passo"><span class="punto"></span>Parte obbligatoria completata</p><h1>Ci sei' + (info.nome ? ', ' + esc(info.nome) : '') + '</h1>' +
-     '<p class="sotto">Con queste risposte la tua simulazione si può già preparare.</p><p class="sotto">Se hai altri 2 minuti, c\'è una cosa che la rende molto più precisa: un esempio vero del tuo lavoro.</p>' +
-     percorso(2, [["Modulo sul sito"], ["Questionario"], ["Un esempio vero", "Facoltativo · 2 minuti", "adesso"]]) +
-     azioni('<button class="pulsante" id="esempio" type="button">Aggiungo un esempio' + FRECCIA + '</button>', '<button class="secondario" id="basta" type="button">Ho finito così</button>'));
+     '<p class="sotto">Con queste risposte la simulazione si può già preparare.</p>' +
+     '<h2 style="margin-top:32px">Vuoi vedere Mark al lavoro su un tuo file vero?</h2>' +
+     '<p class="sotto">Mandaci ' + e.cosa + '. In telefonata ti facciamo vedere Mark che lavora proprio su quello, invece che su un esempio inventato.</p>' +
+     '<p class="sotto">Bastano una foto o uno screenshot dal telefono. Nomi e cifre puoi coprirli.</p>' +
+     azioni('<button class="pulsante" id="esempio" type="button">Sì, carico un file' + FRECCIA + '</button>', '<button class="secondario" id="basta" type="button">No, va bene così</button>'));
   document.getElementById("esempio").onclick = caricaFile;
   document.getElementById("basta").onclick = fine;
 }
 
 function caricaFile(){
   var lista = files.map(function(f, n){ return '<div class="file"><span>' + esc(f.name) + '</span><button type="button" data-n="' + n + '">Togli</button></div>'; }).join("");
-  el('<p class="passo">Parte facoltativa · 1 di 2</p><h2>Un esempio vero</h2>' +
-     '<p class="sotto">Carica una cosa su cui lavori davvero: un\'email tipo, un preventivo, un export dal gestionale, un file Excel. Va bene anche una foto o uno screenshot fatti col telefono.</p>' +
-     '<p class="sotto">Nomi e cifre puoi coprirli: il file serve solo per preparare la simulazione.</p>' +
+  var e = tipoEsempio();
+  el('<p class="passo">Il tuo file · facoltativo</p><h2>Carica ' + e.cosa + '</h2>' +
+     '<p class="sotto">Lo usiamo solo per preparare la simulazione su ' + e.perche + '. Nomi e cifre puoi coprirli.</p>' +
      (files.length < 3 ? '<label class="carica" for="fileinput"><b>Carica un file</b><span>Foto, PDF, Word, Excel · fino a 10 MB · massimo 3</span></label><input id="fileinput" type="file" hidden accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt">' : '') +
      lista + '<p class="errore" id="err" hidden></p>' +
      azioni('<button class="pulsante" id="avanti" type="button">' + (files.length ? "Avanti" : "Salto questo passaggio") + '</button>'));
@@ -320,7 +333,7 @@ function caricaFile(){
 }
 
 function altro(){
-  el('<p class="passo">Parte facoltativa · 2 di 2</p><h2>C\'è altro che dobbiamo sapere?</h2>' +
+  el('<p class="passo">Ultima cosa · facoltativa</p><h2>C\'è altro che dobbiamo sapere?</h2>' +
      '<div class="campo"><label for="altro">Facoltativo</label><textarea id="altro" maxlength="3000" placeholder="come lo fai oggi passo per passo, cosa ti fa perdere più tempo, cosa hai già provato">' + esc(S.r.altro || "") + '</textarea></div>' +
      '<p class="errore" id="err" hidden></p>' + azioni('<button class="pulsante" id="invia" type="button">Invia</button>'));
   var t = document.getElementById("altro"); t.oninput = function(){ S.r.altro = t.value; salva(); };
