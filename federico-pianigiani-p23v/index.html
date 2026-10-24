@@ -209,10 +209,11 @@ td.n b{font-weight:600}
 .soglia{margin:0;position:absolute;left:0;right:0;border-top:2px dashed var(--testo);z-index:1}
 .soglia em{position:absolute;left:0;bottom:6px;font-style:normal;font-size:14px;font-weight:600;background:var(--banda);padding:0 6px}
 .mesi-et{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--s1);font-size:14px;color:var(--grigio);text-align:center;margin-top:var(--s1)}
+.mesi.lungo,.mesi-et.lungo{grid-template-columns:repeat(14,1fr);gap:4px}
 .js .grafico:not(.vista) .mesi>div{transform:scaleY(0)}
 
 /* 13 passo */
-.fine{display:grid;grid-template-columns:3fr 2fr;gap:var(--s5);align-items:stretch;margin-top:var(--s5)}
+.fine{display:grid;grid-template-columns:3fr 2fr;gap:var(--s5);align-items:start;margin-top:var(--s5)}
 .orari{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
 .orario{border:1px solid var(--filo);border-top:3px solid var(--acc);padding:var(--s3);border-radius:2px}
 .orario .g{font-size:clamp(24px,2.1vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
@@ -220,7 +221,10 @@ td.n b{font-weight:600}
 .prezzo{border-left:1px solid var(--filo);padding-left:var(--s5);display:flex;flex-direction:column;justify-content:center}
 .prezzo .big{font-size:clamp(72px,7vw,112px)}
 .prezzo p{font-size:19px;color:var(--grigio);margin-top:var(--s2)}
-.prezzo p b{color:var(--testo);font-weight:500}
+.prezzo p b{color:var(--testo);font-weight:600}
+.dentro-ceo{list-style:none;margin:var(--s2) 0 0;padding:0;font-size:18px;color:var(--testo)}
+.dentro-ceo li{padding:8px 0 8px 22px;border-top:1px solid var(--filo);position:relative;line-height:1.35}
+.dentro-ceo li::before{content:"";position:absolute;left:0;top:16px;width:10px;height:2px;background:var(--acc)}
 .chiusa{font-size:clamp(24px,2.2vw,32px);font-weight:500;margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid var(--filo);letter-spacing:-.01em}
 
 /* contatore per la registrazione */
@@ -460,16 +464,16 @@ td.n b{font-weight:600}
 <section class="s" id="s7">
   <div class="w">
     <div class="testa"><h2>Poi Jarvis insiste al posto tuo.</h2>
-    <p class="lead">Fino al giorno in cui chiami tu, <b>con il nome giusto e il numero diretto.</b></p></div>
+    <p class="lead">Solo email, in automatico, nella stessa conversazione. <b>Finché l'azienda non risponde con nome e numero di chi decide.</b></p></div>
     <div class="seq">
-      <div><span class="g"><small>giorno</small>0</span><p><b>Email</b>alla casella dell'azienda</p></div>
-      <div><span class="g"><small>giorno</small>1</span><p><b>Centralino</b>una domanda: chi segue la produzione?</p></div>
-      <div><span class="g"><small>giorno</small>2</span><p><b>LinkedIn</b>invito alla persona giusta</p></div>
-      <div><span class="g"><small>giorno</small>4</span><p><b>Sollecito</b>nella stessa email</p></div>
-      <div class="tu"><span class="g"><small>giorno</small>6</span><p><b>Chiami tu</b>col nome e il numero diretto</p></div>
-      <div><span class="g"><small>giorno</small>10</span><p><b>Ultimo sollecito</b>«mi basta anche un no»</p></div>
+      <div><span class="g"><small>giorno</small>0</span><p><b>Prima email</b>alla casella dell'azienda</p></div>
+      <div><span class="g"><small>giorno</small>3</span><p><b>Follow-up</b>nella stessa email</p></div>
+      <div><span class="g"><small>giorno</small>6</span><p><b>Follow-up</b>nella stessa email</p></div>
+      <div><span class="g"><small>giorno</small>10</span><p><b>Follow-up</b>nella stessa email</p></div>
+      <div><span class="g"><small>giorno</small>14</span><p><b>Ultimo</b>«mi basta anche un no»</p></div>
+      <div class="tu"><span class="g">✓</span><p><b>Nome + numero</b>e da lì chiami tu</p></div>
     </div>
-    <div class="stop">Chiedono il prezzo, una demo, o ti dicono che gestionale usano? <b>Jarvis si ferma e ti passa il contatto.</b> Da lì sei tu.</div>
+    <div class="stop">Quando arriva la risposta, Jarvis si ferma e ti manda su Telegram <b>il contatto pronto: nome, ruolo, telefono.</b> Nessuna telefonata a freddo: la prima chiamata la fai tu, a chi ti aspetta.</div>
   </div>
 </section>
 
@@ -536,9 +540,9 @@ td.n b{font-weight:600}
   <div class="w">
     <h2>I tuoi dubbi, uno per uno.</h2>
     <div class="dubbi">
-      <div class="dubbio"><h3>«Non sono un tecnico.»</h3><p>Non tocchi codice e non impari un programma. <b>Lo installiamo noi sul tuo computer, in una call.</b> Poi gli parli su Telegram, come a un collega.</p></div>
+      <div class="dubbio"><h3>«Non sono un tecnico.»</h3><p>Non tocchi codice e non impari un programma. <b>Lo costruiamo noi sul tuo lavoro e lo installiamo sul tuo computer, in 4 call insieme.</b> Poi gli parli su Telegram, come a un collega.</p></div>
       <div class="dubbio"><h3>«Partono email a mio nome?»</h3><p><b>Solo dopo il tuo sì.</b> Le leggi prima, le cambi se vuoi.</p></div>
-      <div class="dubbio"><h3>«E se non funziona?»</h3><p>Non compri a scatola chiusa. <b>Prima di pagare lo vedi lavorare sul tuo mercato</b>, davanti a te. Se non ti convince, non compri.</p></div>
+      <div class="dubbio"><h3>«E se non funziona?»</h3><p>La macchina che trova i clienti ha <b>un collaudo di 7 giorni sul tuo lavoro</b>, con i criteri scritti nel contratto. E prima di pagare <b>lo vedi lavorare sul tuo mercato</b>, davanti a te.</p></div>
       <div class="dubbio"><h3>«Quanto costa ogni mese?»</h3><p>A noi niente. Jarvis gira su <b>Claude Max, circa 100 $ al mese</b>, intestato a te e pagato direttamente a loro.</p></div>
       <div class="dubbio"><h3>«Vale anche per altri prodotti?»</h3><p>Sì. Cambi il tipo di azienda e il messaggio: <b>il metodo è lo stesso.</b></p></div>
     </div>
@@ -551,23 +555,17 @@ td.n b{font-weight:600}
     <h2>Il conto, con i tuoi numeri.</h2>
     <div class="conto">
       <div>
-        <div class="eq"><span class="big">3.000 €</span><span class="op">÷</span><span class="big">550 €</span></div>
-        <div class="eq-et"><span>Jarvis Personal, una volta</span><span>·</span><span>la tua provvigione media per cliente</span></div>
-        <p class="lead" style="max-width:24ch">= <b class="acc">6 clienti</b>, e Jarvis è ripagato.</p>
+        <div class="eq"><span class="big">6.900 €</span><span class="op">÷</span><span class="big">550 €</span></div>
+        <div class="eq-et"><span>Jarvis CEO, una volta</span><span>·</span><span>la tua provvigione per cliente (500-600 €)</span></div>
+        <p class="lead" style="max-width:26ch">= <b class="acc">12-14 clienti in più</b>, e Jarvis è ripagato.</p>
       </div>
       <div class="grafico">
-        <div class="mesi">
-          <p class="soglia" style="bottom:71.4%"><em>3.000 €</em></p>
-          <div style="height:13.1%"><span>550</span></div>
-          <div style="height:26.2%"><span>1.100</span></div>
-          <div style="height:39.3%"><span>1.650</span></div>
-          <div style="height:52.4%"><span>2.200</span></div>
-          <div style="height:65.5%"><span>2.750</span></div>
-          <div class="pari" style="height:78.6%"><span>3.300</span></div>
-          <div class="pari" style="height:91.7%"><span>3.850</span></div>
+        <div class="mesi lungo">
+          <p class="soglia" style="bottom:89.6%"><em>6.900 €</em></p>
+          <div class="" style="height:7.1%"></div><div class="" style="height:14.3%"></div><div class="" style="height:21.4%"></div><div class="" style="height:28.6%"></div><div class="" style="height:35.7%"></div><div class="" style="height:42.9%"></div><div class="" style="height:50.0%"></div><div class="" style="height:57.1%"></div><div class="" style="height:64.3%"></div><div class="" style="height:71.4%"></div><div class="" style="height:78.6%"></div><div class="" style="height:85.7%"></div><div class="pari" style="height:92.9%"></div><div class="pari" style="height:100.0%"></div>
         </div>
-        <div class="mesi-et"><span>1°</span><span>2°</span><span>3°</span><span>4°</span><span>5°</span><span>6°</span><span>7°</span></div>
-        <p class="nota">Mese per mese, se ti porta un cliente in più al mese. Con il tuo rapporto, cinque visite e tre chiusi, vuol dire meno di due visite in più al mese. Non è una promessa: è il conto. Quanti clienti porta davvero lo vediamo dalle prime settimane.</p>
+        <div class="mesi-et lungo"><span>1°</span><span>2°</span><span>3°</span><span>4°</span><span>5°</span><span>6°</span><span>7°</span><span>8°</span><span>9°</span><span>10°</span><span>11°</span><span>12°</span><span>13°</span><span>14°</span></div>
+        <p class="nota">Provvigioni sommate mese per mese, se ti porta un cliente in più al mese: al 13° mese è ripagato. Con il tuo rapporto, cinque visite e tre chiusi, un cliente in più vuol dire meno di due visite in più al mese. Non è una promessa, è il conto: quanti clienti porta davvero lo vediamo nelle prime settimane. Claude Max è a parte.</p>
       </div>
     </div>
   </div>
@@ -583,8 +581,14 @@ td.n b{font-weight:600}
       <div class="orario"><div class="g">Mercoledì 28 ottobre</div><div class="o">16:30</div></div>
     </div>
     <div class="prezzo">
-      <div class="big">3.000 €</div>
-      <p><b>Jarvis Personal, pagamento unico.</b><br>Più Claude Max, circa 100 $ al mese, intestato a te. Se ti convince, lo installiamo.</p>
+      <div class="big">6.900 €</div>
+      <p><b>Jarvis CEO, costruito sul tuo lavoro.</b></p>
+      <ul class="dentro-ceo">
+        <li>La macchina che trova i clienti, automatizzata per intero: aziende, schede, email fino al numero di chi decide</li>
+        <li>4 call insieme</li>
+        <li>Collaudo di 7 giorni sul tuo lavoro</li>
+      </ul>
+      <p>Più Claude Max, circa 100 $ al mese, intestato a te.</p>
     </div></div>
     <p class="chiusa">Rispondimi solo con il giorno che preferisci.</p>
     <p class="nota">La lista è in Toscana perché pensiamo sia la tua zona. Se copri altro, in call la rifacciamo sulla tua.</p>
