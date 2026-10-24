@@ -16,81 +16,142 @@
 @font-face{font-family:Switzer;src:url(switzer-500.woff2) format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:Switzer;src:url(switzer-600.woff2) format('woff2');font-weight:600;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url(geist-mono-500.woff2) format('woff2');font-weight:500;font-display:swap}
-:root{--ossidiana:#050505;--grafite:#0F0F10;--grafite-2:#161617;--linea:#262628;--avorio:#F2F0EB;--titanio:#9A9A9A;--ambra:#E39B3A;--ambra-forte:#F2B25E;
+/* Piano (24/10, metodi/Landing e Questionari che Convertono.md): 390 px prima di tutto. Ossidiana fondo, grafite superfici, linea bordi,
+   avorio testo, titanio secondario, ambra unico accento. Stark solo nei titoli grandi, Switzer testo, Geist Mono numeri e tappe.
+   Cosa memorabile: il percorso in 3 tappe (modulo fatto → questionario → telefonata) che torna in apertura, a metà e alla fine. */
+:root{--ossidiana:#050505;--grafite:#0F0F10;--grafite-2:#161617;--linea:#262628;--avorio:#F2F0EB;--titanio:#9A9A9A;--ambra:#E39B3A;--ambra-forte:#F2B25E;--ambra-fondo:#1A140B;
   --stark:Stark,Switzer,sans-serif;--testo:Switzer,system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;--curva:cubic-bezier(.32,.72,0,1);color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--ossidiana);color:var(--avorio);font:500 17px/1.5 var(--testo);min-height:100svh}
+body{margin:0;background:var(--ossidiana);color:var(--avorio);font:500 17px/1.5 var(--testo);min-height:100svh;overflow-x:hidden}
 button,input,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--ambra);outline-offset:3px}
-.testa{position:sticky;top:0;z-index:5;background:var(--ossidiana);padding:16px max(16px,env(safe-area-inset-left)) 0}
-.testa-riga{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;min-height:40px;font:500 12px/16px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--titanio)}
+/* testa: indietro · marchio, poi barra e riga della tappa */
+.testa{position:sticky;top:0;z-index:5;background:var(--ossidiana);padding:8px max(16px,env(safe-area-inset-left)) 0}
+.testa-riga{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;min-height:48px}
 .marchio{font:400 14px/16px var(--stark);letter-spacing:.24em;color:var(--avorio)}
 .marchio i{font-style:normal;color:var(--ambra)}
-.indietro{background:none;border:0;padding:8px 8px 8px 0;color:var(--titanio);cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;visibility:hidden}
+.indietro{display:flex;align-items:center;gap:8px;min-height:44px;background:none;border:0;padding:0 12px 0 0;color:var(--titanio);cursor:pointer;font:500 15px/1 var(--testo);visibility:hidden}
+.indietro svg{width:18px;height:18px}
 .indietro.si{visibility:visible}
-.barra{max-width:640px;margin:12px auto 0;height:2px;background:var(--linea)}
-.barra span{display:block;height:100%;width:0;background:var(--ambra);box-shadow:0 0 10px rgba(227,155,58,.7);transition:width .6s var(--curva)}
-main{max-width:640px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left)) 24px}
-.schermo{animation:entra .55s var(--curva) both}
-@keyframes entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.passo{font:500 12px/16px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ambra);margin-bottom:16px}
-h1{font:400 23px/34px var(--stark);letter-spacing:.03em;text-transform:uppercase;margin:0;text-wrap:balance}
-h2{font:600 24px/32px var(--testo);margin:0;text-wrap:pretty}
-.citazione{display:block;margin:0 0 16px;padding:12px 16px;border-left:2px solid var(--ambra);background:var(--grafite);color:var(--avorio);font-size:16px;line-height:24px}
-.sotto{margin:16px 0 0;color:var(--titanio);font-size:17px;line-height:27px;text-wrap:pretty}
-.nota{margin:8px 0 0;color:var(--titanio);font:500 13px/20px var(--mono);letter-spacing:.04em}
+.barra{max-width:640px;margin:0 auto;height:3px;background:var(--linea);border-radius:2px;overflow:hidden}
+.barra span{display:block;height:100%;width:0;background:var(--ambra);transition:width .7s var(--curva)}
+.tappa{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;min-height:16px;padding-top:8px;font:500 13px/16px var(--mono);color:var(--titanio)}
+.tappa b{font-weight:500;color:var(--avorio)}
+main{max-width:672px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-left)) 24px;overflow-x:clip}
+html,body{overflow-x:hidden}
+/* entrata: avanti da destra, indietro da sinistra; le risposte arrivano una dopo l'altra */
+.schermo{animation:entra .42s var(--curva) both}
+.schermo.dietro{animation-name:entraDietro}
+@keyframes entra{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes entraDietro{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.scelte li{animation:sale .38s var(--curva) both;animation-delay:calc(var(--n,0) * 35ms + 80ms)}
+@keyframes sale{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.passo{display:inline-flex;align-items:center;margin-bottom:16px;font:500 13px/16px var(--mono);color:var(--ambra)}
+h1{font:400 24px/34px var(--stark);letter-spacing:.02em;text-transform:uppercase;margin:0;text-wrap:balance}
+h2{font:600 25px/32px var(--testo);margin:0;letter-spacing:-.005em;text-wrap:pretty}
+.citazione{display:block;margin:0 0 24px;padding:12px 16px;border-left:2px solid var(--ambra);background:var(--grafite);color:var(--avorio);font-size:16px;line-height:24px}
+.sotto{margin:16px 0 0;color:var(--titanio);font-size:17px;line-height:26px;text-wrap:pretty}
+.nota{margin:8px 0 0;color:var(--titanio);font:500 13px/20px var(--mono)}
+/* risposte: righe intere da toccare, alte 56 */
 .scelte{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:8px}
-.scelta{position:relative;width:100%;display:flex;align-items:center;gap:16px;text-align:left;min-height:56px;padding:14px 16px;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;cursor:pointer;transition:border-color .25s var(--curva),background .25s var(--curva),transform .2s var(--curva)}
-.scelta:active{transform:scale(.99)}
-.scelta .lettera{flex:0 0 28px;height:28px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:2px;font:500 12px/1 var(--mono);color:var(--titanio)}
-.scelta[aria-pressed="true"]{border-color:var(--ambra);background:#1A140B}
+.scelta{position:relative;width:100%;display:flex;align-items:center;gap:16px;text-align:left;min-height:56px;padding:12px 16px;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;cursor:pointer;font-size:17px;line-height:23px;transition:border-color .2s var(--curva),background .2s var(--curva),transform .15s var(--curva)}
+.scelta:active{transform:scale(.985)}
+.scelta .lettera{flex:0 0 28px;height:28px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:2px;font:500 12px/1 var(--mono);color:var(--titanio);transition:background .2s var(--curva),border-color .2s var(--curva),color .2s}
+.scelta .lettera svg{width:14px;height:14px;display:none}
+.scelta[aria-pressed="true"]{border-color:var(--ambra);background:var(--ambra-fondo)}
 .scelta[aria-pressed="true"] .lettera{background:var(--ambra);border-color:var(--ambra);color:var(--ossidiana)}
+.scelta[aria-pressed="true"] .lettera svg{display:block}
+.scelta[aria-pressed="true"] .lettera em{display:none}
+.scelta .lettera em{font-style:normal}
+.scelta.preso{animation:preso .28s var(--curva)}
+@keyframes preso{40%{transform:scale(.97)}}
 @media (hover:hover){.scelta:hover{border-color:#4A3A22}}
 .campo{margin-top:24px}
 .campo label{display:block;font-size:15px;line-height:22px;color:var(--titanio);margin-bottom:8px}
-.campo input,.campo textarea{width:100%;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;padding:14px 16px;font-size:17px;line-height:24px;outline:none}
+.campo input,.campo textarea{width:100%;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;padding:14px 16px;font-size:17px;line-height:24px;outline:none;transition:border-color .2s}
 .campo textarea{min-height:120px;resize:vertical}
 .campo input:focus,.campo textarea:focus{border-color:var(--ambra)}
 .campo ::placeholder{color:#6E6E6E}
 .sub{margin-top:32px;padding-top:24px;border-top:1px solid var(--linea)}
 .sub h3{margin:0;font:600 19px/26px var(--testo)}
+/* pulsante in basso, alla portata del pollice */
 .azioni{position:sticky;bottom:0;z-index:6;margin:32px -16px 0;padding:24px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--ossidiana) 24px)}
 .azioni-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
 .pulsante{width:100%;min-height:56px;display:flex;align-items:center;justify-content:center;gap:12px;background:var(--ambra);color:var(--ossidiana);border:0;border-radius:3px;font:600 17px/24px var(--testo);cursor:pointer;transition:background .2s,opacity .2s,transform .2s var(--curva)}
+.pulsante svg{width:18px;height:18px;transition:transform .25s var(--curva)}
 .pulsante:hover{background:var(--ambra-forte)}
+.pulsante:hover svg{transform:translateX(3px)}
 .pulsante:active{transform:translateY(1px)}
 .pulsante[disabled]{opacity:.35;cursor:default}
+.pulsante[disabled]:hover{background:var(--ambra)}
+.sotto-pulsante{margin:0;text-align:center;color:var(--titanio);font-size:14px;line-height:20px}
+.tasti{font:500 13px/20px var(--mono)}
+.tasti{display:none}
 .secondario{background:none;border:0;color:var(--titanio);min-height:44px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
 .carica{margin-top:24px;display:block;border:1px dashed #4A3A22;border-radius:3px;padding:24px 16px;text-align:center;cursor:pointer;background:var(--grafite)}
 .carica b{display:block;font-weight:600;color:var(--ambra)}
 .carica span{display:block;margin-top:4px;color:var(--titanio);font-size:14px}
 .file{margin-top:12px;display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border:1px solid var(--linea);border-radius:3px;font-size:15px;background:var(--grafite)}
 .file button{background:none;border:0;color:var(--titanio);cursor:pointer}
-.angoli{position:relative;padding:32px 24px;margin-top:8px}
-.angoli i{position:absolute;width:18px;height:18px;border:0 solid var(--ambra);opacity:.6}
-.angoli i:nth-child(1){left:0;top:0;border-width:1px 0 0 1px}.angoli i:nth-child(2){right:0;top:0;border-width:1px 1px 0 0}
-.angoli i:nth-child(3){left:0;bottom:0;border-width:0 0 1px 1px}.angoli i:nth-child(4){right:0;bottom:0;border-width:0 1px 1px 0}
-.punto{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ambra);box-shadow:0 0 8px var(--ambra);margin-right:10px;vertical-align:2px;animation:respira 2.2s ease-in-out infinite}
+/* il percorso: tre tappe su una linea verticale */
+.percorso{list-style:none;margin:32px 0 0;padding:0;position:relative}
+.percorso li{position:relative;display:grid;grid-template-columns:28px 1fr;gap:16px;padding-bottom:24px}
+.percorso li:last-child{padding-bottom:0}
+.percorso li:not(:last-child)::before{content:"";position:absolute;left:13px;top:30px;bottom:2px;width:2px;background:var(--linea)}
+.percorso li.fatto:not(:last-child)::before{background:var(--ambra)}
+.percorso .seg{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:50%;background:var(--ossidiana);font:500 12px/1 var(--mono);color:var(--titanio)}
+.percorso .seg svg{width:14px;height:14px}
+.percorso .fatto .seg{background:var(--ambra);border-color:var(--ambra);color:var(--ossidiana)}
+.percorso .ora .seg{border-color:var(--ambra);color:var(--ambra);box-shadow:0 0 0 4px rgba(227,155,58,.12)}
+.percorso .ora .seg::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--ambra);animation:respira 2.2s ease-in-out infinite}
+.percorso .ora .seg span{display:none}
+.percorso strong{display:block;font:600 17px/24px var(--testo);padding-top:2px}
+.percorso small{display:block;margin-top:2px;color:var(--titanio);font-size:15px;line-height:22px;text-wrap:pretty}
+.percorso .fatto strong{color:var(--titanio);font-weight:500}
+.percorso .stato{font:500 12px/24px var(--mono);color:var(--ambra);margin-left:8px;font-weight:500}
+.prova{margin:32px 0 0;padding:16px;border:1px solid var(--linea);border-radius:3px;display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:4px 32px;align-items:end}
+.percorso.lungo strong{font-weight:500;color:var(--avorio)}
+.percorso.lungo li.ora strong{color:var(--avorio)}
+.prova div b{display:block;font:400 26px/32px var(--stark);color:var(--avorio)}
+.prova div span{display:block;font:500 12px/16px var(--mono);color:var(--titanio)}
+.prova p{grid-column:1/-1;margin:12px 0 0;color:var(--titanio);font-size:14px;line-height:20px}
+.punto{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ambra);margin-right:10px;animation:respira 2.2s ease-in-out infinite}
 @keyframes respira{50%{opacity:.3}}
-.elenco{margin:24px 0 0;padding:0;list-style:none;display:grid;gap:16px}
-.elenco li{display:grid;grid-template-columns:32px 1fr;gap:8px;color:var(--avorio);line-height:26px}
-.elenco li b{font:500 13px/26px var(--mono);color:var(--ambra)}
 .errore{margin-top:16px;color:#F08A6B;font-size:15px}
 .carico{display:inline-block;width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:gira .8s linear infinite}
 @keyframes gira{to{transform:rotate(360deg)}}
-@media (min-width:900px){main{padding-top:72px}h1{font-size:30px;line-height:42px}h2{font-size:28px;line-height:38px}.azioni{position:static;background:none;margin:0;padding:40px 0 0}.azioni-in{max-width:none;flex-direction:row-reverse;justify-content:flex-start;align-items:center;gap:24px}.pulsante{width:auto;padding:0 40px}main{padding-bottom:64px}}
+.video{position:relative;padding-top:56.25%;margin:16px 0;border-radius:3px;overflow:hidden;border:1px solid var(--linea)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media (min-width:900px){
+  main{padding-top:56px;padding-bottom:64px}
+  h1{font-size:32px;line-height:44px}h2{font-size:30px;line-height:40px}
+  .azioni{position:static;background:none;margin:0;padding:40px 0 0}
+  .azioni-in{max-width:none;flex-direction:row-reverse;justify-content:flex-start;align-items:center;gap:24px}
+  .pulsante{width:auto;padding:0 40px}
+  .sotto-pulsante{text-align:left}
+  .tasti{display:inline;color:#6E6E6E;font:500 13px/20px var(--mono)}
+  main.largo{max-width:1072px}
+  body.largo .testa-riga,body.largo .barra{max-width:1040px}
+  .apertura{display:grid;grid-template-columns:1.1fr 1fr;grid-template-areas:"t d" "s d" "a d" "x d";grid-template-rows:auto auto auto 1fr;column-gap:80px;align-items:start}
+  .apertura h1{grid-area:t}.apertura>.sotto{grid-area:s}.apertura .destra{grid-area:d}.apertura .azioni{grid-area:a}
+  .apertura .azioni-in{flex-direction:column;align-items:flex-start;gap:16px}
+  .apertura .percorso{margin-top:8px}
+  .apertura .destra{padding:32px;border:1px solid var(--linea);border-radius:3px;background:var(--grafite)}
+  .apertura .destra .percorso li:not(.fatto) .seg{background:var(--grafite)}
+  .apertura .prova{border:0;padding:24px 0 0;border-top:1px solid var(--linea);border-radius:0}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header class="testa">
   <div class="testa-riga">
-    <button class="indietro" id="indietro" type="button">← Indietro</button>
-    <span id="contatore"></span>
+    <button class="indietro" id="indietro" type="button" aria-label="Domanda precedente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>Indietro</button>
     <span class="marchio">M<i>A</i>RK</span>
   </div>
   <div class="barra"><span id="barra"></span></div>
+  <div class="tappa" id="riga-tappa" hidden><span id="nome-tappa"></span><span id="contatore"></span></div>
 </header>
 <main id="app" aria-live="polite"><div class="schermo"><p class="sotto"><span class="carico"></span></p></div></main>
 <script>
@@ -106,7 +167,21 @@ var files = [];
 function carica(){ try { return JSON.parse(localStorage.getItem(CHIAVE)); } catch(e){ return null; } }
 function salva(){ try { localStorage.setItem(CHIAVE, JSON.stringify(S)); } catch(e){} }
 function esc(t){ return String(t||"").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
-function el(html){ app.innerHTML = '<div class="schermo">' + html + '</div>'; window.scrollTo(0,0); }
+var verso = 1, tasti = null;
+function el(html, cls){
+  tasti = null; app.className = cls || ""; document.body.classList.toggle("largo", cls === "largo");
+  app.innerHTML = '<div class="schermo' + (verso < 0 ? ' dietro' : '') + '">' + html + '</div>'; verso = 1; window.scrollTo(0,0);
+}
+document.addEventListener("keydown", function(e){ if (tasti && !e.metaKey && !e.ctrlKey && !e.altKey) tasti(e); });
+var FRECCIA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+var SPUNTA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+// Il percorso in 3 tappe: a = quante fatte (1 = modulo sul sito). Testi delle tappe: righe brevi, niente promesse nuove.
+function percorso(a, righe){
+  return '<ol class="percorso">' + righe.map(function(r, n){
+    var c = n < a ? "fatto" : (n === a ? "ora" : "");
+    return '<li class="' + c + '"><span class="seg">' + (n < a ? SPUNTA : '<span>' + (n+1) + '</span>') + '</span><div><strong>' + r[0] + (n === a && r[2] ? '<span class="stato">' + r[2] + '</span>' : '') + '</strong>' + (r[1] ? '<small>' + r[1] + '</small>' : '') + '</div></li>';
+  }).join("") + '</ol>';
+}
 
 var PAGANTI = ["Una persona (dipendente o collaboratore)","Un'agenzia","Il commercialista o un consulente","Un programma in abbonamento","Stavo per pagare qualcuno, ma non l'ho ancora fatto"];
 var D = [
@@ -127,18 +202,22 @@ var D = [
 ];
 var N = D.length;
 
+// Tappe mostrate in testa (solo grafica: le domande e l'ordine restano quelli approvati)
+function nomeTappa(i){ return i < 4 ? "Il tuo lavoro" : (i < 6 ? "I tuoi programmi" : "La telefonata"); }
+var rigaTappa = document.getElementById("riga-tappa"), nomeTappaEl = document.getElementById("nome-tappa");
 function avanzamento(i){
-  if (i >= 0 && i < N){ barra.style.width = ((i) / N * 100) + "%"; contatore.textContent = (i+1) + " di " + N; }
-  else { barra.style.width = i >= N ? "100%" : "0"; contatore.textContent = ""; }
+  // Barra che parte già avanti e corre più all'inizio che alla fine (meta-analisi Villar 2014: veloce-poi-lenta = meno abbandoni)
+  if (i >= 0 && i < N){ barra.style.width = (8 + 84 * Math.pow(i / N, 0.75)) + "%"; contatore.textContent = (i+1) + " di " + N; nomeTappaEl.innerHTML = "<b>" + nomeTappa(i) + "</b>"; rigaTappa.hidden = false; }
+  else { barra.style.width = i >= N ? "100%" : "0"; contatore.textContent = ""; rigaTappa.hidden = true; }
   indietroBtn.classList.toggle("si", i > 0 && i < N);
 }
-indietroBtn.onclick = function(){ if (S.i > 0 && S.i < N){ S.i--; salva(); mostra(); } };
+indietroBtn.onclick = function(){ if (S.i > 0 && S.i < N){ S.i--; verso = -1; salva(); mostra(); } };
 
 function lettera(n){ return "ABCDEFGHI".charAt(n); }
 function bottoniScelte(lista, sel, attr){
   return '<ul class="scelte">' + lista.map(function(t, n){
     var on = Array.isArray(sel) ? sel.indexOf(t) >= 0 : sel === t;
-    return '<li><button type="button" class="scelta" ' + attr + ' data-v="' + esc(t) + '" aria-pressed="' + on + '"><span class="lettera">' + lettera(n) + '</span><span>' + esc(t) + '</span></button></li>';
+    return '<li style="--n:' + n + '"><button type="button" class="scelta" ' + attr + ' data-v="' + esc(t) + '" aria-pressed="' + on + '"><span class="lettera" aria-hidden="true"><em>' + lettera(n) + '</em>' + SPUNTA + '</span><span>' + esc(t) + '</span></button></li>';
   }).join("") + '</ul>';
 }
 function azioni(primario, secondario){
@@ -149,11 +228,11 @@ function domanda(i){
   var d = D[i], r = S.r;
   var testo = typeof d.testo === "function" ? d.testo() : d.testo;
   var sel = r[d.k] || (d.tipo === "tanti" ? [] : "");
-  var h = '<p class="passo">Domanda ' + (i+1) + ' di ' + N + '</p>' + testo + bottoniScelte(d.o, sel, 'data-g="main"');
+  var h = testo + bottoniScelte(d.o, sel, 'data-g="main"');
   if (d.sotto) h += '<div class="sub" id="sub" hidden><h3>' + d.sotto.titolo + '</h3>' + bottoniScelte(d.sotto.o, r[d.sotto.k] || "", 'data-g="sub"') + '</div>';
-  if (d.extra) h += '<div class="campo"><label for="extra">' + d.extra.label + '</label><input id="extra" type="text" maxlength="200" autocomplete="off" placeholder="' + esc(d.extra.ph) + '" value="' + esc(r[d.extra.k] || "") + '"></div>';
+  if (d.extra) h += '<div class="campo"><label for="extra">' + d.extra.label + '</label><input id="extra" type="text" maxlength="200" autocomplete="off" enterkeyhint="next" placeholder="' + esc(d.extra.ph) + '" value="' + esc(r[d.extra.k] || "") + '"></div>';
   var serveAvanti = d.tipo === "tanti" || d.extra || d.sotto;
-  h += azioni(serveAvanti ? '<button class="pulsante" id="avanti" type="button">' + (i === N-1 ? "Invia le risposte" : "Avanti") + '</button>' : "");
+  h += azioni(serveAvanti ? '<button class="pulsante" id="avanti" type="button">' + (i === N-1 ? "Invia le risposte" : "Avanti") + FRECCIA + '</button>' + '<p class="sotto-pulsante tasti">oppure premi Invio</p>' : '<p class="sotto-pulsante tasti">Tocca una risposta o premi la lettera</p>');
   el(h);
   var avanti = document.getElementById("avanti"), sub = document.getElementById("sub"), extra = document.getElementById("extra");
   function valido(){
@@ -169,7 +248,7 @@ function domanda(i){
       if (g === "sub"){ r[d.sotto.k] = v; app.querySelectorAll('[data-g="sub"]').forEach(function(x){ x.setAttribute("aria-pressed", x === b); }); }
       else if (d.tipo === "uno"){
         r[d.k] = v; app.querySelectorAll('[data-g="main"]').forEach(function(x){ x.setAttribute("aria-pressed", x === b); });
-        if (!serveAvanti){ salva(); setTimeout(function(){ prossima(); }, 260); return; }
+        if (!serveAvanti){ b.classList.add("preso"); tasti = null; salva(); setTimeout(function(){ prossima(); }, 320); return; }
       } else {
         var a = (r[d.k] || []).slice(), at = a.indexOf(v);
         if (at >= 0) a.splice(at, 1); else { if (v === d.solo) a = []; else a = a.filter(function(x){ return x !== d.solo; }); a.push(v); }
@@ -181,6 +260,13 @@ function domanda(i){
   });
   if (extra) extra.oninput = function(){ r[d.extra.k] = extra.value; salva(); };
   if (avanti) avanti.onclick = function(){ if (!avanti.disabled) prossima(); };
+  // Da computer: lettera = sceglie, Invio = avanti (come Typeform). Mai mentre si scrive nel campo.
+  tasti = function(e){
+    if (e.key === "Enter"){ if (avanti && !avanti.disabled){ e.preventDefault(); avanti.click(); } return; }
+    if (document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    var n = "ABCDEFGHI".indexOf((e.key || "").toUpperCase()); if (n < 0 || e.key.length !== 1) return;
+    var b = app.querySelectorAll('[data-g="main"]')[n]; if (b) b.click();
+  };
   valido();
 }
 
@@ -206,9 +292,10 @@ function inviaParte1(){
 
 function meta(){
   avanzamento(N + 1);
-  el('<div class="angoli"><i></i><i></i><i></i><i></i><p class="passo"><span class="punto"></span>Parte obbligatoria completata</p><h1>Ci sei' + (info.nome ? ', ' + esc(info.nome) : '') + '</h1>' +
-     '<p class="sotto">Con queste risposte la tua simulazione si può già preparare.</p><p class="sotto">Se hai altri 2 minuti, c\'è una cosa che la rende molto più precisa: un esempio vero del tuo lavoro.</p></div>' +
-     azioni('<button class="pulsante" id="esempio" type="button">Aggiungo un esempio</button>', '<button class="secondario" id="basta" type="button">Ho finito così</button>'));
+  el('<p class="passo"><span class="punto"></span>Parte obbligatoria completata</p><h1>Ci sei' + (info.nome ? ', ' + esc(info.nome) : '') + '</h1>' +
+     '<p class="sotto">Con queste risposte la tua simulazione si può già preparare.</p><p class="sotto">Se hai altri 2 minuti, c\'è una cosa che la rende molto più precisa: un esempio vero del tuo lavoro.</p>' +
+     percorso(2, [["Modulo sul sito"], ["Questionario"], ["Un esempio vero", "Facoltativo · 2 minuti", "adesso"]]) +
+     azioni('<button class="pulsante" id="esempio" type="button">Aggiungo un esempio' + FRECCIA + '</button>', '<button class="secondario" id="basta" type="button">Ho finito così</button>'));
   document.getElementById("esempio").onclick = caricaFile;
   document.getElementById("basta").onclick = fine;
 }
@@ -249,22 +336,27 @@ function altro(){
 
 function fine(){
   S.fine = true; salva(); avanzamento(N + 1); barra.style.width = "100%";
-  el('<div class="angoli"><i></i><i></i><i></i><i></i><p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '. Adesso tocca a noi</h1></div>' +
-     '<ul class="elenco"><li><b>01</b><span>Prepariamo la simulazione di Mark applicata direttamente alla tua attività, con le risposte che ci hai dato.</span></li>' +
-     '<li><b>02</b><span>Poi ti chiama ' + esc(info.chi) + ' al numero che ci hai lasciato, nella fascia oraria che hai scelto.</span></li>' +
-     '<li><b>03</b><span>In telefonata vedi la simulazione sul tuo lavoro e capisci subito se fa per te.</span></li></ul>' +
-     '<h2 style="margin-top:36px">Prima della telefonata, guarda questo video</h2>' +
+  el('<p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '. Adesso tocca a noi</h1>' +
+     '<ol class="percorso lungo"><li class="ora"><span class="seg"><span>1</span></span><div><strong>Prepariamo la simulazione di Mark applicata direttamente alla tua attività, con le risposte che ci hai dato.</strong></div></li>' +
+     '<li><span class="seg"><span>2</span></span><div><strong>Poi ti chiama ' + esc(info.chi) + ' al numero che ci hai lasciato, nella fascia oraria che hai scelto.</strong></div></li>' +
+     '<li><span class="seg"><span>3</span></span><div><strong>In telefonata vedi la simulazione sul tuo lavoro e capisci subito se fa per te.</strong></div></li></ol>' +
+     '<h2 style="margin-top:48px">Prima della telefonata, guarda questo video</h2>' +
      '<p class="sotto">In 20 minuti Dennis ti fa vedere come usiamo Mark ogni giorno nelle nostre aziende, con esempi veri. Così in telefonata parliamo già del tuo caso.</p>' +
-     '<div style="position:relative;padding-top:56.25%;margin:16px 0;border-radius:8px;overflow:hidden"><iframe src="https://www.youtube-nocookie.com/embed/FF3P4joKUr0" title="Come usiamo Mark nelle nostre aziende" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
+     '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/FF3P4joKUr0" title="Come usiamo Mark nelle nostre aziende" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
      '<p class="sotto">Se ti viene in mente un altro esempio, lo puoi mandare su WhatsApp allo stesso numero da cui ti abbiamo scritto.</p>');
 }
 
+// Prima schermata (metodo «Landing e Questionari che Convertono»): parole del WhatsApp + nome, cosa ottiene, percorso già iniziato
+// (il modulo sul sito è fatto davvero), quante domande e minuti, un pulsante in basso, una prova vera (Hospitality Pro, sì di Davide 24/10).
 function apertura(){
   avanzamento(-1);
-  el('<p class="passo"><span class="punto"></span>Questionario · 2 minuti</p><h1>Ciao' + (info.nome ? ' ' + esc(info.nome) : '') + ', prepariamo Mark sul tuo lavoro</h1>' +
-     '<p class="sotto">Rispondi a 9 domande, quasi tutte a scelta: ci vogliono 2 minuti. Con le tue risposte prepariamo una simulazione di Mark applicata direttamente alla tua attività e te la facciamo vedere quando ti chiamiamo.</p>' +
-     azioni('<button class="pulsante" id="via" type="button">Iniziamo</button>'));
+  el('<div class="apertura"><h1>Ciao' + (info.nome ? ' ' + esc(info.nome) : '') + ', prepariamo Mark sul tuo lavoro</h1>' +
+     '<p class="sotto">Con le tue risposte prepariamo una simulazione di Mark applicata direttamente alla tua attività e te la facciamo vedere quando ti chiamiamo.</p>' +
+     '<div class="destra">' + percorso(1, [["Modulo sul sito"], ["Questionario", "9 domande, quasi tutte a un tocco", "2 minuti"], ["Telefonata con la simulazione", "Ti chiama " + esc(info.chi || "Dejan") + " nella fascia oraria che scegli tu"]]) +
+     '<div class="prova"><div><b>112</b><span>location contattate</span></div><div><b>8</b><span>giorni</span></div><div><b>65</b><span>risposte</span></div><p>Il lavoro di Mark in una delle nostre aziende.</p></div></div>' +
+     azioni('<button class="pulsante" id="via" type="button">Iniziamo' + FRECCIA + '</button>', '<p class="sotto-pulsante">Le risposte servono solo a preparare la tua simulazione.</p>') + '</div>', "largo");
   document.getElementById("via").onclick = function(){ S.i = 0; salva(); mostra(); };
+  tasti = function(e){ if (e.key === "Enter"){ e.preventDefault(); document.getElementById("via").click(); } };
 }
 
 function mostra(){
