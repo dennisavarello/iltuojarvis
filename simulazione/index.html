@@ -337,18 +337,18 @@ function altro(){
 
 function fine(){
   S.fine = true; salva(); avanzamento(N + 1); barra.style.width = "100%";
-  el('<p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '. Adesso tocca a noi</h1>' +
+  el('<p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '</h1>' +
+     '<p class="sotto">Prima della telefonata guarda questo video di 20 minuti: Dennis ti fa vedere come usiamo Mark ogni giorno nelle nostre aziende, con esempi veri.</p>' +
+     '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/FF3P4joKUr0" title="Come usiamo Mark nelle nostre aziende" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
+     '<h2 style="margin-top:48px">Cosa succede adesso</h2>' +
      '<ol class="percorso lungo"><li class="ora"><span class="seg"><span>1</span></span><div><strong>Prepariamo la simulazione di Mark applicata direttamente alla tua attività, con le risposte che ci hai dato.</strong></div></li>' +
      '<li><span class="seg"><span>2</span></span><div><strong>Poi ti chiamiamo al numero che ci hai lasciato, nella fascia oraria che hai scelto.</strong></div></li>' +
      '<li><span class="seg"><span>3</span></span><div><strong>In telefonata vedi la simulazione sul tuo lavoro e capisci subito se fa per te.</strong></div></li></ol>' +
-     '<h2 style="margin-top:48px">Prima della telefonata, guarda questo video</h2>' +
-     '<p class="sotto">In 20 minuti Dennis ti fa vedere come usiamo Mark ogni giorno nelle nostre aziende, con esempi veri. Così in telefonata parliamo già del tuo caso.</p>' +
-     '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/FF3P4joKUr0" title="Come usiamo Mark nelle nostre aziende" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
      '<p class="sotto">Se ti viene in mente un altro esempio, lo puoi mandare su WhatsApp allo stesso numero da cui ti abbiamo scritto.</p>');
 }
 
 // Prima schermata (metodo «Landing e Questionari che Convertono»): parole del WhatsApp + nome, cosa ottiene, percorso già iniziato
-// (il modulo sul sito è fatto davvero), quante domande e minuti, un pulsante in basso, una prova vera (Hospitality Pro, sì di Davide 24/10).
+// (il modulo sul sito è fatto davvero), quante domande e minuti, un pulsante in basso. Niente riquadro di numeri (Davide 24/10).
 function apertura(){
   avanzamento(-1);
   el('<div class="apertura"><h1>Ciao' + (info.nome ? ' ' + esc(info.nome) : '') + ', prepariamo Mark sul tuo lavoro</h1>' +
