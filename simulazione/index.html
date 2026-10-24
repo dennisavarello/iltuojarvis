@@ -161,7 +161,7 @@ var API = "https://questionario-tekjtvnh3q-ew.a.run.app";
 var C = ((decodeURIComponent(location.search) || "").match(/([A-Za-z0-9]{10,40}\.[A-Za-z0-9_-]{12})(?:[^A-Za-z0-9_-]|$)/g) || [""]).pop().replace(/[^A-Za-z0-9_.-]+$/, "");
 var CHIAVE = "mark-q-" + C;
 var app = document.getElementById("app"), barra = document.getElementById("barra"), contatore = document.getElementById("contatore"), indietroBtn = document.getElementById("indietro");
-var info = {nome:"", lavoro:"", chi:"Dejan"};
+var info = {nome:"", lavoro:"", chi:""};
 var S = carica() || {i:-1, r:{}, inviato1:false};
 var files = [];
 
@@ -339,7 +339,7 @@ function fine(){
   S.fine = true; salva(); avanzamento(N + 1); barra.style.width = "100%";
   el('<p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '. Adesso tocca a noi</h1>' +
      '<ol class="percorso lungo"><li class="ora"><span class="seg"><span>1</span></span><div><strong>Prepariamo la simulazione di Mark applicata direttamente alla tua attività, con le risposte che ci hai dato.</strong></div></li>' +
-     '<li><span class="seg"><span>2</span></span><div><strong>Poi ti chiama ' + esc(info.chi) + ' al numero che ci hai lasciato, nella fascia oraria che hai scelto.</strong></div></li>' +
+     '<li><span class="seg"><span>2</span></span><div><strong>Poi ti chiamiamo al numero che ci hai lasciato, nella fascia oraria che hai scelto.</strong></div></li>' +
      '<li><span class="seg"><span>3</span></span><div><strong>In telefonata vedi la simulazione sul tuo lavoro e capisci subito se fa per te.</strong></div></li></ol>' +
      '<h2 style="margin-top:48px">Prima della telefonata, guarda questo video</h2>' +
      '<p class="sotto">In 20 minuti Dennis ti fa vedere come usiamo Mark ogni giorno nelle nostre aziende, con esempi veri. Così in telefonata parliamo già del tuo caso.</p>' +
@@ -353,7 +353,7 @@ function apertura(){
   avanzamento(-1);
   el('<div class="apertura"><h1>Ciao' + (info.nome ? ' ' + esc(info.nome) : '') + ', prepariamo Mark sul tuo lavoro</h1>' +
      '<p class="sotto">Con le tue risposte prepariamo una simulazione di Mark applicata direttamente alla tua attività e te la facciamo vedere quando ti chiamiamo.</p>' +
-     '<div class="destra">' + percorso(1, [["Modulo sul sito"], ["Questionario", "9 domande, quasi tutte a un tocco", "2 minuti"], ["Telefonata con la simulazione", "Ti chiama " + esc(info.chi || "Dejan") + " nella fascia oraria che scegli tu"]]) +
+     '<div class="destra">' + percorso(1, [["Modulo sul sito"], ["Questionario", "9 domande, quasi tutte a un tocco", "2 minuti"], ["Telefonata con la simulazione", "Ti chiamiamo nella fascia oraria che scegli tu"]]) +
      '</div>' +
      azioni('<button class="pulsante" id="via" type="button">Iniziamo' + FRECCIA + '</button>', '<p class="sotto-pulsante">Le risposte servono solo a preparare la tua simulazione.</p>') + '</div>', "largo");
   document.getElementById("via").onclick = function(){ S.i = 0; salva(); mostra(); };
