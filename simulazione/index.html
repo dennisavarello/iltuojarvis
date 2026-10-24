@@ -5,41 +5,46 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#050505">
+<meta name="theme-color" content="#FAF7F0">
 <title>Mark · La tua simulazione</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='6' fill='%230B0B0C'/%3E%3Cpath d='M14 46V18h8l10 15 10-15h8v28h-8V31l-10 14-10-14v15z' fill='%23E39B3A'/%3E%3C/svg%3E">
-<link rel="preload" href="michroma-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="switzer-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="switzer-400.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Questionario «simulazione di Mark» per i lead nuovi di iltuomark.com (24/10/2026). Link personale dal pulsante del WhatsApp: ?c=<idcontatto>.<firma>.
      Le risposte vanno alla funzione Google di Davide (progetto mark-questionario) che le scrive nel contatto GHL. Cartella di Davide: non toccare. -->
 <style>
 @font-face{font-family:Stark;src:url(michroma-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Switzer;src:url(switzer-400.woff2) format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:Switzer;src:url(switzer-500.woff2) format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:Switzer;src:url(switzer-600.woff2) format('woff2');font-weight:600;font-display:swap}
-@font-face{font-family:'Geist Mono';src:url(geist-mono-500.woff2) format('woff2');font-weight:500;font-display:swap}
-/* Piano (24/10, metodi/Landing e Questionari che Convertono.md): 390 px prima di tutto. Ossidiana fondo, grafite superfici, linea bordi,
-   avorio testo, titanio secondario, ambra unico accento. Stark solo nei titoli grandi, Switzer testo, Geist Mono numeri e tappe.
-   Cosa memorabile: il percorso in 3 tappe (modulo fatto → questionario → telefonata) che torna in apertura, a metà e alla fine. */
-:root{--ossidiana:#050505;--grafite:#0F0F10;--grafite-2:#161617;--linea:#262628;--avorio:#F2F0EB;--titanio:#9A9A9A;--ambra:#E39B3A;--ambra-forte:#F2B25E;--ambra-fondo:#1A140B;
-  --stark:Stark,Switzer,sans-serif;--testo:Switzer,system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;--curva:cubic-bezier(.32,.72,0,1);color-scheme:dark}
+/* Piano v2 (25/10, critica di Davide da iPhone: «tutto sto nero e grigino»). Tema CHIARO ad alto contrasto, come Typeform/Tally/Noom/Headway.
+   Avorio fondo #FAF7F0, carta #FFF per le risposte, inchiostro #17150F (17:1), testo secondario #4A463E (8,8:1), bordi #CBC3B3.
+   Ambra #E39B3A SOLO dove va l'occhio: pulsante (testo inchiostro 7,8:1), barra, scelta selezionata, tappa fatta. Ambra scura #8A5410 per le scritte d'accento (5,9:1).
+   Switzer per tutto (titoli 600 in minuscolo normale, corpo 18/27); Michroma solo nel marchio.
+   Cosa memorabile: il percorso in 3 tappe (modulo fatto → questionario → telefonata). */
+:root{--fondo:#FAF7F0;--carta:#FFFFFF;--inchiostro:#17150F;--grigio:#4A463E;--linea:#CBC3B3;--linea-tenue:#E6E0D3;
+  --ambra:#E39B3A;--ambra-forte:#F0A848;--ambra-scura:#8A5410;--ambra-bordo:#B4690E;--ambra-fondo:#FCEFD9;
+  --stark:Stark,Switzer,sans-serif;--testo:Switzer,system-ui,-apple-system,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;--curva:cubic-bezier(.32,.72,0,1);color-scheme:light}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--ossidiana);color:var(--avorio);font:500 17px/1.5 var(--testo);min-height:100svh;overflow-x:hidden}
+body{margin:0;background:var(--fondo);color:var(--inchiostro);font:400 18px/1.5 var(--testo);min-height:100svh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button,input,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--ambra);outline-offset:3px}
+:focus-visible{outline:3px solid var(--ambra-bordo);outline-offset:3px}
 /* testa: indietro · marchio, poi barra e riga della tappa */
-.testa{position:sticky;top:0;z-index:5;background:var(--ossidiana);padding:8px max(16px,env(safe-area-inset-left)) 0}
+.testa{position:sticky;top:0;z-index:5;background:var(--fondo);padding:8px max(20px,env(safe-area-inset-left)) 12px;border-bottom:1px solid var(--linea-tenue)}
 .testa-riga{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;min-height:48px}
-.marchio{font:400 14px/16px var(--stark);letter-spacing:.24em;color:var(--avorio)}
-.marchio i{font-style:normal;color:var(--ambra)}
-.indietro{display:flex;align-items:center;gap:8px;min-height:44px;background:none;border:0;padding:0 12px 0 0;color:var(--titanio);cursor:pointer;font:500 15px/1 var(--testo);visibility:hidden}
-.indietro svg{width:18px;height:18px}
+.marchio{font:400 14px/16px var(--stark);letter-spacing:.24em;color:var(--inchiostro)}
+.marchio i{font-style:normal;color:var(--ambra-bordo)}
+.indietro{display:flex;align-items:center;gap:6px;min-height:44px;background:none;border:0;padding:0 12px 0 0;color:var(--inchiostro);cursor:pointer;font:500 16px/1 var(--testo);visibility:hidden}
+.indietro svg{width:20px;height:20px}
 .indietro.si{visibility:visible}
-.barra{max-width:640px;margin:0 auto;height:3px;background:var(--linea);border-radius:2px;overflow:hidden}
-.barra span{display:block;height:100%;width:0;background:var(--ambra);transition:width .7s var(--curva)}
-.tappa{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;min-height:16px;padding-top:8px;font:500 13px/16px var(--mono);color:var(--titanio)}
-.tappa b{font-weight:500;color:var(--avorio)}
+.barra{max-width:640px;margin:4px auto 0;height:6px;background:var(--linea-tenue);border-radius:3px;overflow:hidden}
+.barra span{display:block;height:100%;width:0;background:var(--ambra);border-radius:3px;transition:width .7s var(--curva)}
+.tappa{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;min-height:20px;padding-top:10px;font:500 15px/20px var(--testo);color:var(--grigio)}
+.tappa b{font-weight:600;color:var(--inchiostro)}
+#contatore{font:500 15px/20px var(--testo);font-variant-numeric:tabular-nums;color:var(--grigio)}
 .tappa[hidden]{display:none}
-main{max-width:672px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-left)) 24px;overflow-x:clip}
+main{max-width:680px;margin:0 auto;padding:32px max(20px,env(safe-area-inset-left)) 24px;overflow-x:clip}
 html,body{overflow-x:hidden}
 /* entrata: avanti da destra, indietro da sinistra; le risposte arrivano una dopo l'altra */
 .schermo{animation:entra .42s var(--curva) both}
@@ -48,99 +53,93 @@ html,body{overflow-x:hidden}
 @keyframes entraDietro{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
 .scelte li{animation:sale .38s var(--curva) both;animation-delay:calc(var(--n,0) * 35ms + 80ms)}
 @keyframes sale{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.passo{display:inline-flex;align-items:center;margin-bottom:16px;font:500 13px/16px var(--mono);color:var(--ambra)}
-h1{font:400 24px/34px var(--stark);letter-spacing:.02em;text-transform:uppercase;margin:0;text-wrap:balance}
-h2{font:600 25px/32px var(--testo);margin:0;letter-spacing:-.005em;text-wrap:pretty}
-.citazione{display:block;margin:0 0 24px;padding:12px 16px;border-left:2px solid var(--ambra);background:var(--grafite);color:var(--avorio);font-size:16px;line-height:24px}
-.sotto{margin:16px 0 0;color:var(--titanio);font-size:17px;line-height:26px;text-wrap:pretty}
-.nota{margin:8px 0 0;color:var(--titanio);font:500 13px/20px var(--mono)}
-/* risposte: righe intere da toccare, alte 56 */
-.scelte{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:8px}
-.scelta{position:relative;width:100%;display:flex;align-items:center;gap:16px;text-align:left;min-height:56px;padding:12px 16px;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;cursor:pointer;font-size:17px;line-height:23px;transition:border-color .2s var(--curva),background .2s var(--curva),transform .15s var(--curva)}
+.passo{display:inline-flex;align-items:center;margin:0 0 12px;font:600 16px/22px var(--testo);color:var(--ambra-scura)}
+h1{font:600 32px/1.15 var(--testo);letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font:600 27px/1.22 var(--testo);margin:0;letter-spacing:-.015em;text-wrap:pretty}
+.citazione{display:block;margin:0 0 20px;padding:14px 16px;border-left:4px solid var(--ambra);background:var(--carta);border-radius:0 3px 3px 0;color:var(--grigio);font-size:17px;line-height:1.45}
+.sotto{margin:16px 0 0;color:var(--grigio);font-size:18px;line-height:1.5;text-wrap:pretty}
+.nota{margin:10px 0 0;color:var(--grigio);font:500 16px/22px var(--testo)}
+/* risposte: card intere da toccare, alte almeno 60 */
+.scelte{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:10px}
+.scelta{position:relative;width:100%;display:flex;align-items:center;gap:14px;text-align:left;min-height:60px;padding:14px 16px;background:var(--carta);border:1.5px solid var(--linea);border-radius:3px;cursor:pointer;font-size:18px;line-height:1.35;font-weight:500;color:var(--inchiostro);transition:border-color .2s var(--curva),background .2s var(--curva),transform .15s var(--curva)}
 .scelta:active{transform:scale(.985)}
-.scelta .lettera{flex:0 0 28px;height:28px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:2px;font:500 12px/1 var(--mono);color:var(--titanio);transition:background .2s var(--curva),border-color .2s var(--curva),color .2s}
-.scelta .lettera svg{width:14px;height:14px;display:none}
-.scelta[aria-pressed="true"]{border-color:var(--ambra);background:var(--ambra-fondo)}
-.scelta[aria-pressed="true"] .lettera{background:var(--ambra);border-color:var(--ambra);color:var(--ossidiana)}
+.scelta .lettera{flex:0 0 30px;height:30px;display:grid;place-items:center;border:1.5px solid var(--linea);border-radius:3px;background:var(--fondo);font:600 14px/1 var(--testo);color:var(--grigio);transition:background .2s var(--curva),border-color .2s var(--curva),color .2s}
+.scelta .lettera svg{width:16px;height:16px;display:none}
+.scelta[aria-pressed="true"]{border-color:var(--ambra-bordo);background:var(--ambra-fondo);box-shadow:inset 0 0 0 1px var(--ambra-bordo)}
+.scelta[aria-pressed="true"] .lettera{background:var(--ambra);border-color:var(--ambra-bordo);color:var(--inchiostro)}
 .scelta[aria-pressed="true"] .lettera svg{display:block}
 .scelta[aria-pressed="true"] .lettera em{display:none}
 .scelta .lettera em{font-style:normal}
 .scelta.preso{animation:preso .28s var(--curva)}
 @keyframes preso{40%{transform:scale(.97)}}
-@media (hover:hover){.scelta:hover{border-color:#4A3A22}}
-.campo{margin-top:24px}
-.campo label{display:block;font-size:15px;line-height:22px;color:var(--titanio);margin-bottom:8px}
-.campo input,.campo textarea{width:100%;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;padding:14px 16px;font-size:17px;line-height:24px;outline:none;transition:border-color .2s}
-.campo textarea{min-height:120px;resize:vertical}
-.campo input:focus,.campo textarea:focus{border-color:var(--ambra)}
-.campo ::placeholder{color:#6E6E6E}
+@media (hover:hover){.scelta:hover{border-color:var(--ambra-bordo)}}
+.campo{margin-top:28px}
+.campo label{display:block;font-size:17px;line-height:1.4;font-weight:500;color:var(--inchiostro);margin-bottom:8px}
+.campo input,.campo textarea{width:100%;background:var(--carta);border:1.5px solid var(--linea);border-radius:3px;padding:14px 16px;font-size:18px;line-height:1.4;outline:none;transition:border-color .2s}
+.campo textarea{min-height:140px;resize:vertical}
+.campo input:focus,.campo textarea:focus{border-color:var(--ambra-bordo);box-shadow:0 0 0 3px rgba(227,155,58,.25)}
+.campo ::placeholder{color:#8C8577}
 .sub{margin-top:32px;padding-top:24px;border-top:1px solid var(--linea)}
-.sub h3{margin:0;font:600 19px/26px var(--testo)}
+.sub h3{margin:0;font:600 21px/1.3 var(--testo)}
 /* pulsante in basso, alla portata del pollice */
-.azioni{position:sticky;bottom:0;z-index:6;margin:32px -16px 0;padding:24px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--ossidiana) 24px)}
-.azioni-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
-.pulsante{width:100%;min-height:56px;display:flex;align-items:center;justify-content:center;gap:12px;background:var(--ambra);color:var(--ossidiana);border:0;border-radius:3px;font:600 17px/24px var(--testo);cursor:pointer;transition:background .2s,opacity .2s,transform .2s var(--curva)}
-.pulsante svg{width:18px;height:18px;transition:transform .25s var(--curva)}
+.azioni{position:sticky;bottom:0;z-index:6;margin:32px -20px 0;padding:20px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(rgba(250,247,240,0),var(--fondo) 20px)}
+.azioni-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.pulsante{width:100%;min-height:58px;display:flex;align-items:center;justify-content:center;gap:12px;background:var(--ambra);color:var(--inchiostro);border:0;border-radius:3px;font:600 18px/24px var(--testo);cursor:pointer;transition:background .2s,opacity .2s,transform .2s var(--curva)}
+.pulsante svg{width:20px;height:20px;transition:transform .25s var(--curva)}
 .pulsante:hover{background:var(--ambra-forte)}
 .pulsante:hover svg{transform:translateX(3px)}
 .pulsante:active{transform:translateY(1px)}
-.pulsante[disabled]{opacity:.35;cursor:default}
-.pulsante[disabled]:hover{background:var(--ambra)}
-.sotto-pulsante{margin:0;text-align:center;color:var(--titanio);font-size:14px;line-height:20px}
-.tasti{font:500 13px/20px var(--mono)}
+.pulsante[disabled]{background:var(--linea-tenue);color:#6B655A;cursor:default}
+.pulsante[disabled]:hover{background:var(--linea-tenue)}
+.sotto-pulsante{margin:0;text-align:center;color:var(--grigio);font-size:15px;line-height:1.4}
 .tasti{display:none}
-.secondario{background:none;border:0;color:var(--titanio);min-height:44px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
-.carica{margin-top:24px;display:block;border:1px dashed #4A3A22;border-radius:3px;padding:24px 16px;text-align:center;cursor:pointer;background:var(--grafite)}
-.carica b{display:block;font-weight:600;color:var(--ambra)}
-.carica span{display:block;margin-top:4px;color:var(--titanio);font-size:14px}
-.file{margin-top:12px;display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border:1px solid var(--linea);border-radius:3px;font-size:15px;background:var(--grafite)}
-.file button{background:none;border:0;color:var(--titanio);cursor:pointer}
+.secondario{background:none;border:0;color:var(--inchiostro);min-height:48px;font-size:17px;font-weight:500;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--linea)}
+.carica{margin-top:24px;display:block;border:2px dashed var(--ambra-bordo);border-radius:3px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--carta)}
+.carica b{display:block;font-weight:600;font-size:19px;color:var(--inchiostro)}
+.carica span{display:block;margin-top:6px;color:var(--grigio);font-size:15px}
+.file{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--linea);border-radius:3px;font-size:16px;background:var(--carta)}
+.file button{background:none;border:0;color:var(--inchiostro);text-decoration:underline;min-height:44px;cursor:pointer}
 /* il percorso: tre tappe su una linea verticale */
 .percorso{list-style:none;margin:32px 0 0;padding:0;position:relative}
-.percorso li{position:relative;display:grid;grid-template-columns:28px 1fr;gap:16px;padding-bottom:24px}
+.percorso li{position:relative;display:grid;grid-template-columns:32px 1fr;gap:16px;padding-bottom:24px}
 .percorso li:last-child{padding-bottom:0}
-.percorso li:not(:last-child)::before{content:"";position:absolute;left:13px;top:30px;bottom:2px;width:2px;background:var(--linea)}
+.percorso li:not(:last-child)::before{content:"";position:absolute;left:15px;top:34px;bottom:2px;width:2px;background:var(--linea)}
 .percorso li.fatto:not(:last-child)::before{background:var(--ambra)}
-.percorso .seg{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:50%;background:var(--ossidiana);font:500 12px/1 var(--mono);color:var(--titanio)}
-.percorso .seg svg{width:14px;height:14px}
-.percorso .fatto .seg{background:var(--ambra);border-color:var(--ambra);color:var(--ossidiana)}
-.percorso .ora .seg{border-color:var(--ambra);color:var(--ambra);box-shadow:0 0 0 4px rgba(227,155,58,.12)}
-.percorso .ora .seg::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--ambra);animation:respira 2.2s ease-in-out infinite}
+.percorso .seg{width:32px;height:32px;display:grid;place-items:center;border:1.5px solid var(--linea);border-radius:50%;background:var(--carta);font:600 14px/1 var(--testo);color:var(--grigio)}
+.percorso .seg svg{width:16px;height:16px}
+.percorso .fatto .seg{background:var(--ambra);border-color:var(--ambra);color:var(--inchiostro)}
+.percorso .ora .seg{border:2px solid var(--ambra-bordo);color:var(--ambra-bordo);box-shadow:0 0 0 4px rgba(227,155,58,.2)}
+.percorso .ora .seg::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--ambra);animation:respira 2.2s ease-in-out infinite}
 .percorso .ora .seg span{display:none}
-.percorso strong{display:block;font:600 17px/24px var(--testo);padding-top:2px}
-.percorso small{display:block;margin-top:2px;color:var(--titanio);font-size:15px;line-height:22px;text-wrap:pretty}
-.percorso .fatto strong{color:var(--titanio);font-weight:500}
-.percorso .stato{font:500 12px/24px var(--mono);color:var(--ambra);margin-left:8px;font-weight:500}
-.prova{margin:32px 0 0;padding:16px;border:1px solid var(--linea);border-radius:3px;display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:4px 32px;align-items:end}
-.percorso.lungo strong{font-weight:500;color:var(--avorio)}
-.percorso.lungo li.ora strong{color:var(--avorio)}
-.prova div b{display:block;font:400 26px/32px var(--stark);color:var(--avorio)}
-.prova div span{display:block;font:500 12px/16px var(--mono);color:var(--titanio)}
-.prova p{grid-column:1/-1;margin:12px 0 0;color:var(--titanio);font-size:14px;line-height:20px}
-.punto{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ambra);margin-right:10px;animation:respira 2.2s ease-in-out infinite}
-@keyframes respira{50%{opacity:.3}}
-.errore{margin-top:16px;color:#F08A6B;font-size:15px}
-.carico{display:inline-block;width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:gira .8s linear infinite}
+.percorso strong{display:block;font:600 18px/1.35 var(--testo);padding-top:4px;color:var(--inchiostro)}
+.percorso small{display:block;margin-top:2px;color:var(--grigio);font-size:16px;line-height:1.45;text-wrap:pretty}
+.percorso .fatto strong{color:var(--grigio);font-weight:500}
+.percorso .stato{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:3px;background:var(--ambra-fondo);font:600 14px/22px var(--testo);color:var(--ambra-scura);vertical-align:1px}
+.percorso.lungo strong{font-weight:500;color:var(--inchiostro)}
+.percorso.lungo li.ora strong{font-weight:600}
+.punto{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ambra);margin-right:10px;animation:respira 2.2s ease-in-out infinite}
+@keyframes respira{50%{opacity:.35}}
+.errore{margin-top:16px;color:#B3261E;font-size:16px;font-weight:500}
+.carico{display:inline-block;width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:gira .8s linear infinite;vertical-align:-3px}
 @keyframes gira{to{transform:rotate(360deg)}}
-.video{position:relative;padding-top:56.25%;margin:16px 0;border-radius:3px;overflow:hidden;border:1px solid var(--linea)}
+.video{position:relative;padding-top:56.25%;margin:20px 0 4px;border-radius:3px;overflow:hidden;background:#000;border:1px solid var(--linea)}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.fine-titolo{margin-top:40px!important;padding-top:32px;border-top:1px solid var(--linea)}
 @media (min-width:900px){
-  main{padding-top:56px;padding-bottom:64px}
-  h1{font-size:32px;line-height:44px}h2{font-size:30px;line-height:40px}
+  main{padding-top:64px;padding-bottom:64px}
+  h1{font-size:44px}h2{font-size:34px}
   .azioni{position:static;background:none;margin:0;padding:40px 0 0}
   .azioni-in{max-width:none;flex-direction:row-reverse;justify-content:flex-start;align-items:center;gap:24px}
   .pulsante{width:auto;padding:0 40px}
   .sotto-pulsante{text-align:left}
-  .tasti{display:inline;color:#6E6E6E;font:500 13px/20px var(--mono)}
-  main.largo{max-width:1072px}
+  .tasti{display:inline;color:var(--grigio);font:500 14px/20px var(--testo)}
+  main.largo{max-width:1080px}
   body.largo .testa-riga,body.largo .barra{max-width:1040px}
   .apertura{display:grid;grid-template-columns:1.1fr 1fr;grid-template-areas:"t d" "s d" "a d" "x d";grid-template-rows:auto auto auto 1fr;column-gap:80px;align-items:start}
-  .apertura h1{grid-area:t}.apertura>.sotto{grid-area:s}.apertura .destra{grid-area:d}.apertura .azioni{grid-area:a}
+  .apertura h1{grid-area:t}.apertura>.sotto{grid-area:s;font-size:20px}.apertura .destra{grid-area:d}.apertura .azioni{grid-area:a}
   .apertura .azioni-in{flex-direction:column;align-items:flex-start;gap:16px}
-  .apertura .percorso{margin-top:8px}
-  .apertura .destra{padding:32px;border:1px solid var(--linea);border-radius:3px;background:var(--grafite)}
-  .apertura .destra .percorso li:not(.fatto) .seg{background:var(--grafite)}
-  .apertura .prova{border:0;padding:24px 0 0;border-top:1px solid var(--linea);border-radius:0}
+  .apertura .percorso{margin-top:0}
+  .apertura .destra{padding:36px;border:1.5px solid var(--linea);border-radius:3px;background:var(--carta)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -353,7 +352,7 @@ function fine(){
   el('<p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '</h1>' +
      '<p class="sotto">Prima della telefonata guarda questo video di 20 minuti: Dennis ti fa vedere come usiamo Mark ogni giorno nelle nostre aziende, con esempi veri.</p>' +
      '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/FF3P4joKUr0" title="Come usiamo Mark nelle nostre aziende" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
-     '<h2 style="margin-top:48px">Cosa succede adesso</h2>' +
+     '<h2 class="fine-titolo">Cosa succede adesso</h2>' +
      '<ol class="percorso lungo"><li class="ora"><span class="seg"><span>1</span></span><div><strong>Prepariamo la simulazione di Mark applicata direttamente alla tua attività, con le risposte che ci hai dato.</strong></div></li>' +
      '<li><span class="seg"><span>2</span></span><div><strong>Poi ti chiamiamo al numero che ci hai lasciato, nella fascia oraria che hai scelto.</strong></div></li>' +
      '<li><span class="seg"><span>3</span></span><div><strong>In telefonata vedi la simulazione sul tuo lavoro e capisci subito se fa per te.</strong></div></li></ol>' +
