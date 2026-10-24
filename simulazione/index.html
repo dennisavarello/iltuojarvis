@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#050505">
+<title>Mark · La tua simulazione</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='6' fill='%230B0B0C'/%3E%3Cpath d='M14 46V18h8l10 15 10-15h8v28h-8V31l-10 14-10-14v15z' fill='%23E39B3A'/%3E%3C/svg%3E">
+<link rel="preload" href="michroma-400.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Questionario «simulazione di Mark» per i lead nuovi di iltuomark.com (24/10/2026). Link personale dal pulsante del WhatsApp: ?c=<idcontatto>.<firma>.
+     Le risposte vanno alla funzione Google di Davide (progetto mark-questionario) che le scrive nel contatto GHL. Cartella di Davide: non toccare. -->
+<style>
+@font-face{font-family:Stark;src:url(michroma-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Switzer;src:url(switzer-500.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:Switzer;src:url(switzer-600.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url(geist-mono-500.woff2) format('woff2');font-weight:500;font-display:swap}
+:root{--ossidiana:#050505;--grafite:#0F0F10;--grafite-2:#161617;--linea:#262628;--avorio:#F2F0EB;--titanio:#9A9A9A;--ambra:#E39B3A;--ambra-forte:#F2B25E;
+  --stark:Stark,Switzer,sans-serif;--testo:Switzer,system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;--curva:cubic-bezier(.32,.72,0,1);color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ossidiana);color:var(--avorio);font:500 17px/1.5 var(--testo);min-height:100svh}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ambra);outline-offset:3px}
+.testa{position:sticky;top:0;z-index:5;background:var(--ossidiana);padding:16px max(16px,env(safe-area-inset-left)) 0}
+.testa-riga{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;min-height:40px;font:500 12px/16px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--titanio)}
+.marchio{font:400 14px/16px var(--stark);letter-spacing:.24em;color:var(--avorio)}
+.marchio i{font-style:normal;color:var(--ambra)}
+.indietro{background:none;border:0;padding:8px 8px 8px 0;color:var(--titanio);cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;visibility:hidden}
+.indietro.si{visibility:visible}
+.barra{max-width:640px;margin:12px auto 0;height:2px;background:var(--linea)}
+.barra span{display:block;height:100%;width:0;background:var(--ambra);box-shadow:0 0 10px rgba(227,155,58,.7);transition:width .6s var(--curva)}
+main{max-width:640px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left)) 24px}
+.schermo{animation:entra .55s var(--curva) both}
+@keyframes entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.passo{font:500 12px/16px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ambra);margin-bottom:16px}
+h1{font:400 23px/34px var(--stark);letter-spacing:.03em;text-transform:uppercase;margin:0;text-wrap:balance}
+h2{font:600 24px/32px var(--testo);margin:0;text-wrap:pretty}
+.citazione{display:block;margin:0 0 16px;padding:12px 16px;border-left:2px solid var(--ambra);background:var(--grafite);color:var(--avorio);font-size:16px;line-height:24px}
+.sotto{margin:16px 0 0;color:var(--titanio);font-size:17px;line-height:27px;text-wrap:pretty}
+.nota{margin:8px 0 0;color:var(--titanio);font:500 13px/20px var(--mono);letter-spacing:.04em}
+.scelte{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:8px}
+.scelta{position:relative;width:100%;display:flex;align-items:center;gap:16px;text-align:left;min-height:56px;padding:14px 16px;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;cursor:pointer;transition:border-color .25s var(--curva),background .25s var(--curva),transform .2s var(--curva)}
+.scelta:active{transform:scale(.99)}
+.scelta .lettera{flex:0 0 28px;height:28px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:2px;font:500 12px/1 var(--mono);color:var(--titanio)}
+.scelta[aria-pressed="true"]{border-color:var(--ambra);background:#1A140B}
+.scelta[aria-pressed="true"] .lettera{background:var(--ambra);border-color:var(--ambra);color:var(--ossidiana)}
+@media (hover:hover){.scelta:hover{border-color:#4A3A22}}
+.campo{margin-top:24px}
+.campo label{display:block;font-size:15px;line-height:22px;color:var(--titanio);margin-bottom:8px}
+.campo input,.campo textarea{width:100%;background:var(--grafite);border:1px solid var(--linea);border-radius:3px;padding:14px 16px;font-size:17px;line-height:24px;outline:none}
+.campo textarea{min-height:120px;resize:vertical}
+.campo input:focus,.campo textarea:focus{border-color:var(--ambra)}
+.campo ::placeholder{color:#6E6E6E}
+.sub{margin-top:32px;padding-top:24px;border-top:1px solid var(--linea)}
+.sub h3{margin:0;font:600 19px/26px var(--testo)}
+.azioni{position:sticky;bottom:0;z-index:6;margin:32px -16px 0;padding:24px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--ossidiana) 24px)}
+.azioni-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.pulsante{width:100%;min-height:56px;display:flex;align-items:center;justify-content:center;gap:12px;background:var(--ambra);color:var(--ossidiana);border:0;border-radius:3px;font:600 17px/24px var(--testo);cursor:pointer;transition:background .2s,opacity .2s,transform .2s var(--curva)}
+.pulsante:hover{background:var(--ambra-forte)}
+.pulsante:active{transform:translateY(1px)}
+.pulsante[disabled]{opacity:.35;cursor:default}
+.secondario{background:none;border:0;color:var(--titanio);min-height:44px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.carica{margin-top:24px;display:block;border:1px dashed #4A3A22;border-radius:3px;padding:24px 16px;text-align:center;cursor:pointer;background:var(--grafite)}
+.carica b{display:block;font-weight:600;color:var(--ambra)}
+.carica span{display:block;margin-top:4px;color:var(--titanio);font-size:14px}
+.file{margin-top:12px;display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border:1px solid var(--linea);border-radius:3px;font-size:15px;background:var(--grafite)}
+.file button{background:none;border:0;color:var(--titanio);cursor:pointer}
+.angoli{position:relative;padding:32px 24px;margin-top:8px}
+.angoli i{position:absolute;width:18px;height:18px;border:0 solid var(--ambra);opacity:.6}
+.angoli i:nth-child(1){left:0;top:0;border-width:1px 0 0 1px}.angoli i:nth-child(2){right:0;top:0;border-width:1px 1px 0 0}
+.angoli i:nth-child(3){left:0;bottom:0;border-width:0 0 1px 1px}.angoli i:nth-child(4){right:0;bottom:0;border-width:0 1px 1px 0}
+.punto{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ambra);box-shadow:0 0 8px var(--ambra);margin-right:10px;vertical-align:2px;animation:respira 2.2s ease-in-out infinite}
+@keyframes respira{50%{opacity:.3}}
+.elenco{margin:24px 0 0;padding:0;list-style:none;display:grid;gap:16px}
+.elenco li{display:grid;grid-template-columns:32px 1fr;gap:8px;color:var(--avorio);line-height:26px}
+.elenco li b{font:500 13px/26px var(--mono);color:var(--ambra)}
+.errore{margin-top:16px;color:#F08A6B;font-size:15px}
+.carico{display:inline-block;width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+@media (min-width:900px){main{padding-top:72px}h1{font-size:30px;line-height:42px}h2{font-size:28px;line-height:38px}.azioni{position:static;background:none;margin:0;padding:40px 0 0}.azioni-in{max-width:none;flex-direction:row-reverse;justify-content:flex-start;align-items:center;gap:24px}.pulsante{width:auto;padding:0 40px}main{padding-bottom:64px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="testa">
+  <div class="testa-riga">
+    <button class="indietro" id="indietro" type="button">← Indietro</button>
+    <span id="contatore"></span>
+    <span class="marchio">M<i>A</i>RK</span>
+  </div>
+  <div class="barra"><span id="barra"></span></div>
+</header>
+<main id="app" aria-live="polite"><div class="schermo"><p class="sotto"><span class="carico"></span></p></div></main>
+<script>
+(function(){
+var API = "https://questionario-tekjtvnh3q-ew.a.run.app";
+var C = new URLSearchParams(location.search).get("c") || "";
+var CHIAVE = "mark-q-" + C;
+var app = document.getElementById("app"), barra = document.getElementById("barra"), contatore = document.getElementById("contatore"), indietroBtn = document.getElementById("indietro");
+var info = {nome:"", lavoro:"", chi:"Dejan"};
+var S = carica() || {i:-1, r:{}, inviato1:false};
+var files = [];
+
+function carica(){ try { return JSON.parse(localStorage.getItem(CHIAVE)); } catch(e){ return null; } }
+function salva(){ try { localStorage.setItem(CHIAVE, JSON.stringify(S)); } catch(e){} }
+function esc(t){ return String(t||"").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function el(html){ app.innerHTML = '<div class="schermo">' + html + '</div>'; window.scrollTo(0,0); }
+
+var PAGANTI = ["Una persona (dipendente o collaboratore)","Un'agenzia","Il commercialista o un consulente","Un programma in abbonamento","Stavo per pagare qualcuno, ma non l'ho ancora fatto"];
+var D = [
+  {k:"q_chi_lo_fa", tipo:"uno", testo:function(){ return (info.lavoro ? '<span class="citazione">Nel modulo ci hai scritto che vorresti toglierti di dosso: «' + esc(info.lavoro) + '»</span><h2>Oggi chi lo fa?</h2>' : '<h2>Il lavoro che vorresti affidare a Mark: oggi chi lo fa?</h2>'); },
+   o:["Lo faccio io, a mano","Un dipendente o un collaboratore","Lo do fuori (agenzia, commercialista, consulente)","Un programma, ma serve comunque tanto lavoro a mano","Nessuno, e resta indietro"],
+   extra:{k:"q_come_lo_fa", label:"Come lo fai, in una riga (facoltativo)", ph:"es. copio i dati dalle email in Excel e poi faccio il preventivo"}},
+  {k:"q_ore", tipo:"uno", testo:"<h2>Quante ore a settimana ti porta via?</h2>", o:["Meno di 2","Da 2 a 5","Da 5 a 10","Da 10 a 20","Più di 20","Non saprei"]},
+  {k:"q_chi_paga", tipo:"tanti", testo:'<h2>Per risolverlo oggi paghi qualcuno, o stavi per farlo?</h2><p class="nota">Puoi sceglierne più di una</p>', o:PAGANTI.concat(["No, lo faccio io"]), solo:"No, lo faccio io",
+   sotto:{k:"q_quanto_anno", se:function(v){ return v.some(function(x){ return PAGANTI.indexOf(x) >= 0; }); }, titolo:"Più o meno quanto, in un anno?", o:["Meno di 1.000 €","Da 1.000 a 5.000 €","Da 5.000 a 15.000 €","Più di 15.000 €","Preferisco non dirlo"]}},
+  {k:"q_valore_cliente", tipo:"uno", testo:"<h2>In media, quanto ti porta un cliente nuovo?</h2>", o:["Meno di 500 €","Da 500 a 2.000 €","Da 2.000 a 10.000 €","Più di 10.000 €","Non lavoro con clienti","Non saprei"]},
+  {k:"q_computer", tipo:"uno", testo:"<h2>Su che computer lavori?</h2>", o:["Mac","Windows","Tutti e due","Non lo so"]},
+  {k:"q_programmi", tipo:"tanti", testo:'<h2>Quali di questi usi per lavoro?</h2><p class="nota">Puoi sceglierne più di uno</p>', o:["Gmail","Outlook","Excel o Fogli Google","WhatsApp Business","Un gestionale","Un CRM per i clienti","Programma delle fatture","Non lo so"], solo:"Non lo so",
+   extra:{k:"q_gestionale", label:"Come si chiama il gestionale o il programma che usi di più? (facoltativo)", ph:"es. TeamSystem, Danea, Fatture in Cloud"}},
+  {k:"q_obiezioni", tipo:"tanti", testo:'<h2>Cosa ti farebbe dire di no?</h2><p class="sotto">Scrivilo pure: in telefonata rispondiamo proprio a quello.</p><p class="nota">Puoi sceglierne più di una</p>', o:["Il costo","Non funziona col programma che uso","Non ho tempo per imparare a usarlo","La privacy dei miei dati","Ho già provato qualcosa e non ha funzionato","Devo sentire il socio o qualcun altro","Niente, voglio solo vederlo funzionare"], solo:"Niente, voglio solo vederlo funzionare",
+   extra:{k:"q_obiezioni_testo", label:"Altro? Scrivilo qui (facoltativo)", ph:""}},
+  {k:"q_chi_decide", tipo:"uno", testo:"<h2>Chi decide con te?</h2>", o:["Decido io","Con un socio","Con la famiglia","Con il commercialista o un consulente","Altro"]},
+  {k:"q_quando_chiamare", tipo:"tanti", testo:'<h2>Quando preferisci che ti chiamiamo?</h2><p class="nota">Puoi sceglierne più di una</p>', o:["Mattina, dalle 9 alle 12","Pausa pranzo, dalle 12 alle 14","Pomeriggio, dalle 14 alle 18","Dopo le 18"]}
+];
+var N = D.length;
+
+function avanzamento(i){
+  if (i >= 0 && i < N){ barra.style.width = ((i) / N * 100) + "%"; contatore.textContent = (i+1) + " di " + N; }
+  else { barra.style.width = i >= N ? "100%" : "0"; contatore.textContent = ""; }
+  indietroBtn.classList.toggle("si", i > 0 && i < N);
+}
+indietroBtn.onclick = function(){ if (S.i > 0 && S.i < N){ S.i--; salva(); mostra(); } };
+
+function lettera(n){ return "ABCDEFGHI".charAt(n); }
+function bottoniScelte(lista, sel, attr){
+  return '<ul class="scelte">' + lista.map(function(t, n){
+    var on = Array.isArray(sel) ? sel.indexOf(t) >= 0 : sel === t;
+    return '<li><button type="button" class="scelta" ' + attr + ' data-v="' + esc(t) + '" aria-pressed="' + on + '"><span class="lettera">' + lettera(n) + '</span><span>' + esc(t) + '</span></button></li>';
+  }).join("") + '</ul>';
+}
+function azioni(primario, secondario){
+  return '<div class="azioni"><div class="azioni-in">' + (primario || "") + (secondario || "") + '</div></div>';
+}
+
+function domanda(i){
+  var d = D[i], r = S.r;
+  var testo = typeof d.testo === "function" ? d.testo() : d.testo;
+  var sel = r[d.k] || (d.tipo === "tanti" ? [] : "");
+  var h = '<p class="passo">Domanda ' + (i+1) + ' di ' + N + '</p>' + testo + bottoniScelte(d.o, sel, 'data-g="main"');
+  if (d.sotto) h += '<div class="sub" id="sub" hidden><h3>' + d.sotto.titolo + '</h3>' + bottoniScelte(d.sotto.o, r[d.sotto.k] || "", 'data-g="sub"') + '</div>';
+  if (d.extra) h += '<div class="campo"><label for="extra">' + d.extra.label + '</label><input id="extra" type="text" maxlength="200" autocomplete="off" placeholder="' + esc(d.extra.ph) + '" value="' + esc(r[d.extra.k] || "") + '"></div>';
+  var serveAvanti = d.tipo === "tanti" || d.extra || d.sotto;
+  h += azioni(serveAvanti ? '<button class="pulsante" id="avanti" type="button">' + (i === N-1 ? "Invia le risposte" : "Avanti") + '</button>' : "");
+  el(h);
+  var avanti = document.getElementById("avanti"), sub = document.getElementById("sub"), extra = document.getElementById("extra");
+  function valido(){
+    var v = r[d.k];
+    var ok = d.tipo === "tanti" ? (v && v.length > 0) : !!v;
+    if (ok && d.sotto && d.sotto.se(v || [])) ok = !!r[d.sotto.k];
+    if (avanti) avanti.disabled = !ok;
+    if (sub){ var vis = d.sotto.se(r[d.k] || []); sub.hidden = !vis; if (!vis) delete r[d.sotto.k]; }
+  }
+  app.querySelectorAll(".scelta").forEach(function(b){
+    b.onclick = function(){
+      var v = b.getAttribute("data-v"), g = b.getAttribute("data-g");
+      if (g === "sub"){ r[d.sotto.k] = v; app.querySelectorAll('[data-g="sub"]').forEach(function(x){ x.setAttribute("aria-pressed", x === b); }); }
+      else if (d.tipo === "uno"){
+        r[d.k] = v; app.querySelectorAll('[data-g="main"]').forEach(function(x){ x.setAttribute("aria-pressed", x === b); });
+        if (!serveAvanti){ salva(); setTimeout(function(){ prossima(); }, 260); return; }
+      } else {
+        var a = (r[d.k] || []).slice(), at = a.indexOf(v);
+        if (at >= 0) a.splice(at, 1); else { if (v === d.solo) a = []; else a = a.filter(function(x){ return x !== d.solo; }); a.push(v); }
+        r[d.k] = a;
+        app.querySelectorAll('[data-g="main"]').forEach(function(x){ x.setAttribute("aria-pressed", a.indexOf(x.getAttribute("data-v")) >= 0); });
+      }
+      salva(); valido();
+    };
+  });
+  if (extra) extra.oninput = function(){ r[d.extra.k] = extra.value; salva(); };
+  if (avanti) avanti.onclick = function(){ if (!avanti.disabled) prossima(); };
+  valido();
+}
+
+function prossima(){ S.i++; salva(); if (S.i >= N) inviaParte1(); else mostra(); }
+
+function post(dati){
+  return fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(dati)}).then(function(x){ return x.json().then(function(j){ if (!x.ok || !j.ok) throw new Error("salvataggio"); return j; }); });
+}
+
+function inviaParte1(){
+  avanzamento(N);
+  el('<p class="passo">Salvataggio</p><h2>Sto salvando le tue risposte…</h2><p class="sotto"><span class="carico"></span></p>');
+  var r = S.r, ob = (r.q_obiezioni || []).slice();
+  if (r.q_obiezioni_testo) ob.push("Altro: " + r.q_obiezioni_testo);
+  var risposte = {q_chi_lo_fa:r.q_chi_lo_fa, q_come_lo_fa:r.q_come_lo_fa, q_ore:r.q_ore, q_chi_paga:r.q_chi_paga, q_quanto_anno:r.q_quanto_anno, q_valore_cliente:r.q_valore_cliente,
+    q_computer:r.q_computer, q_programmi:r.q_programmi, q_gestionale:r.q_gestionale, q_obiezioni:ob, q_chi_decide:r.q_chi_decide, q_quando_chiamare:r.q_quando_chiamare};
+  post({c:C, fase:"parte1", risposte:risposte}).then(function(){ S.inviato1 = true; S.i = N; salva(); meta(); })
+  .catch(function(){
+    el('<h2>Le risposte non sono partite</h2><p class="sotto">Capita se la connessione salta. Le tue risposte sono ancora qui: riprova.</p>' + azioni('<button class="pulsante" id="riprova" type="button">Riprova</button>'));
+    document.getElementById("riprova").onclick = inviaParte1;
+  });
+}
+
+function meta(){
+  avanzamento(N + 1);
+  el('<div class="angoli"><i></i><i></i><i></i><i></i><p class="passo"><span class="punto"></span>Parte obbligatoria completata</p><h1>Ci sei' + (info.nome ? ', ' + esc(info.nome) : '') + '</h1>' +
+     '<p class="sotto">Con queste risposte la tua simulazione si può già preparare.</p><p class="sotto">Se hai altri 2 minuti, c\'è una cosa che la rende molto più precisa: un esempio vero del tuo lavoro.</p></div>' +
+     azioni('<button class="pulsante" id="esempio" type="button">Aggiungo un esempio</button>', '<button class="secondario" id="basta" type="button">Ho finito così</button>'));
+  document.getElementById("esempio").onclick = caricaFile;
+  document.getElementById("basta").onclick = fine;
+}
+
+function caricaFile(){
+  var lista = files.map(function(f, n){ return '<div class="file"><span>' + esc(f.name) + '</span><button type="button" data-n="' + n + '">Togli</button></div>'; }).join("");
+  el('<p class="passo">Parte facoltativa · 1 di 2</p><h2>Un esempio vero</h2>' +
+     '<p class="sotto">Carica una cosa su cui lavori davvero: un\'email tipo, un preventivo, un export dal gestionale, un file Excel. Va bene anche una foto o uno screenshot fatti col telefono.</p>' +
+     '<p class="sotto">Nomi e cifre puoi coprirli: il file serve solo per preparare la simulazione.</p>' +
+     (files.length < 3 ? '<label class="carica" for="fileinput"><b>Carica un file</b><span>Foto, PDF, Word, Excel · fino a 10 MB · massimo 3</span></label><input id="fileinput" type="file" hidden accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt">' : '') +
+     lista + '<p class="errore" id="err" hidden></p>' +
+     azioni('<button class="pulsante" id="avanti" type="button">' + (files.length ? "Avanti" : "Salto questo passaggio") + '</button>'));
+  var inp = document.getElementById("fileinput"), err = document.getElementById("err");
+  if (inp) inp.onchange = function(){
+    var f = inp.files[0]; if (!f) return;
+    if (f.size > 10 * 1024 * 1024){ err.hidden = false; err.textContent = "Questo file supera i 10 MB: prova con una foto o uno screenshot."; return; }
+    files.push(f); caricaFile();
+  };
+  app.querySelectorAll(".file button").forEach(function(b){ b.onclick = function(){ files.splice(+b.getAttribute("data-n"), 1); caricaFile(); }; });
+  document.getElementById("avanti").onclick = altro;
+}
+
+function altro(){
+  el('<p class="passo">Parte facoltativa · 2 di 2</p><h2>C\'è altro che dobbiamo sapere?</h2>' +
+     '<div class="campo"><label for="altro">Facoltativo</label><textarea id="altro" maxlength="3000" placeholder="come lo fai oggi passo per passo, cosa ti fa perdere più tempo, cosa hai già provato">' + esc(S.r.altro || "") + '</textarea></div>' +
+     '<p class="errore" id="err" hidden></p>' + azioni('<button class="pulsante" id="invia" type="button">Invia</button>'));
+  var t = document.getElementById("altro"); t.oninput = function(){ S.r.altro = t.value; salva(); };
+  var b = document.getElementById("invia");
+  b.onclick = function(){
+    if (!files.length && !(S.r.altro || "").trim()){ fine(); return; }
+    b.disabled = true; b.innerHTML = '<span class="carico"></span> Invio in corso';
+    Promise.all(files.map(function(f){ return new Promise(function(ok, ko){ var fr = new FileReader(); fr.onload = function(){ ok({name:f.name, type:f.type, data:fr.result}); }; fr.onerror = ko; fr.readAsDataURL(f); }); }))
+    .then(function(lista){ return post({c:C, fase:"parte2", altro:S.r.altro || "", files:lista}); })
+    .then(function(){ files = []; fine(); })
+    .catch(function(){ b.disabled = false; b.textContent = "Riprova"; var e = document.getElementById("err"); e.hidden = false; e.textContent = "L'invio non è riuscito. Controlla la connessione e riprova."; });
+  };
+}
+
+function fine(){
+  S.fine = true; salva(); avanzamento(N + 1); barra.style.width = "100%";
+  el('<div class="angoli"><i></i><i></i><i></i><i></i><p class="passo"><span class="punto"></span>Ricevuto</p><h1>Fatto' + (info.nome ? ', ' + esc(info.nome) : '') + '. Adesso tocca a noi</h1></div>' +
+     '<ul class="elenco"><li><b>01</b><span>Prepariamo la simulazione di Mark applicata direttamente alla tua attività, con le risposte che ci hai dato.</span></li>' +
+     '<li><b>02</b><span>Poi ti chiama ' + esc(info.chi) + ' al numero che ci hai lasciato, nella fascia oraria che hai scelto.</span></li>' +
+     '<li><b>03</b><span>In telefonata vedi la simulazione sul tuo lavoro e capisci subito se fa per te.</span></li></ul>' +
+     '<p class="sotto">Se ti viene in mente un altro esempio, lo puoi mandare su WhatsApp allo stesso numero da cui ti abbiamo scritto.</p>');
+}
+
+function apertura(){
+  avanzamento(-1);
+  el('<p class="passo"><span class="punto"></span>Questionario · 2 minuti</p><h1>Ciao' + (info.nome ? ' ' + esc(info.nome) : '') + ', prepariamo Mark sul tuo lavoro</h1>' +
+     '<p class="sotto">Rispondi a 9 domande, quasi tutte a scelta: ci vogliono 2 minuti. Con le tue risposte prepariamo una simulazione di Mark applicata direttamente alla tua attività e te la facciamo vedere quando ti chiamiamo.</p>' +
+     azioni('<button class="pulsante" id="via" type="button">Iniziamo</button>'));
+  document.getElementById("via").onclick = function(){ S.i = 0; salva(); mostra(); };
+}
+
+function mostra(){
+  if (S.fine) return fine();
+  if (S.inviato1 && S.i >= N) return meta();
+  if (S.i < 0) return apertura();
+  if (S.i >= N) return inviaParte1();
+  avanzamento(S.i); domanda(S.i);
+}
+
+function linkRotto(){
+  avanzamento(-1);
+  el('<h1>Questo link non funziona</h1><p class="sotto">Apri il questionario dal pulsante del messaggio WhatsApp che ti abbiamo mandato. Se non lo trovi, rispondi a quel messaggio e te lo rimandiamo.</p>');
+}
+
+if (!/^[A-Za-z0-9]{10,40}\.[A-Za-z0-9_-]{12}$/.test(C)) return linkRotto();
+fetch(API + "?c=" + encodeURIComponent(C)).then(function(x){ if (!x.ok) throw 0; return x.json(); }).then(function(j){
+  info = j;
+  if (j.fatto && !S.inviato1){ S.inviato1 = true; S.i = N; salva(); }
+  mostra();
+}).catch(linkRotto);
+})();
+</script>
+</body>
+</html>
