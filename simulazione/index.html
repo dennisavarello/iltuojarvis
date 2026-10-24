@@ -294,10 +294,10 @@ function inviaParte1(){
 // per il lavoro che il lead vuole togliersi, e diciamo cosa ci guadagna (Mark sul suo file vero in telefonata, come Studio 15).
 function tipoEsempio(){
   var l = (info.lavoro || "").toLowerCase();
-  if (/fattur|contab|commercialist|pagament|incass|bilanc|prima nota/.test(l)) return {cosa:"una fattura o l\'export dei movimenti di un mese", perche:"le tue fatture"};
-  if (/client|vend|contatt|preventiv|lead|social|instagram|campagn/.test(l)) return {cosa:"un preventivo, la lista dei tuoi contatti o un messaggio che mandi ai clienti", perche:"i tuoi clienti"};
-  if (/mail|posta|agenda|organizz|ricord|dimentic|scadenz|appuntament|telefon/.test(l)) return {cosa:"uno screenshot della tua posta o della tua agenda di questa settimana", perche:"la tua posta e la tua agenda"};
-  return {cosa:"il file o la schermata dove oggi perdi più tempo", perche:"il tuo lavoro vero"};
+  if (/fattur|contab|commercialist|pagament|incass|bilanc|prima nota/.test(l)) return {cosa:"una fattura o l\'export dei movimenti di un mese", perche:"sulle tue fatture"};
+  if (/client|vend|contatt|preventiv|lead|social|instagram|campagn/.test(l)) return {cosa:"un preventivo, la lista dei tuoi contatti o un messaggio che mandi ai clienti", perche:"sui tuoi clienti"};
+  if (/mail|posta|agenda|organizz|ricord|dimentic|scadenz|appuntament|telefon/.test(l)) return {cosa:"uno screenshot della tua posta o della tua agenda di questa settimana", perche:"sulla tua posta e sulla tua agenda"};
+  return {cosa:"il file o la schermata dove oggi perdi più tempo", perche:"sul tuo lavoro vero"};
 }
 
 function meta(){
@@ -317,7 +317,7 @@ function caricaFile(){
   var lista = files.map(function(f, n){ return '<div class="file"><span>' + esc(f.name) + '</span><button type="button" data-n="' + n + '">Togli</button></div>'; }).join("");
   var e = tipoEsempio();
   el('<p class="passo">Il tuo file · facoltativo</p><h2>Carica ' + e.cosa + '</h2>' +
-     '<p class="sotto">Lo usiamo solo per preparare la simulazione su ' + e.perche + '. Nomi e cifre puoi coprirli.</p>' +
+     '<p class="sotto">Lo usiamo solo per preparare la simulazione ' + e.perche + '. Nomi e cifre puoi coprirli.</p>' +
      (files.length < 3 ? '<label class="carica" for="fileinput"><b>Carica un file</b><span>Foto, PDF, Word, Excel · fino a 10 MB · massimo 3</span></label><input id="fileinput" type="file" hidden accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt">' : '') +
      lista + '<p class="errore" id="err" hidden></p>' +
      azioni('<button class="pulsante" id="avanti" type="button">' + (files.length ? "Avanti" : "Salto questo passaggio") + '</button>'));
