@@ -96,7 +96,7 @@ h2{font:600 24px/32px var(--testo);margin:0;text-wrap:pretty}
 <script>
 (function(){
 var API = "https://questionario-tekjtvnh3q-ew.a.run.app";
-var C = new URLSearchParams(location.search).get("c") || "";
+var C = ((decodeURIComponent(location.search) || "").match(/([A-Za-z0-9]{10,40}\.[A-Za-z0-9_-]{12})(?:[^A-Za-z0-9_-]|$)/g) || [""]).pop().replace(/[^A-Za-z0-9_.-]+$/, "");
 var CHIAVE = "mark-q-" + C;
 var app = document.getElementById("app"), barra = document.getElementById("barra"), contatore = document.getElementById("contatore"), indietroBtn = document.getElementById("indietro");
 var info = {nome:"", lavoro:"", chi:"Dejan"};
