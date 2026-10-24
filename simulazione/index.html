@@ -354,7 +354,7 @@ function apertura(){
   el('<div class="apertura"><h1>Ciao' + (info.nome ? ' ' + esc(info.nome) : '') + ', prepariamo Mark sul tuo lavoro</h1>' +
      '<p class="sotto">Con le tue risposte prepariamo una simulazione di Mark applicata direttamente alla tua attività e te la facciamo vedere quando ti chiamiamo.</p>' +
      '<div class="destra">' + percorso(1, [["Modulo sul sito"], ["Questionario", "9 domande, quasi tutte a un tocco", "2 minuti"], ["Telefonata con la simulazione", "Ti chiama " + esc(info.chi || "Dejan") + " nella fascia oraria che scegli tu"]]) +
-     '<div class="prova"><div><b>112</b><span>location contattate</span></div><div><b>8</b><span>giorni</span></div><div><b>65</b><span>risposte</span></div><p>Il lavoro di Mark in una delle nostre aziende.</p></div></div>' +
+     '</div>' +
      azioni('<button class="pulsante" id="via" type="button">Iniziamo' + FRECCIA + '</button>', '<p class="sotto-pulsante">Le risposte servono solo a preparare la tua simulazione.</p>') + '</div>', "largo");
   document.getElementById("via").onclick = function(){ S.i = 0; salva(); mostra(); };
   tasti = function(e){ if (e.key === "Enter"){ e.preventDefault(); document.getElementById("via").click(); } };
