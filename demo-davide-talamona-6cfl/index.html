@@ -802,14 +802,33 @@ const attendi = (ms, g) => new Promise((ok, ko) => {
   if (subito) return g === giro ? ok() : ko(new Stop());
   setTimeout(() => g === giro ? ok() : ko(new Stop()), ms / (vel * (DEMO.ritmo || 1)));
 });
+/* 30 ott: voci precaricate all'apertura (fetch → blob in memoria, 4 alla volta, nell'ordine della demo),
+   così una frase non resta mai ad aspettare la rete; e un guardiano al posto dei 30 s fissi:
+   se l'audio non avanza (stallo, play() pendente) la demo prosegue dopo 2,5 s, mai ferma. */
+const VOCI_BLOB = {};
+(function precarica() {
+  const urls = [...new Set(Object.values(VOCI))], coda = []; let attivi = 0;
+  const via = () => { while (attivi < 4 && coda.length) { const [u, ok] = coda.shift(); attivi++;
+    fetch(u).then(r => r.ok ? r.blob() : null).then(b => ok(b ? URL.createObjectURL(b) : null)).catch(() => ok(null)).finally(() => { attivi--; via(); }); } };
+  urls.forEach(u => { VOCI_BLOB[u] = new Promise(ok => coda.push([u, ok])); }); via();
+})();
 function parla(t) {
-  return new Promise(ok => {
+  return new Promise(async ok => {
     if (!voceOn || subito) return ok();
     if (VOCI[t]) {
       try {
-        const a = new Audio(VOCI[t]); audioOra = a; a.preservesPitch = true; a.playbackRate = vel;   /* 22/10 Davide: a 1,5× la voce restava a 1,22× e la demo sembrava uguale a 1× */ musicaGiu(true); SFX.giu(true);
-        let f = false; const fine = () => { if (!f) { f = true; ok(); } };
-        const fine0 = fine; a.onended = () => { musicaGiu(false); SFX.giu(false); fine0(); }; a.onerror = () => { musicaGiu(false); SFX.giu(false); fine0(); }; setTimeout(fine, 30000);
+        const src = await Promise.race([VOCI_BLOB[VOCI[t]] || null, new Promise(r => setTimeout(() => r(null), 4000))]) || VOCI[t];
+        if (!voceOn || subito) return ok();
+        const a = new Audio(src); audioOra = a; a.preload = "auto"; a.preservesPitch = true; a.playbackRate = vel;   /* 22/10 Davide: a 1,5× la voce restava a 1,22× e la demo sembrava uguale a 1× */ musicaGiu(true); SFX.giu(true);
+        let f = false, ultimo = -1, mosso = performance.now(), partito = false, guardia = 0;
+        const fine = () => { if (f) return; f = true; clearInterval(guardia); if (!a.ended && audioOra === a) a.pause(); musicaGiu(false); SFX.giu(false); ok(); };
+        a.onended = fine; a.onerror = fine;
+        guardia = setInterval(() => {
+          if (a.ended) return fine();
+          if (a.currentTime !== ultimo) { ultimo = a.currentTime; mosso = performance.now(); if (ultimo > 0) partito = true; return; }
+          if (a.paused && partito) return fine();   /* messo in pausa da ferma() o dal tasto Voce */
+          if (performance.now() - mosso > (partito ? 2500 : 5000)) fine();
+        }, 250);
         a.play().catch(fine); return;
       } catch (e) { return ok(); }
     }
