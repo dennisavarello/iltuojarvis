@@ -820,13 +820,13 @@ function parla(t) {
         const src = await Promise.race([VOCI_BLOB[VOCI[t]] || null, new Promise(r => setTimeout(() => r(null), 4000))]) || VOCI[t];
         if (!voceOn || subito) return ok();
         const a = new Audio(src); audioOra = a; a.preload = "auto"; a.preservesPitch = true; a.playbackRate = vel;   /* 22/10 Davide: a 1,5× la voce restava a 1,22× e la demo sembrava uguale a 1× */ musicaGiu(true); SFX.giu(true);
-        let f = false, ultimo = -1, mosso = performance.now(), partito = false, guardia = 0;
+        let f = false, ultimo = -1, mosso = performance.now(), partito = false, guardia = 0, riprese = 0;
         const fine = () => { if (f) return; f = true; clearInterval(guardia); if (!a.ended && audioOra === a) a.pause(); musicaGiu(false); SFX.giu(false); ok(); };
         a.onended = fine; a.onerror = fine;
         guardia = setInterval(() => {
           if (a.ended) return fine();
           if (a.currentTime !== ultimo) { ultimo = a.currentTime; mosso = performance.now(); if (ultimo > 0) partito = true; return; }
-          if (a.paused && partito) return fine();   /* messo in pausa da ferma() o dal tasto Voce */
+          if (a.paused && partito) { if (inCorso && voceOn && audioOra === a && riprese++ < 3) { mosso = performance.now(); a.play().catch(() => {}); return; } return fine(); }   /* pausa del sistema (cambio uscita audio): riprende; pausa da ferma() o dal tasto Voce: chiude */
           if (performance.now() - mosso > (partito ? 2500 : 5000)) fine();
         }, 250);
         a.play().catch(fine); return;
